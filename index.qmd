@@ -1,10 +1,5 @@
 ---
 title: "ISSS626 Geospatial Analytics & Applications"
-listing:
-  max-items: 9
-  type: grid
-  sort:
-      "date desc"
 ---
 
 Welcome to my Page!
