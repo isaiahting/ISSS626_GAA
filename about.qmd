@@ -26,7 +26,7 @@ Connect with Me:
 
 Back to Home:
 
-[![](images/home.png){width="50"}](https://joshuaisaiah.netlify.app/)
+[![](images/home.png){width="50"}](https://joshuaisaiahgeospatial.netlify.app//)
 :::
 :::
 :::
