@@ -1,0 +1,14 @@
+---
+title: "ISSS626 Geospatial Analytics & Applications"
+listing:
+  max-items: 9
+  type: grid
+  sort:
+      "date desc"
+---
+
+Welcome to my Page!
+
+This website is crafted as part of a module's requirement for the Master's programme (Visual Analytics & Application) under the esteemed guidance of A/Prof KAM Tin Seong.
+
+![](geospatial.webp)
