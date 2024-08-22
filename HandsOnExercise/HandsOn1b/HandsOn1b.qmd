@@ -1,0 +1,20 @@
+---
+title: "Hands On Exercise 1b"
+author: "Joshua TING"
+date: "August 23, 2024"
+date-modified: "last-modified"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code Chunk"
+    number-sections: true
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+  message: false
+editor: source
+---
+
+# **2  Thematic Mapping and GeoVisualisation with R**
