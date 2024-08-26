@@ -1,0 +1,22 @@
+---
+title: "In Class Exercise 1"
+author: "Joshua TING"
+date: "August 26, 2024"
+date-modified: "last-modified"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code Chunk"
+    number-sections: true
+execute:
+  eval: true
+  echo: true
+  warning: false
+  freeze: true
+  message: false
+editor: source
+---
+
+# **1. In Class Exercise 1**
+
+## **1.1** 
