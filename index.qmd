@@ -6,4 +6,8 @@ Hello! Welcome to my Page!
 
 This website is crafted as part of a module's requirement for the Master's programme (Visual Analytics & Application) under the esteemed guidance of A/Prof KAM Tin Seong.
 
-![](geospatial.webp)
+![*Amalgamating Geospatial & Epidemiology*](images/healthcare.webp)
+
+**Motivation**
+
+Inspired by the pioneering work of John Snow in epidemiology, whose spatial mapping of cholera outbreaks in the 1850s revolutionized disease tracking, I aim to apply these princeiples to contemporary challenges, using spatial data to analyze patterns, uncover insights, and contribute to more informed decision-making in fields like public health and beyond, especially with the rise of Mpox.
