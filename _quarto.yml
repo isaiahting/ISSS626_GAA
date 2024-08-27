@@ -11,12 +11,18 @@ website:
             href: "HandsOnExercise/HandsOn1/HandsOn1.html"
           - text: "Hands-On Exercise 1b"
             href: "HandsOnExercise/HandsOn1b/HandsOn1b.html"
+          - text: "Hands-On Exercise 2a"
+            href: "HandsOnExercise/HandsOn2a/HandsOn2a.html"
+          - text: "Hands-On Exercise 2b"
+            href: "HandsOnExercise/HandsOn2b/HandsOn2b.html"
 
             
       - text: "In-Class Exercise"
         menu:
           - text: "In-Class Exercise 1"
             href: "InClassExercise/InClass1/InClass1.html"
+          - text: "In-Class Exercise 2"
+            href: "InClassExercise/InClass2/InClass2.html"
 
           
       - text: "Take-Home Exercise"
