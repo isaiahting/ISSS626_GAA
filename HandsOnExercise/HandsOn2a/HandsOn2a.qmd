@@ -1,0 +1,24 @@
+---
+title: "Hands-On Exercise 2a"
+author: "Joshua TING"
+date: "August 28, 2024"
+date-modified: "last-modified"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code Chunk"
+    number-sections: true
+execute:
+  eval: true #r will run through all codes
+  echo: true #r will display all code chunk
+  warning: false #for mark down
+  freeze: true #r will not render all existing  html files
+  message: false #avoid printing warning message
+editor: source
+---
+
+# **In-Class Exercise 2a**
+
+## **Installing Packages**
+
+![](/images/workinprogress.jpg){fig-align="center"}
