@@ -30,6 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -66,7 +68,65 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
 
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-author','listing-date','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -198,7 +258,141 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-</main> <!-- /main -->
+
+<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1724774400000" data-listing-file-modified-sort="1725166387230" data-listing-date-modified-sort="1725166387000" data-listing-reading-time-sort="19" data-listing-word-count-sort="3671">
+<a href="./HandsOnExercise/HandsOn2a/HandsOn2a.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="HandsOnExercise/HandsOn2a/HandsOn2a_files/figure-html/unnamed-chunk-19-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Hands-On Exercise 2a
+</h5>
+<div class="card-text listing-description">
+Spatial Point Pattern Analysis is the evaluation of the pattern or distribution, of a set of points on a surface. The point can be location of:
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Joshua TING
+</div>
+<div class="listing-date">
+Aug 28, 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-listing-date-sort="1724774400000" data-listing-file-modified-sort="1724772210771" data-listing-date-modified-sort="1724772210000" data-listing-reading-time-sort="1" data-listing-word-count-sort="3">
+<a href="./HandsOnExercise/HandsOn2b/HandsOn2b.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="images/workinprogress.jpg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Hands-On Exercise 2b
+</h5>
+<div class="card-text listing-description">
+
+
+<section id="installing-packages" class="level2" data-number="1.1">
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p></p>
+</figure>
+</div>
+
+
+</section>
+
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Joshua TING
+</div>
+<div class="listing-date">
+Aug 28, 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="2" data-listing-date-sort="1724601600000" data-listing-file-modified-sort="1724771605196" data-listing-date-modified-sort="1724771605000" data-listing-reading-time-sort="2" data-listing-word-count-sort="292">
+<a href="./InClassExercise/InClass1/InClass1.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+In Class Exercise 1
+</h5>
+<div class="card-text listing-description">
+To use Projected Coordinate System (PCS) as geography is flattened and measured using (i.e.&nbsp;metres) instead of Geography Coordinate System (GCS) as it is not accurate. For…
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Joshua TING
+</div>
+<div class="listing-date">
+Aug 26, 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="3" data-listing-date-sort="1724342400000" data-listing-file-modified-sort="1724345747175" data-listing-date-modified-sort="1724345747000" data-listing-reading-time-sort="15" data-listing-word-count-sort="2909">
+<a href="./HandsOnExercise/HandsOn1/HandsOn1.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="HandsOnExercise/HandsOn1/HandsOn1_files/figure-html/unnamed-chunk-8-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Hands On Exercise 1a
+</h5>
+<div class="card-text listing-description">
+Geospatial Data Science is a process of importing, wrangling, integrating, and processing geographically referenced data sets. In this hands-on exercise, you will learn how…<strong></strong>
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Joshua TING
+</div>
+<div class="listing-date">
+Aug 23, 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="4" data-listing-date-sort="1724342400000" data-listing-file-modified-sort="1724405748362" data-listing-date-modified-sort="1724405748000" data-listing-reading-time-sort="18" data-listing-word-count-sort="3405">
+<a href="./HandsOnExercise/HandsOn1b/HandsOn1b.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="HandsOnExercise/HandsOn1b/HandsOn1b_files/figure-html/unnamed-chunk-9-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Hands On Exercise 1b
+</h5>
+<div class="card-text listing-description">
+In general, thematic mapping involves the use of map symbols to visualize selected properties of geographic features that are not naturally visible, such as population…
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Joshua TING
+</div>
+<div class="listing-date">
+Aug 23, 2024
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

@@ -2,7 +2,11 @@
   {
     "listing": "/index.html",
     "items": [
-      "/about.html"
+      "/HandsOnExercise/HandsOn2a/HandsOn2a.html",
+      "/HandsOnExercise/HandsOn2b/HandsOn2b.html",
+      "/InClassExercise/InClass1/InClass1.html",
+      "/HandsOnExercise/HandsOn1/HandsOn1.html",
+      "/HandsOnExercise/HandsOn1b/HandsOn1b.html"
     ]
   }
 ]
