@@ -99,7 +99,9 @@ mpsz3414 <- st_set_crs(mpsz_sf, 3414)
 st_crs(mpsz3414)
 ```
 
-\``{r} st_crs(sg_sf)`
+```{r}
+st_crs(sg_sf)
+```
 
 Notice that except `childcare_sf`, both `mpsz_sf` and `sg_sf` do not have proper crs information.
 
