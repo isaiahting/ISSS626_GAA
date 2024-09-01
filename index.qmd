@@ -1,5 +1,11 @@
 ---
 title: "ISSS626 Geospatial Analytics & Applications"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: grid
+  include:
+    author: "{Joshua TING}*"
 ---
 
 **Hello! Welcome to my Page!**
