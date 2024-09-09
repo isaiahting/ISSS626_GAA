@@ -449,6 +449,12 @@ The null hypothesis will be rejected is p-value is smaller than alpha value of 0
 
 The code chunk below is used to perform the hypothesis testing.
 
+::: callout-note
+## Monte Carlo for R
+
+R starts from 0, hence if 99, it is running 100 times.
+:::
+
 ```{r}
 F_tm.csr <- envelope(childcare_tm_ppp, Fest, correction = "all", nsim = 999)
 ```
