@@ -1,0 +1,15 @@
+{
+  "hash": "5850eb185cd74b406d4fb1018b973a26",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Take-Home Exercise 1\"\nauthor: \"Joshua TING\"\ndate: \"2nd September, 2024\"\ndate-modified: \"last-modified\"\nformat:\n  html:\n    code-fold: true\n    code-summary: \"Code Chunk\"\n    number-sections: true\nexecute:\n  eval: true #r will run through all codes\n  echo: true #r will display all code chunk\n  warning: false #for mark down\n  freeze: true #r will not render all existing  html files\n  message: false #avoid printing warning message\neditor: source\n---\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(tidyverse, sf)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nrdacc_sf <- read_csv(\"data/archive/thai_road_accident_2019_2022.csv\") %>%\n  filter(!is.na(longitude) & longitude !='',\n        !is.na(latitude) & latitude != '') %>%\n  st_as_sf(coords = c(\"longitude\", 'latitude'),\n           crs=4326) %>% #WGS 84 - USE BY ALL GPS\n  st_transform(crs=32647) #PROJECTED PCS UTM IS 326, 47 NORTH \n```\n:::\n\n\n![](/images/workinprogress.jpg)\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

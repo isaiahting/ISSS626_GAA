@@ -1,0 +1,33 @@
+---
+title: "Take-Home Exercise 1"
+author: "Joshua TING"
+date: "2nd September, 2024"
+date-modified: "last-modified"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code Chunk"
+    number-sections: true
+execute:
+  eval: true #r will run through all codes
+  echo: true #r will display all code chunk
+  warning: false #for mark down
+  freeze: true #r will not render all existing  html files
+  message: false #avoid printing warning message
+editor: source
+---
+
+```{r}
+pacman::p_load(tidyverse, sf)
+```
+
+```{r}
+rdacc_sf <- read_csv("data/archive/thai_road_accident_2019_2022.csv") %>%
+  filter(!is.na(longitude) & longitude !='',
+        !is.na(latitude) & latitude != '') %>%
+  st_as_sf(coords = c("longitude", 'latitude'),
+           crs=4326) %>% #WGS 84 - USE BY ALL GPS
+  st_transform(crs=32647) #PROJECTED PCS UTM IS 326, 47 NORTH 
+```
+
+![](/images/workinprogress.jpg)
