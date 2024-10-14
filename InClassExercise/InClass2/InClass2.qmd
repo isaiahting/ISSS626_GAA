@@ -1,0 +1,80 @@
+---
+title: "In-Class Exercise 2"
+author: "Joshua TING"
+date: "September 1, 2024"
+date-modified: "last-modified"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code Chunk"
+    number-sections: true
+execute:
+  eval: false #r will run through all codes
+  echo: true #r will display all code chunk
+  warning: false #for mark down
+  freeze: true #r will not render all existing  html files
+  message: false #avoid printing warning message
+editor: source
+---
+
+In Class Exercise 2
+
+Maptools is retired and binary is removed from CRAN. If you would want to use it, you can retrieve from CRAN. However, R version must support the package.
+
+```{r}
+install.packages("maptools",
+                 repos = "https://packagemanager.posit.co/cran/2023-10-13")
+```
+
+```{r}
+pacman::p_load()
+```
+
+Issue 2: Creating coastal outline
+
+in sf package, there are two functions allow us to combine multiple simple features into one simple features. They are st_combine and st_union().
+
+sf: <https://r-spatial.github.io/sf/>
+
+Working with st_union()
+
+The code chunk below st_union() is used to derive the coastal outline sf tibble data.frame.
+
+```{r}
+sg_sf <- mpsz_sf %>%
+  st_union()
+```
+
+sg_sf will look similar to the figure below.
+
+```{r}
+print(sg_sf)
+```
+
+as.ppp() allows to create point object and as.owin creates boundary.
+
+\`\`\`{r}\
+
+```{r}
+
+par(bg="#E4D5C9")
+
+gridded_kde_childcareSG_ad <- as(
+  kde_childcareSG_adaptive,
+  "SpatialGridDataFrame")
+spplot(gridded_kde_childcareSG_ad)
+```
+
+::: {.callout-tip appearance="minimal"}
+## Monte Carlo Simulation
+
+In order to ensure reproducibility, it's important to include the code chunk below before using spatstat functions involve Monte Carlo Simulation.
+:::
+
+```{r}
+set.seed(1234)
+
+```
+
+1.  ensure km are m in PCS
+2.  

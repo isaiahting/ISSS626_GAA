@@ -1,0 +1,142 @@
+---
+title: "In-Class Exercise 4"
+author: "Joshua TING"
+date: "16 September, 2024"
+date-modified: "last-modified"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code Chunk"
+    number-sections: true
+execute:
+  eval: false #r will run through all codes
+  echo: true #r will display all code chunk
+  warning: false #for mark down
+  freeze: true #r will not render all existing  html files
+  message: false #avoid printing warning message
+editor: source
+---
+
+# In - Class Exercise 4
+
+```{r}
+pacman::p_load(sf, tmap, tidyverse, GWmodel, ggstatsplot, knitr)
+```
+
+## Preparing The Data
+
+```{r}
+hunan2012 <- read_csv("data/aspatial/Hunan_2012.csv")
+```
+
+```{r}
+hunan_sf <- st_read(dsn = "data/geospatial",
+                    layer="Hunan")
+```
+
+```{r}
+hunan <- left_join(hunan_sf, hunan2012) %>% #when join need common value (must be the same), 
+  select(1:3, 7, 15, 16, 31, 32) #choosing the column by numbered
+```
+
+::: callout-note
+## If the column names are not the same:
+
+Use left_join:
+
+by ("name of column", "name of column")
+:::
+
+## Converting to SpatialPolygon DataFrame
+
+```{r}
+hunan_sp <- hunan_sf %>% #convert sf to SP - it is a list object
+  as_Spatial()
+```
+
+```{r}
+basemap <- tm_shape(hunan) +
+  tm_polygons() +
+  tm_text("NAME_3", size=0.5)
+
+gdppc <- qtm(hunan_sp, "GDPPC")
+tmap_arrange(basemap, gdppc, asp=1, ncol=2)
+```
+
+```{r}
+#| eval: false
+bw_AIC <- bw.gwr()
+
+```
+
+```{r}
+
+```
+
+```{r}
+#| eval: false
+bw_CV <- bw.gwr(GDPPC ~ 1,
+                data = hunan_sp,
+                approach - "CV",
+                adaptive = TRUE,
+                kernel = "bisquare",
+                longlat = T) # T is TRUE, indicate it is in decimel degree
+```
+
+```{r}
+#| eval: false
+bw_CV <- bw.gwr(GDPPC ~ 1,
+                data = hunan_sp,
+                approach - "CV",
+                adaptive = FALSE,
+                kernel = "bisquare",
+                longlat = T) # T is TRUE, indicate it is in decimel degree
+```
+
+```{r}
+#| eval: false
+bw_CV <- bw.gwr(GDPPC ~ 1,
+                data = hunan_sp,
+                approach - "AIC",
+                adaptive = TRUE,
+                kernel = "bisquare",
+                longlat = T)
+```
+
+```{r}
+gwstat <- gwss(data = hunan_sp,
+                vars = "GDPPC",
+                bw = bw_AIC,
+                kernel = "bisquare",
+                adaptive = TRUE,
+                longlat = T)
+```
+
+```{r}
+#| eval: false
+gwstat_df <- as.data.frame(gwstat$SDF)
+```
+
+```{r}
+hunan_gstat <- cbind(hunan_df, gwstat_df)
+```
+
+```{r}
+#| eval: false
+tm_shape(human_gstat) +
+  tm_fill("GDPPC_LM",
+          n = 5,
+          style = "quantile") +
+  tm_borders(alpha = 0.5) + #opacity
+  tm_layout(main.title = "Distribution of geographically weighted mean",
+            main.title.position = "centre",
+            main.title.size = 2.0,
+            legend.text.size = 1.2,
+            legend.height = 1.5,
+            legend.width = 1.5,
+            frmae = TRUE)
+```
+
+```{r}
+gestats <- gwss(GDPPC ~)
+```

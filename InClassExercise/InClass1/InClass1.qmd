@@ -1,0 +1,111 @@
+---
+title: "In Class Exercise 1"
+author: "Joshua TING"
+date: "August 26, 2024"
+date-modified: "last-modified"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code Chunk"
+    number-sections: true
+execute:
+  eval: true #r will run through all codes
+  echo: true #r will display all code chunk
+  warning: false #for mark down
+  freeze: true #r will not render all existing  html files
+  message: false #avoid printing warning message
+editor: source
+---
+
+# **In-Class Exercise 1**
+
+## **Installing Packages**
+
+```{r}
+pacman::p_load(sf, tidyverse, tmap, ggstatsplot)
+```
+
+## **Reading Data**
+
+### Importing shapefile
+
+```{r}
+mpsz14_shp = st_read(dsn = "data/", 
+                  layer = "MP14_SUBZONE_WEB_PL")
+```
+
+### Importing kml file
+
+```{r}
+#| eval: false
+mpsz14_kml <- st_read("data/MasterPlan2014SubzoneBoundaryWebKML.kml")
+```
+
+### Troubleshooting: Resolving the error of corrupted kml file
+
+```{r}
+st_write(mpsz14_shp,
+         "data/MP14_SUBZONE_WEB_PL.kml",
+         delete_dsn = TRUE) #delete the existing file with same name first
+```
+
+### To import shapefile Master Plan 2025
+
+```{r}
+mpsz19_shp = st_read(dsn = "data/", 
+                  layer = "MPSZ-2019")
+```
+
+### To import kml Master Plan 2025
+
+```{r}
+mpsz19_shp <-  st_read("data/MasterPlan2019SubzoneBoundaryNoSeaKML.kml")
+```
+
+::: callout-note
+## PCS over GCS
+
+To use Projected Coordinate System (PCS) as geography is flattened and measured using (i.e. metres) instead of Geography Coordinate System (GCS) as it is not accurate. For an example, one degree in the equator and north pole makes a significant difference and GCS will distort it.
+:::
+
+## Transforming coordinate system from GCS to PCS
+
+This mathematically converts one coordinate to another coordinate.
+
+```{r}
+mpsz19_shp <- st_read(dsn = "data/",
+                      layer = "MPSZ-2019") %>%
+  st_transform(crs = 3414)
+```
+
+::: callout-note
+## Choosing CSV over XLS
+
+CSV. over XLS as there are multiple hindrances (i.e. extra space, symbols) that requires extra effort to clean. Use text files without structures.
+:::
+
+## New Practice
+
+### Reading the CSV data
+
+```{r}
+popdata <- read.csv("data/respopagesextod2023/respopagesextod2023.csv")
+```
+
+### Aggregation the data
+
+```{r}
+#| eval: false
+popdata2023 <- popdata %>%
+  group_by(PA, SZ, AG) %>% #aggregation
+  summarise('POP'=sum('Pop')) %>%
+  ungroup() %>%
+  pivot_wider(names_from=AG,
+              values_from=POP)
+```
+
+```{r}
+#| eval: false
+popdata2023 <- popdata %>%
+  mutate(YOUNG=rowSums(.[3:6]))
+```
