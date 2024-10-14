@@ -1,0 +1,515 @@
+---
+title: "Take-Home Exercise 1"
+author: "Joshua TING"
+date: "2 September, 2024"
+date-modified: "last-modified"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code Chunk"
+    number-sections: true
+execute:
+  eval: true #r will run through all codes
+  echo: true #r will display all code chunk
+  warning: false #for mark down
+  freeze: true #r will not render all existing  html files
+  message: false #avoid printing warning message
+editor: source
+---
+
+# Take-Home Exercise 1: Geospatial Analytics for Public Good
+
+## **Setting the Scene**
+
+According to World Health Organisation (WHO), road traffic accidents cause the death of approximately 1.19 million people each year leave between 20 and 50 million people with non-fatal injuries. More than half of all road traffic deaths occur among vulnerable road users, such as pedestrians, cyclists and motorcyclists.
+
+Road traffic injuries are the leading cause of death for children and young adults aged 5–29. Yet two thirds of road traffic fatalities occur among people of working age (18–59 years). Nine in 10 fatalities on the roads occur in low- and middle-income countries, even though these countries have around 60% of the world’s vehicles.
+
+In addition to the human suffering caused by road traffic injuries, they also incur a heavy economic burden on victims and their families, both through treatment costs for the injured and through loss of productivity of those killed or disabled. More broadly, road traffic injuries have a serious impact on national economies, costing countries 3% of their annual gross domestic product.
+
+Thailand’s roads are the deadliest in Southeast Asia and among the worst in the world, according to the World Health Organisation. About 20,000 people die in road accidents each year, or about 56 deaths a day (WHO).
+
+Between 2014 and 2021, Thailand experienced a notable increase in accident frequencies. Specifically, 19% of all accidents in Thailand occurred on the national highways, which constituted the primary public thoroughfares connecting various regions, provinces , districts, and significant locations within a comprehensive network. Within the broader context of accidents across the country, there existed a considerable 66% likelihood of encountering accident-prone zones, often termed ‘black spots,’ distributed as follows: 66% on straight road segments, 13% at curves, 6% at median points of cross-shaped intersections, 5% at T-shaped intersections and Y-shaped intersections, 3% at cross-shaped intersections, 2% on bridges, and 2% on steep slopes, respectively.
+
+## **Objectives**
+
+By and large, road traffic accidents can be attributed by two major factors, namely: behavioural and environmental factors. Behavioural factors in driving are considered to be major causes of traffic accidents either in direct or indirect manner (Lewin, 1982). These factors can be further grouped into two as, driver behavior (also called driver/driving style) and driver performance, in other words, driver/driving skills (Elander, West, & French, 1993). Environmental factors, on the other hand, includes but not limited to weather condition such as poor visibility during heavy rain or foggy and road conditions such as sharp bend road, slippery slope road, and [blind spot](https://en.wikipedia.org/wiki/Vehicle_blind_spot).
+
+Previous studies have demonstrated the significant potential of Spatial Point Patterns Analysis (SPPA) in exploring and identifying factors influencing road traffic accidents. However, these studies often focus solely on either behavioral or environmental factors, with limited consideration of temporal factors such as season, day of the week, or time of day.
+
+In view of this, you are tasked to discover factors affecting road traffic accidents in the [Bangkok Metropolitan Region BMR](https://en.wikipedia.org/wiki/Bangkok_Metropolitan_Region) by employing both spatial spatio-temporal point patterns analysis methods.
+
+The specific objectives of this take-home exercise are as follows:
+
+-   To visualize the spatio-temporal dynamics of road traffic accidents in BMR using appropriate statistical graphics and geovisualization methods.
+
+-   To conduct detailed spatial analysis of road traffic accidents using appropriate Network Spatial Point Patterns Analysis methods.
+
+-   To conduct detailed spatio-temporal analysis of road traffic accidents using appropriate Temporal Network Spatial Point Patterns Analysis methods.
+
+## **Data Preparation**
+
+For the purpose of this exercise, three basic data sets must be used:
+
+-   [Thailand Road Accident \[2019-2022\]](https://www.kaggle.com/datasets/thaweewatboy/thailand-road-accident-2019-2022) on Kaggle
+
+-   [Thailand Roads (OpenStreetMap Export)](https://data.humdata.org/dataset/hotosm_tha_roads) on HDX.
+
+-   [Thailand - Subnational Administrative Boundaries](https://data.humdata.org/dataset/cod-ab-tha?) on HDX.
+
+```{r}
+pacman::p_load(tidyverse, sf, spatstat, ggplot2, ggmap, tmap, dplyr, lubridate, raster)
+```
+
+| Packages | Function |
+|----|----|
+| [**sf**](https://r-spatial.github.io/sf/) | To import, manage, and hande geospatial data |
+| [**tidyverse**](https://www.tidyverse.org/) | For non-spatial data wrangling |
+| [**sfdep**](https://sfdep.josiahparry.com/) | To compute spatial weights, global and local spatial autocorrelation statistics |
+| [spatstat](https://spatstat.org/) | For analysing spatial points |
+| [ggplot2](https://ggplot2.tidyverse.org/) | For data divisualisation |
+| [ggmap](https://cran.r-project.org/web/packages/ggmap/readme/README.html) | Retrieve raster map tiles from online mapping services |
+| [tmap](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html) | Creating thematic maps |
+| [lubridate](https://lubridate.tidyverse.org/) | For robust date-time usage |
+| [**leaflet**](https://rstudio.github.io/leaflet/) | For interactive maps |
+| [**knitr**](https://cran.r-project.org/web/packages/knitr/) | For dynamic report generation |
+| raster |  |
+
+: Packages
+
+::: panel-tabset
+## Road Traffic Accidents (RTA)
+
+**Thailand Road Traffic Accident Data \[2019-2022\]** (from Kaggle): This contains the road accident records, including spatial (longitude/latitude) and temporal information (date and time).
+
+```{r}
+rta_sf <- read_csv("data/aspatial/archive/thai_road_accident_2019_2022.csv") %>%
+  filter(!is.na(longitude) & longitude !='',
+        !is.na(latitude) & latitude != '') %>%
+  st_as_sf(coords = c("longitude", 'latitude'),
+           crs=4326) %>% #WGS 84 - USE BY ALL GPS
+  st_transform(crs=32647) %>% #EPSG 
+  mutate(Month_num = month(incident_datetime)) %>%
+  mutate(Month_fac = month(incident_datetime, #fac is factor
+                       label = TRUE, 
+                       abbr = TRUE)) %>% #CAN CHANGE TO MON TUES 
+  mutate(dayofweek = day(incident_datetime))
+st_crs(rta_sf)
+```
+
+Saving this geometry with corrected projection for plotting use.
+
+```{r}
+write_rds(rta_sf, "data/rds/rta_sf.rds")
+```
+
+## Road Network
+
+-   **Thailand Roads (OpenStreetMap Export)** (from HDX): This will provide the road network to conduct network-based analysis.
+
+```{r}
+roadlines <- st_read(dsn = "data/geospatial/roadlines/",
+                      layer = "hotosm_tha_roads_lines_shp",
+                      crs = 4326) #in wgs 84
+```
+
+```{r}
+tmap_mode('view')
+#view is interative, plot is static
+tm_shape(roadlines) +
+  tm_lines()
+```
+
+## Administrative Boundaries
+
+**Thailand Subnational Administrative Boundaries** (from HDX): These boundaries will help in restricting the analysis to the Bangkok Metropolitan Region 9BMR) and may also serve for regional analysis.
+
+```{r}
+thaiadmin <- st_read(dsn = "data/geospatial/tha_adm_rtsd_itos_20210121_shp/",
+                      layer = "tha_admbnda_adm1_rtsd_20220121")
+```
+
+## Importing Aspatial & Geospatial Data
+:::
+
+## Data Preparation
+
+### Data Exploration
+
+Using the function glimpse() in of dplyr in the tidyverse family, we are able to see the data type of each variable.
+
+```{r}
+glimpse(thaiadmin)
+```
+
+```{r}
+plot(thaiadmin)
+```
+
+### SF Transformation
+
+```{r}
+thaiadmin <- st_transform(thaiadmin, crs = 32647)
+```
+
+```{r}
+roadlines = st_transform(roadlines, crs = 32647)
+```
+
+### Thai Admin
+
+The variables that were not used in the analysis were dropped and it was filtered to the BMR.
+
+```{r}
+thaiadmin_bmr <- thaiadmin %>%
+  dplyr::select(-ADM1_TH, -ADM0_TH, -ADM1_REF, -ADM1ALT1EN, -ADM1ALT2EN, -ADM1ALT1TH,
+         -ADM1ALT2TH, -ADM0_PCODE, -validTo, -validOn) %>%
+  filter(ADM1_EN %in% c("Nakhon Pathom", "Pathum Thani", "Nonthaburi", "Samut Prakan", "Samut Sakhon", "Bangkok"))
+```
+
+### St_intersection for Thai Admin & Roadlines
+
+```{r}
+roadlines_bmr <- st_intersection(thaiadmin_bmr, roadlines)
+```
+
+```{r}
+write_rds(roadlines_bmr, "data/rds/roadlinesbmr")
+```
+
+#use this when we need
+
+```{r}
+roadlines_bmr <- read_rds("data/rds/roadlinesbmr")
+```
+
+n_distinct() of the dyplr package counts the number of incidents.
+
+```{r}
+n_distinct(rta_sf$acc_code)
+```
+
+## Data Wrangling
+
+### *RoadTrafficAccident_SF*
+
+#### Checking for Duplicates
+
+The output reflected that there are no duplicates in the data.
+
+```{r}
+duplicate <- rta_sf %>%
+  group_by_all() %>%
+  filter(n()>1) %>%
+  ungroup()
+
+duplicate
+```
+
+#### Filtering to BMR & Dropping Variables: "*Province_en*" & "*Route*"
+
+"dplyr::select" was used as an error message "Error: unable to find an inherited method for function ‘select’ for signature ‘x = "sf"’".
+
+```{r}
+rta_sf_mbr <- rta_sf %>%
+  dplyr::select(-province_th, -route) %>%
+  filter(province_en %in% c("Nakhon Pathom", "Pathum Thani", "Nonthaburi", "Samut Prakan", "Samut Sakhon", "Bangkok"))
+```
+
+The two variables were dropped as it were in Thai language. Additionally, the scope has been narrowed to only 6 provinces that are in the BMR.
+
+#### Splitting Date & Time & Classifying as POSIXct
+
+The incident_datetime and report_datetime column were separated for ease of manipulation.
+
+```{r}
+rta_sf_mbr_split <- rta_sf_mbr %>%
+  separate(incident_datetime, into = c("incident_date", "incident_time"), sep = " ") %>%
+  separate(report_datetime, into = c("report_date", "report_time"), sep = " ")
+```
+
+In ensuring that the data is in POSIXct format, ymd_hms was used.
+
+```{r}
+rta_sf_mbr_split <- rta_sf_mbr %>%
+  mutate(
+    datetime_parsed = ymd_hms(incident_datetime),
+    date = ymd_hms(datetime_parsed),
+    time = format(datetime_parsed, "%H:%M:%S")
+  )
+# Converts data to an sf object using longitude and latitude 
+  st_as_sf(coords = c("longitude", "latitude"),
+           crs = 4326) %>%
+  
+  # Transforms to the projection used in Thailand
+  st_transform(crs = 32647)
+```
+
+Pulse Check: To check all of the current columns.
+
+```{r}
+colnames(rta_sf_mbr_split)
+```
+
+```         
+rta_sf_mbr_split 
+```
+
+From this heatmap, we can see Bangkok notoriously topped the charts in the number of RTAs every year followed by Samut Prakan.
+
+```{r}
+# Step 1: Extract the year from the date column
+rta_sf_mbr_split <- rta_sf_mbr_split %>%
+  mutate(year = year(date))  # Extract year using lubridate's year() function
+
+# Step 2: Summarize the data to count accidents per province and year
+accidents_summary <- rta_sf_mbr_split %>%
+  group_by(province_en, year) %>%
+  summarise(total_accidents = n(), .groups = "drop")
+
+# Step 3: Create the heatmap with number of accidents in each tile
+ggplot(accidents_summary, aes(x = year, y = province_en, fill = total_accidents)) +
+  geom_tile(color = "white") +  # Use geom_tile to create the heatmap
+  geom_text(aes(label = total_accidents), color = "black", size = 3) +  # Add the number of accidents in each tile
+  scale_fill_gradient(low = "lightblue", high = "red", na.value = "white", name = "Number of Accidents") +
+  labs(title = "Accident Heatmap by Province and Year",
+       x = "Year",
+       y = "Province",
+       fill = "Total Accidents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for better readability
+```
+
+A heatmap segregated of months was populated below to gain a better understanding of the accidents in each month.
+
+```{r}
+# Step 1: Extract the year and month name from the date column
+rta_sf_mbr_split <- rta_sf_mbr_split %>%
+  mutate(
+    year = year(date),                # Extract year
+    month = month(date, label = TRUE, abbr = FALSE)  # Extract full month name
+  )
+
+# Step 2: Summarize the data to count accidents per province, year, and month
+accidents_summary <- rta_sf_mbr_split %>%
+  group_by(province_en, year, month) %>%
+  summarise(total_accidents = n(), .groups = "drop")
+
+# Step 3: Create the heatmap
+ggplot(accidents_summary, aes(x = month, y = province_en, fill = total_accidents)) +
+  geom_tile(color = "white") +  # Use geom_tile to create the heatmap
+  facet_wrap(~year, ncol = 1) +  # Separate the heatmap by year
+  scale_fill_gradient(low = "lightblue", high = "red", na.value = "white", name = "Number of Accidents") +
+  labs(title = "Accident Heatmap by Province and Month",
+       x = "Month",
+       y = "Province",
+       fill = "Total Accidents") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for better readability
+
+```
+
+```{r}
+# Filter to BMR
+provinces_to_keep <- c("Nakhon Pathom", "Pathum Thani", "Nonthaburi", 
+                       "Samut Prakan", "Samut Sakhon", "Bangkok")
+
+# Filter the dataset for the 6 provinces
+rta_sf_mbr_filtered <- rta_sf_mbr_split %>%
+  filter(province_en %in% provinces_to_keep)
+
+# Group by date and province, then count the number of accidents per day for each province
+accident_trends_by_province <- rta_sf_mbr_filtered %>%
+  group_by(date = as.Date(date), province_en) %>%
+  summarise(daily_accidents = n(), .groups = "drop")
+
+# Plot the time series chart for each province
+ggplot(data = accident_trends_by_province, aes(x = date, y = daily_accidents, color = province_en)) +
+  geom_line() +
+  labs(title = "Time Series of Accident Trends by Province",
+       x = "Year", y = "Number of Accidents") +
+  theme_minimal() +
+  facet_wrap(~ province_en, ncol = 2, scales = "free_y")
+
+```
+
+**Observation**
+
+Based on a cursory view, it is apparent that Bangkok has the highest number of RTA from 2019 - 2023 and the numbers are relatively consistent and concentrated except in Q1 2019 & Q4 2023 when it spiked above 15 accidents. Conversely, Samut Sakhon has the lowest number of RTA where in end of 2022, there is close to 0 number of accidents. It is also worthwhile noting that Samut Prakan has an interesting outlook of the RTA data. At certain time frame, it had spikes that indicates that the number of RTA rose above 7 and Samut Prakan also have pockets of "dead spots" which tells us the number of accidents were close to 0.
+
+**Inference**
+
+Bangkok is notably the most densely populated province in Thailand alongside the influx of tourists. This may explain the consistently high number of RTA in the province.
+
+Additionally, Nonthaburi , too, have a high number of RTA, This may due to it being the 2nd most densely populated province ([Wiki](https://en.wikipedia.org/wiki/Nonthaburi_province)).
+
+As Samut Sakhon is an industrial dominant and formerly an agriculture/fisheries producing province ([Wiki](https://en.wikipedia.org/wiki/Samut_Sakhon_province)), there might not be huge population of people residing or commuting around the province. Hence, it may be why Samut Sakhon has the lowest number of RTA between the 6 provinces of the MBR.
+
+```{r}
+class(roadlines_bmr)
+class(rta_sf_mbr_split)
+```
+
+```{r}
+tmap_mode('plot')
+
+tm_shape(roadlines_bmr)+
+  tm_fill(col ="#f4e9e8", 
+          alpha = 0.6) +
+  tm_borders(col = "#ddafa1",
+             lwd = 0.1,  
+             alpha = 1) +
+  tm_layout(main.title = "BMR Administrative Boundary",
+            main.title.position = "center",
+            main.title.size = 1,
+            bg.color = "#E4D5C9",
+            frame = F)
+```
+
+```{r}
+tmap_mode('plot')
+
+tm_shape(roadlines_bmr) +
+  tm_borders(col = "blue") +
+  tm_shape(rta_sf_mbr_split) +
+  tm_dots(col = "red", size =0.02) +
+  tm_layout(frame = FALSE, legend.outside = TRUE)
+```
+
+#### *owin* object
+
+When analysing spatial point patterns, it is a good practice to confine the analysis with a geographical area like Singapore boundary. In **spatstat**, an object called ***owin*** is specially designed to represent this polygonal region.
+
+The code chunk below is used to covert *sg* SpatialPolygon object into owin object of **spatstat**.
+
+```{r}
+bmr_owin <- as.owin(thaiadmin32647)
+```
+
+```{r}
+plot(bmr_owin)
+```
+
+```{r}
+coords <- st_coordinates(rta_sf_mbr_split)
+# Create the ppp object with the same window as bmr_owin
+thaiadmin_ppp <- as.ppp(coords, W = bmr_owin)
+
+# View the result
+plot(thaiadmin_ppp)
+```
+
+```{r}
+summary(thaiadmin_ppp)
+```
+
+colnames was used to list all of the columns in the df.
+
+```{r}
+colnames(thaiadmin32647)
+```
+
+### ROADLINES DataFrame
+
+Noticed that the geometry type is in multi-line string, not suitable for maniuplation.
+
+```{r}
+st_geometry(roadlines)
+```
+
+#### Changing Multi-Line String to Line String
+
+```{r}
+roadlines <- st_cast(roadlines, "LINESTRING")
+```
+
+*Head()* function allows to view the first 5 rows of the data.
+
+```{r}
+head(roadlines, n=5)
+```
+
+EXTRACT ROADLINES UNDER BMR then put it accidents data to DR
+
+TASK 1:To visualize the spatio-temporal dynamics of road traffic accidents in BMR using appropriate statistical graphics and geovisualization methods.
+
+-   **Goal**: Create visuals to show how road accidents are distributed over space and time.
+
+-   **Methods**: Use statistical graphics and geovisualization techniques such as:
+
+    -   Heatmaps for spatial density of accidents.
+
+    -   Time series charts for accident trends over time.
+
+    -   Animated maps to show changes in accident locations over time (spatio-temporal dynamics).
+
+TASK 2:To conduct detailed spatial analysis of road traffic accidents using appropriate Network Spatial Point Patterns Analysis methods.
+
+-   **Goal**: Analyze the spatial patterns of accidents using **Network Spatial Point Patterns Analysis** (NSPPA).
+
+-   **Methods**: NSPPA techniques to analyze how accidents are distributed along the road network. This involves:
+
+    -   Kernel density estimation (KDE) on the road network.
+
+    -   Nearest neighbor analysis to see clustering on road segments.
+
+    -   Network K-function or Ripley’s K-function to analyze the spatial distribution along the network.
+
+## Spatial Data Wrangling
+
+```{r}
+tmap_mode('plot')
+tm_shape(rta_sf)+
+  tm_dots(alpha=0.4,
+          size=0.05)
+
+```
+
+```{r}
+write_rds('view', "data/rds/view.rds")
+```
+
+```{r}
+write_rds('plot', "data/rds/plot.rds")
+```
+
+### Converting sf df to sp's Spatial\* Class
+
+```{r}
+rta_sp <- as_Spatial(rta_sf_mbr_split)
+roadlines_sp <- as_Spatial(roadlines)
+thaiadmin_sp <- as_Spatial(thaiadmin32647)
+```
+
+```{r}
+write_rds('rta_sp', "data/rds/rta_sp.rds")
+write_rds('roadlines_sp', "data/rds/roadlines_sp.rds")
+write_rds('thaiadmin_sp', "data/rds/thaiadmin_sp.rds")
+```
+
+Converting generic sp format into spatstat's ppp format
+
+```{r}
+rta_ppp <- as.ppp(rta_sf)
+rta_ppp
+```
+
+```{r}
+kde_rta <- density(rta_ppp,
+                   sigma=bw.diggle,
+                   edge=TRUE,
+                   kernel="gaussian") 
+```
+
+```{r}
+plot(kde_rta)
+```
+
+```{r}
+kde_rta_adaptive <- adaptive.density(rta_ppp, method="kernel")
+plot(kde_rta_adaptive)
+```
+
+"Murphy's law will kick in during the very last minute" (Kam, 2024).
+
+And I attest it was absolutely true.

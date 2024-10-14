@@ -1,0 +1,685 @@
+---
+title: "Take-Home Exercise 2"
+author: "Joshua TING"
+date: "30 September, 2024"
+date-modified: "last-modified"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code Chunk"
+    number-sections: true
+execute:
+  eval: true #r will run through all codes
+  echo: true #r will display all code chunk
+  warning: false #for mark down
+  freeze: true #r will not render all existing  html files
+  message: false #avoid printing warning message
+editor: source
+---
+
+# Take-Home Exercise 2: Discovering impacts of COVID-19 on Thailand tourism economy at the province level using spatial and spatio-temporal statistics
+
+## **Setting the Scene**
+
+Tourism is one of Thailand’s largest industries, accounting for some 20% of the gross domestic product (GDP). In 2019, Thailand earned 90 billion US\$ from domestic and international tourism, but the COVID-19 pandemic caused revenues to crash to 24 billion US\$ in 2020.
+
+Figure below shows the total revenue receipt from tourism sector from January 2019 until Feb 2023. The figure reveals that the revenue from tourism industry have been recovered gradually since September 2021.
+
+## Objectives
+
+To discover:
+
+-   if the key indicators of tourism economy of Thailand are independent from space and space and time.
+
+-   If the tourism economy is indeed spatial and spatio-temporal dependent, then, you would like to detect where are the clusters and outliers, and the emerging hot spot/cold spot areas.
+
+## Importing Packages
+
+```{r}
+pacman::p_load(tidyverse, sf, spatstat, ggplot2, ggmap, tmap, dplyr, lubridate, raster, gtsummary, tidyr, spdep, knitr, plotly)
+```
+
+| Packages | Function |
+|------------------------------------|------------------------------------|
+| [**sf**](https://r-spatial.github.io/sf/) | To import, manage, and hande geospatial data |
+| [**tidyverse**](https://www.tidyverse.org/) | For non-spatial data wrangling |
+| [**sfdep**](https://sfdep.josiahparry.com/) | To compute spatial weights, global and local spatial autocorrelation statistics |
+| [spatstat](https://spatstat.org/) | For analysing spatial points |
+| [ggplot2](https://ggplot2.tidyverse.org/) | For data divisualisation |
+| [ggmap](https://cran.r-project.org/web/packages/ggmap/readme/README.html) | Retrieve raster map tiles from online mapping services |
+| [tmap](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html) | Creating thematic maps |
+| [lubridate](https://lubridate.tidyverse.org/) | For robust date-time usage |
+| [**leaflet**](https://rstudio.github.io/leaflet/) | For interactive maps |
+| [**knitr**](https://cran.r-project.org/web/packages/knitr/) | For dynamic report generation |
+| spdep |  |
+
+## Importing Packages
+
+### Importing Geopatial Data
+
+In this section, `st_read()` of sf package is used to import 'tha_adm_rtsd_itos_20210121_shp' dataset into R enironment. `st_transform()` is used to transform the coordinate reference system (CRS) as we are assigning the boundary data for Thailand and the CRS is EPSG 32647.
+
+```{r}
+thaiboundary <- st_read(dsn = "data/geospatial/tha_adm_rtsd_itos_20210121_shp/",
+                      layer = "tha_admbnda_adm1_rtsd_20220121") %>%
+  st_transform(crs = 32647)
+thaiboundary <- thaiboundary %>%
+  dplyr::select(-ADM1_TH, -ADM1_PCODE, -ADM1_REF, -ADM1ALT1EN, 
+                -ADM1ALT1TH, -ADM1ALT2TH, -ADM0_EN, -ADM0_TH,
+                -ADM0_PCODE, -validTo, -validOn, -date, -ADM1ALT2EN)
+```
+
+In ensuring the right assignment of the coordinate reference system to the data, `st_crs()` is used.
+
+```{r}
+st_crs(thaiboundary)
+```
+
+```{r}
+glimpse(thaiboundary)
+```
+
+After importing the dataset, we will plot the Thailand map using tmap.
+
+```{r}
+tmap_mode("plot")
+tm_shape(thaiboundary) +
+  tm_fill(col = "white") +
+  tm_borders(col = "black", lwd = 0.3, alpha = 0.6) +
+  tm_layout(
+    main.title = "Thailand Administrative Boundary",
+    main.title.size = 0.8,
+    main.title.color = "blue",
+    main.title.position = "center",
+    legend.show = TRUE,
+    frame = FALSE
+  )
+```
+
+```{r}
+#| echo: false
+write_rds(thaiboundary, "data/rds/thaiboundary.rds")
+```
+
+```{r}
+#| echo: false
+thaiboundary = read_rds("data/rds/thaiboundary.rds")
+```
+
+### Importing Aspatial Data
+
+```{r}
+revenue <- read_csv("data/aspatial/thailand_domestic_tourism_2019_2023_ver2.csv")
+```
+
+```{r}
+#| echo: false
+write_rds(revenue, "data/rds/revenue.rds")
+```
+
+```{r}
+#| echo: false
+revenue = read_rds("data/rds/revenue.rds")
+```
+
+The data is then transposed. The "date" column is also converted to POSIXct for ease of manipulation at the later stage.
+
+```{r}
+revenue_transposed <- revenue %>%
+  mutate(date = as.POSIXct(date)) %>%
+  dplyr::select(-province_thai, -region_thai) %>%
+  pivot_wider(
+    names_from = variable,  # Use unique values in 'events' as column names
+    values_from = value,  # Fill new columns with values from 'value'
+    values_fill = list(value = 0)  # Fill NA with 0
+  )
+```
+
+```{r}
+#| echo: false
+colnames(revenue)
+```
+
+::: callout-tip
+## COVID-19 Pandemic in Thailand
+
+In rooting the understanding of the COVID-19 situation in Thailand, it is important to read the [Wiki](https://en.wikipedia.org/wiki/COVID-19_pandemic_in_Thailand) page specifically under the section of Government Response.
+:::
+
+The time period of pre-COVID19 was set from 1st January 2019 to 2nd April 2020 as quoted from Wiki "*On 3 April, the Civil Aviation Authority of Thailand ordered that there would be a ban on all passengers flights landing in Thailand from the morning of 4 April to the evening of the 6 April.."* under the section of Government Response - International Travel Restrictions.
+
+Following the closure of Thailand borders on 4th April 2020, the first series of border opening was 1st July 2021 as evidenced by "*On 15 July 2021, it became possible for vaccinated holidaymakers from overseas to visit three islands in the Surat Thani province; Koh Samui, Koh Tao and Koh Phangan. The decision follows the reopening of Phuket, Thailand's largest island, on Thursday, July 1*". Thus, the timeframe of COVID19 was set from 4th April 2020 - 30th June 2021.
+
+The Government of Thailand only lifted the restrictions such as PCR testing for fully-vaccinated travellers on 1st May 2022 as seen "*Starting 1 May 2022, fully-vaccinated travellers will NOT require RT-PCR on arrival but still need Thailand Pass. ATK is voluntary only.*"
+
+Thus the 2nd part of COVID19 pandemic in Thailand is 1st July 2021 to 30th April 2022. 1st May 2022 marks the reopening of the country borders hence, for this post COVID19 data is set from 1st May 2022 to 31st December 2024.
+
+```{r}
+revenue_transposed <- revenue_transposed %>%
+  mutate(
+    Period = case_when(
+      date >= as.Date("2019-01-01") & date <= as.Date("2020-04-03") ~ "Pre-COVID",
+      date >= as.Date("2020-04-04") & date <= as.Date("2021-06-30") ~ "COVID_P1",
+      date >= as.Date("2021-07-01") & date <= as.Date("2022-04-30") ~ "COVID_P2",
+      date >= as.Date("2022-05-01") & date <= as.Date("2023-12-31") ~ "Post-COVID",
+      TRUE ~ NA_character_  # For any dates outside these ranges
+    )
+  )
+```
+
+```{r}
+#| echo: false
+write_rds(revenue_transposed, "data/rds/revenue_transposed.rds")
+```
+
+```{r}
+#| echo: false
+revenue_transposed = read_rds("data/rds/revenue_transposed.rds")
+```
+
+### Combining Spatial Data Frame & Data Frame
+
+#### Checking Differences in both SF & DF
+
+Prior combining the SF & DF, we would want to compare the unique values (namely the provinces) in the columns `"ADM1_EN"` from the `thaiboundary` spatial data frame and `"province_eng"` from the `revenue_transposed` data frame. The `unique()` function helps to identify any differences between the two columns.
+
+```{r}
+# Get unique values from both columns
+unique_thaiboundary <- unique(thaiboundary$ADM1_EN)
+unique_revenue <- unique(revenue_transposed$province_eng)
+
+# Find differences
+diff_thaiboundary <- setdiff(unique_thaiboundary, unique_revenue)  # In thaiboundary but not in revenue
+diff_revenue <- setdiff(unique_revenue, unique_thaiboundary)      # In revenue but not in thaiboundary
+
+# Create a data frame to show differences
+difference_table <- data.frame(
+  thaiboundary_only = diff_thaiboundary,
+  revenue_only = diff_revenue
+)
+
+# Print the differences
+print(difference_table)
+
+```
+
+Noticeably, we are able to witness the differences between both columns in the above output, this may result in missing values when combining both dataframes which is critical to our analysis. The differences are mainly due to the presence of white spaces.
+
+Henceforth, in the below code, we update the values in the `"ADM1_EN"` column of the `thaiboundary` spatial data frame by creating a mapping of the old values to the new values and then use the `dplyr` package to perform the replacement.
+
+```{r}
+# Create a data frame for the mapping
+mapping <- data.frame(
+  old_value = c("Lop Buri", "Chai Nat", "Chon Buri", "Prachin Buri", "Buri Ram", 
+                "Si Sa Ket", "Nong Bua Lam Phu", "Phangnga"),
+  new_value = c("Lopburi", "Chainat", "Chonburi", "Prachinburi", "Buriram", 
+                "Sisaket", "Nong Bua Lamphu", "Phang Nga"),
+  stringsAsFactors = FALSE
+)
+
+# Create a named vector for recoding
+recode_vector <- setNames(mapping$new_value, mapping$old_value)
+
+# Update the ADM1_EN column using recode_vector
+thaiboundary <- thaiboundary %>%
+  mutate(ADM1_EN = recode(ADM1_EN, !!!recode_vector))
+```
+
+Thereafter, we perform a check again if there are still differences between columns `"ADM1_EN"` from the `thaiboundary` spatial data frame and `"province_eng"` from the `revenue` data frame. The results returned none which is reassuring to witness.
+
+```{r}
+# Get unique values from each column
+unique_adm1_en <- unique(thaiboundary$ADM1_EN)
+unique_province_eng <- unique(revenue$province_eng)
+
+# Compare unique values
+differences_adm1_en <- setdiff(unique_adm1_en, unique_province_eng)
+differences_province_eng <- setdiff(unique_province_eng, unique_adm1_en)
+
+# Create a data frame to show differences side by side
+comparison_table_check <- tibble(
+  ADM1_EN_Not_In_Province = differences_adm1_en,
+  Province_Eng_Not_In_ADM1 = differences_province_eng
+)
+
+# Display the comparison table
+print(comparison_table_check)
+```
+
+#### Standardising Columns before Joining
+
+```{r}
+thaiboundary <- thaiboundary %>%
+  rename(Province = ADM1_EN)
+```
+
+```{r}
+revenue_transposed <- revenue_transposed %>%
+  rename(Province = province_eng)
+```
+
+#### Combining SF & DF
+
+Unwanted columns also then removed for ease of wrangling.
+
+```{r}
+combined <- thaiboundary %>%
+  left_join(revenue_transposed, by = "Province")
+```
+
+```{r}
+#| echo: false
+write.csv(combined, file = "data/csv/combined_data.csv", row.names = FALSE)
+```
+
+```{r}
+#| echo: false
+write_rds(combined, "data/rds/combined.rds")
+```
+
+```{r}
+#| echo: false
+combined = read_rds("data/rds/combined.rds")
+```
+
+```{r}
+basemap <- tm_shape(combined) +
+  tm_polygons() +
+  tm_text("Province", size=0.5) +
+  tm_text("Period")
+
+rev <- qtm(combined, "revenue_all")
+tmap_arrange(basemap, rev, asp=1, ncol=2)
+```
+
+```{r}
+#| echo: false
+write_rds(basemap, "data/rds/basemap.rds")
+```
+
+```{r}
+#| echo: false
+basemap = read_rds("data/rds/basemap.rds")
+```
+
+```{r}
+#| echo: false
+write_rds(rev, "data/rds/rev.rds")
+```
+
+```{r}
+#| echo: false
+rev = read_rds("data/rds/rev.rds")
+```
+
+```{r}
+colnames(combined)
+```
+
+The below code was run to simplify the gemetries through adjusting the tolerance.
+
+```{r}
+combined$geometry <- st_simplify(combined$geometry, dTolerance = 0.01)
+```
+
+```{r}
+#| eval: false
+# Set the tmap mode to plot for static output
+tmap_mode('view')
+
+# Define the unique periods
+periods <- c("Pre-COVID", "COVID_P1", "COVID_P2", "Post-COVID")
+
+# Loop through each period and create a map
+for (period in periods) {
+  # Subset data for the current period
+  current_data <- combined[combined$Period == period, ]
+
+  # Check if there's any data for the current period
+  if (nrow(current_data) == 0) {
+    next  # Skip to the next iteration if no data is found
+  }
+
+  # Create the basemap
+  basemap <- tm_shape(current_data) +
+    tm_polygons() +
+    tm_text("Province", size = 0.5) +
+    tm_layout(main.title = paste("Period:", period))
+
+  # Create the GDP map
+  revenue <- tm_shape(current_data) +
+    tm_polygons("revenue_all") +
+    tm_layout(main.title = paste("Revenue in", period))
+
+  # Combine the basemap and GDP map
+  combined_map <- tmap_arrange(basemap, revenue, asp = 1, ncol = 2)
+
+print(combined_map)
+}
+```
+
+![](map_Pre-COVID.png)
+
+![](map_COVID_P1.png)
+
+![](map_COVID_P2.png)
+
+![](map_Post-COVID.png)
+
+```{r}
+#| echo: false
+write_rds(combinedmap, "data/rds/combinedmap.rds")
+```
+
+```{r}
+#| echo: false
+combinedmap = read_rds("data/rds/combinedmap.rds")
+```
+
+```{r}
+colnames(combined)
+```
+
+## Exploratory Data Analysis
+
+The code chunk below uses *st_area()* of **sf** package to derive the area of each province. We are creating a new column `Area` to store the area values.
+
+```{r}
+combined$Area <- combined %>%
+  st_area()
+```
+
+```{r}
+# Assuming your data is in a variable called 'combined'
+# If it's not, replace 'combined' with your actual data frame name
+
+# Calculate total revenue for each province and period
+revenue_summary <- combined %>%
+  group_by(Province, Period) %>%
+  summarise(total_revenue = sum(revenue_all, na.rm = TRUE)) %>%
+  ungroup()
+
+# Create a function to generate a pie chart for a specific period
+create_pie_chart <- function(data, period) {
+  period_data <- data %>%
+    filter(Period == period) %>%
+    arrange(desc(total_revenue))
+  
+  # Calculate total revenue for the period
+  total_period_revenue <- sum(period_data$total_revenue)
+  
+  # Calculate percentages
+  period_data <- period_data %>%
+    mutate(percentage = (total_revenue / total_period_revenue) * 100)
+  
+  plot_ly(period_data, labels = ~Province, values = ~percentage, type = 'pie',
+          textposition = 'inside',
+          textinfo = 'label',
+          hoverinfo = 'text',
+          text = ~paste(Province, 
+                        "<br>Revenue: $", formatC(total_revenue, format="f", big.mark=",", digits=2),
+                        "<br>Percentage: ", formatC(percentage, format="f", digits=2), "%"),
+          marker = list(line = list(color = '#FFFFFF', width = 1))) %>%
+    layout(title = paste("Revenue Distribution by Province -", period),
+           showlegend = FALSE)
+}
+
+# Create pie charts for each period
+periods <- unique(revenue_summary$Period)
+pie_charts <- lapply(periods, function(p) create_pie_chart(revenue_summary, p))
+
+# Display the charts
+for (chart in pie_charts) {
+  print(chart)
+}
+```
+
+**Pre-COVID: 1st Jan 2019 - 3rd March 2020**
+
+38.3% of the total revenue was generated from Bangkok while Phuket generated 16.91%. Choburi generated 9.88% while Krabi was 4.24%. Chiangmai was 4.14%.
+
+**COVID Part 1: 4th April 2020 - 30th June 2021**
+
+30.71% of the total revenue was generated from Bangkok while Chiangmai generated 8.8%. Chonburi generated 5.52%. Phuket generated 3.21%.
+
+**COVID Part 2: 1st July 2021 - 30th April 2022**
+
+COVID P2, 22.08% of the total revenue during the period was generated from Bangkok while 12.67% comes from Phuket. Chiang Mai & Chonburi generated 8.59% and 9.55% of the total revenue in the total period.
+
+**Post-COVID: 1st May 2022 onwards**
+
+Understandably, Bangkok generated 34.58% while Phuket generated 19.62%. Chonburi generated 9.27% and Chiangmai generated 4.94%. Krabi only generated 1.25%
+
+**Interesting Observations:**
+
+-   Krabi was the top 5 provinces of the total revenue of tourism in Pre-COVID. However, post COVID it wasn't in top 5 and merely generated 1.25% only. This is may due to the "slow international flight resumption at Krabi airport, especially from China, India and South Korea" as taken from [The Bangkok Post, November 2023](https://www.bangkokpost.com/business/general/2685874/krabi-tourism-struggles-with-flight-shortage).
+
+-   
+
+```{r}
+#| echo: false
+write_rds(periods, "data/rds/periods.rds")
+```
+
+```{r}
+#| echo: false
+write_rds(pie_charts, "data/rds/pie_charts.rds")
+```
+
+```{r}
+#| echo: false
+periods = read_rds("data/rds/periods.rds")
+```
+
+```{r}
+#| echo: false
+pie_charts = read_rds("data/rds/pie_charts.rds")
+```
+
+```{r}
+# input: the dataframe and the variable name, chart style, title 
+choropleth_plot <- function(rev, varname, style, title) {
+  tm_shape(rev) +
+    tm_fill(varname, 
+          n= 5,
+          style = style) +
+    tm_borders(alpha = 0.5) +
+    tm_layout(main.title = title,
+              main.title.size = 1,
+              main.title.position = "center",
+              legend.height = 0.45, 
+              legend.width = 0.35,
+              frame = TRUE)+ 
+    tm_compass(position = c('left','bottom'))
+}
+tmap_mode("plot")
+```
+
+## Exploratory Spatial Data Analysis
+
+### Contiguity-based Spatial Weights
+
+#### **Contiguity-based (Queen) Spatial Weight Contiguity**
+
+In the code chunk below, [*poly2nb()*](https://r-spatial.github.io/spdep/reference/poly2nb.html) of **spdep** package is used to compute contiguity weight matrices for the study area. This function builds a neighbours list based on regions with contiguous boundaries. By default, Queen contiguity is applied.
+
+```{r}
+wm_q <- poly2nb(thaiboundary, queen=TRUE)
+summary(wm_q)
+```
+
+The summary report above shows that there are 77 area units in Thailand. The most connected area unit has 9 links.
+
+#### **Contiguity-based (Rook) Spatial Weight Contiguity**
+
+In the code chunk below, [*poly2nb()*](https://r-spatial.github.io/spdep/reference/poly2nb.html) of **spdep** package is used to compute contiguity weight matrices for the study area. We specify `queen = FALSE` to compute Rook contiguity.
+
+```{r}
+wm_q <- poly2nb(thaiboundary, queen=FALSE)
+summary(wm_q)
+```
+
+The summary report above shows that there are 77 area units in Thailand. The most connected area unit has 9 links.
+
+Both of them possess the same number of link (4.57).
+
+### Distance-based Contiguity Weight Matrix
+
+We will derive the distance-based weight matrices by using [*dnearneigh()*](https://r-spatial.github.io/spdep/reference/dnearneigh.html) of **spdep** package. The function identifies neighbours of region points by Euclidean distance with a distance band with lower and upper bounds controlled by the *bounds* argument or by Great Circle distance in kilometres if *longlat* argument is set to TRUE.
+
+#### **Fixed Distance Weight Matrix**
+
+**Determining the cut-off distance**
+
+To ensure that each region has at least one neighbour, we need to find out the minimum distance within which all regions have at least oneneighbour. We can do this by following these steps:
+
+-   Getting the coordinates of polygon centroids. This is required as an input in the next step.
+
+    We need to associate each polygon with a point and its coordinates need to be in a separate data frame. We will use a mapping function that applies a given function to each element of a vector and returns a vector of the same length. Our input vector will be the geometry column of `thaiboundary`. Our function will be *st_centroid()*. We will be using *map_dbl()* variation of [map](https://www.rdocumentation.org/packages/purrr/versions/0.2.5/topics/map) from the **purrr** package. **purrr** is loaded when we load **tidyverse** package.
+
+-   To get our longitude values we map the *st_centroid()* function over the geometry column of thaiboundary and access the longitude value through double bracket notation \[\[\]\] and
+
+    1.  This allows us to get only the longitude, which is the first value in each centroid.
+
+```{r}
+longitude <- map_dbl(thaiboundary$geometry, ~st_centroid(.x)[[1]])
+```
+
+We do the same for latitude with one key difference. We access the second value per each centroid with \[\[2\]\]
+
+```{r}
+latitude <- map_dbl(thaiboundary$geometry, ~st_centroid(.x)[[2]])
+```
+
+Now that we have latitude and longitude, I used cbind to put longitude and latitude into the same object. We should check the first few observations to see if things are formatted correctly.
+
+```{r}
+coords <- cbind(longitude, latitude)
+head(coords, 5)
+```
+
+-   Return a matrix with the indices of points belonging to the set of the k nearest neighbours of each other by using [*knearneigh()*](https://r-spatial.github.io/spdep/reference/knearneigh.html) of **spdep.**
+
+-   Convert the knn object returned by *knearneigh()* into a neighbours list of class nb with a list of integer vectors containing neighbour region number ids by using [*knn2nb()*](https://r-spatial.github.io/spdep/reference/knn2nb.html).
+
+-   Return the length of neighbour relationship edges by using [*nbdists()*](https://r-spatial.github.io/spdep/reference/nbdists.html) of **spdep**. The function returns in the units of the coordinates if the coordinates are projected, in km otherwise.
+
+-   Remove the list structure of the returned object by using [unlist()](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/unlist).
+
+```{r}
+k1 <- knn2nb(knearneigh(coords, k = 1))
+k1dists <- unlist(nbdists(k1, coords))
+summary(k1dists)
+```
+
+The summary report shows that the largest first nearest neighbour distance is 110,987 metres, approximately 111, 000 metres. This will be used as the upper threshold as it gives certainty that all regions will have at least one neighbour.
+
+**Computing the fixed distance weight matrix**
+
+Now, we will compute the distance weight matrix by using [*dnearneigh()*](https://r-spatial.github.io/spdep/reference/dnearneigh.html) as shown below.
+
+```{r}
+wm_d111 <- dnearneigh(coords,0,111000)
+wm_d111
+```
+
+From the above code, we can see that the average number of links is 4.54.
+
+Next, we use *str()* to display the content of `wm_d111` weight matrix.
+
+```{r}
+str(wm_d111)
+```
+
+We can observe that each region has different number of neighbours.
+
+```{r}
+par(mfrow = c(1,2))
+plot(thaiboundary$geometry, border = "lightgrey",main="1st nearest neighbours" )
+plot(k1, coords, add = TRUE, col = "red", length = 0.88, )
+
+plot(thaiboundary$geometry, border = "lightgrey", main = "Distance Link")
+plot(wm_d111, coords, add = TRUE, pch = 19, cex = 0.6)
+```
+
+From the above output, we can make a few observations:
+
+-   It illustrates a characteristic of fixed distance weight matrix–more densely settled areas (usually the urban areas) tend to have more neighbours which is in instance it is in the middle where Bangkok resides and the less densely settled areas (usually the rural provinces) tend to have lesser neighbours
+
+-   The geographical areas of the regions in Thailand are largely varying. In the middle, bottom and top right, we see the neighbour links are dense especially in the middle and less dense in the rest of the regions where white spaces are
+
+-   Lastly, it is interesting to note that there is a dead space between the densely settled area of Bangkok region and the southern part of Thailand. This may indicate that tourism was not developed at all.
+
+#### **Adaptive Distance-based Weight Matrix**
+
+To overcome the issue of fixed distance weight matrix where there is uneven distribution of neighbours, we can use directly control the numbers of neighbours using k-nearest neighbours, as shown in the code chunk below.
+
+As a rule-of-thumb, we will set k = 8 i.e., all regions will have 8 neighbours.
+
+```{r}
+knn8 <- knn2nb(knearneigh(coords, k=8))
+knn8
+```
+
+**Plotting Adaptive Distance-based Neighbours**
+
+```{r}
+par(mfrow = c(1,2))
+plot(thaiboundary$geometry, border = "lightgrey",main="8 nearest neighbours" )
+plot(knn8, coords, add = TRUE, col = "blue", length = 0.88, )
+
+plot(thaiboundary$geometry, border = "lightgrey", main = "Distance Link w KNN")
+plot(knn8, coords, add = TRUE, col = "red", pch = 19, cex = 0.6)
+```
+
+### Spatial Weight Matrix to be Employed
+
+Selecting a spatial weight matrix is use is dependent on the geographical area of interest and the focus of the study^[8](https://isss624-amelia.netlify.app/exercises/take-home_ex1/take-home_ex1#fn8)^.
+
+In this study, between contiguity-based and distance-based spatial weight matrices, we lean towards distance-based matrices. Within distance-based matrices, we will select the adaptive distance-based spatial weight matrix for our subsequent analysis.
+
+The reasons are summarised here:
+
+-   Thailand has 77 provinces and it is relatively small . Hence, a contiguity-based matrix will have the issue where larger LGAs have more neighbours and smaller LGAs have lesser neighbours. This would likely skew our analysis. Therefore, distance-based methods are preferred.
+
+-   As mentioned earlier, the fixed distance-based method has the disadvantage that some regions would only have 1 neighbour, while on average regions have 23 neighbours. Statistical test for regions with only 1 neighbour may not be valid.
+
+Based on the above, we will select adaptive distance-based spatial weight matrix.
+
+### Row-Standardised Weights Matrix
+
+```{r}
+rswm_knn8 <- nb2listw(knn8,
+                   style = "W",
+                   zero.policy = TRUE)
+rswm_knn8
+```
+
+We will be using the row-standardised weight matrix for the next part of the analysis.
+
+### 5.1.6 Computing Global Spatial Autocorrelation Statistics
+
+This in sub-section, we will use two methods: Moran’s I and Geary’s C to test the hypothesis the following hypothesis:
+
+-   H0: Observed spatial patterns of values is equally likely as any other spatial pattern i.e. data is randomly disbursed, no spatial pattern
+
+-   H1: Data is more spatially clustered than expected by chance alone.
+
+#### 5.1.6.1 Moran’s I
+
+We will perform Moran’s I statistical testing by using [*moran.test()*](https://r-spatial.github.io/spdep/reference/moran.test.html) of **spdep**. Moran’s I describe how features differ from the values in the study area as a whole. The Moran I statistic ranges from -1 to 1. If the Moran I is:
+
+-   positive (I\>0): Clustered, observations tend to be similar
+
+-   negative (I\<0): Disperse, observations tend to be dissimilar
+
+-   approximately zero: observations arranged randomly over space
+
+The below code chunk will perform the Moran’s I test on both functional and non-functional water points.
+
+```{r}
+moran.test(combined$revenue_foreign,
+           listw = rswm_knn8,
+           zero.policy = TRUE,
+           na.action = na.omit)
+```
