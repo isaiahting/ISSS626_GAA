@@ -1,0 +1,15 @@
+{
+  "hash": "2a9ebdf6b959cd4aca8c6ea2a66c0b55",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"In-Class Exercise 2\"\nauthor: \"Joshua TING\"\ndate: \"September 1, 2024\"\ndate-modified: \"last-modified\"\nformat:\n  html:\n    code-fold: true\n    code-summary: \"Code Chunk\"\n    number-sections: true\nexecute:\n  eval: false #r will run through all codes\n  echo: true #r will display all code chunk\n  warning: false #for mark down\n  freeze: true #r will not render all existing  html files\n  message: false #avoid printing warning message\neditor: source\n---\n\n\nIn Class Exercise 2\n\nMaptools is retired and binary is removed from CRAN. If you would want to use it, you can retrieve from CRAN. However, R version must support the package.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ninstall.packages(\"maptools\",\n                 repos = \"https://packagemanager.posit.co/cran/2023-10-13\")\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load()\n```\n:::\n\n\nIssue 2: Creating coastal outline\n\nin sf package, there are two functions allow us to combine multiple simple features into one simple features. They are st_combine and st_union().\n\nsf: <https://r-spatial.github.io/sf/>\n\nWorking with st_union()\n\nThe code chunk below st_union() is used to derive the coastal outline sf tibble data.frame.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nsg_sf <- mpsz_sf %>%\n  st_union()\n```\n:::\n\n\nsg_sf will look similar to the figure below.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nprint(sg_sf)\n```\n:::\n\n\nas.ppp() allows to create point object and as.owin creates boundary.\n\n\\`\\`\\`{r}\\\n\n\n::: {.cell}\n\n```{.r .cell-code}\npar(bg=\"#E4D5C9\")\n\ngridded_kde_childcareSG_ad <- as(\n  kde_childcareSG_adaptive,\n  \"SpatialGridDataFrame\")\nspplot(gridded_kde_childcareSG_ad)\n```\n:::\n\n\n::: {.callout-tip appearance=\"minimal\"}\n## Monte Carlo Simulation\n\nIn order to ensure reproducibility, it's important to include the code chunk below before using spatstat functions involve Monte Carlo Simulation.\n:::\n\n\n::: {.cell}\n\n```{.r .cell-code}\nset.seed(1234)\n```\n:::\n\n\n1.  ensure km are m in PCS\n2.  \n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,62 @@
+project:
+  type: website
+
+website:
+  title: "Navigating Geospatial Mines"
+  navbar:
+    left:
+      - text: "Hands-On Exercise"
+        menu: 
+          - text: "Hands-On Exercise 1a"
+            href: "HandsOnExercise/HandsOn1/HandsOn1.html"
+          - text: "Hands-On Exercise 1b"
+            href: "HandsOnExercise/HandsOn1b/HandsOn1b.html"
+          - text: "Hands-On Exercise 2a"
+            href: "HandsOnExercise/HandsOn2a/HandsOn2a.html"
+          - text: "Hands-On Exercise 2b"
+            href: "HandsOnExercise/HandsOn2b/HandsOn2b.html"
+          - text: "Hands-On Exercise 3"
+            href: "HandsOnExercise/HandsOn3/HandsOn3.html"
+          - text: "Hands-On Exercise 4"
+            href: "HandsOnExercise/HandsOn4/HandsOn4.html"       
+          - text: "Hands-On Exercise 5a"
+            href: "HandsOnExercise/HandsOn5a/HandsOn5a.html"
+          - text: "Hands-On Exercise 5b"
+            href: "HandsOnExercise/HandsOn5b/HandsOn5b.html"
+          - text: "Hands-On Exercise 6"
+            href: "HandsOnExercise/HandsOn6/HandsOn6.html"
+
+      - text: "In-Class Exercise"
+        menu:
+          - text: "In-Class Exercise 1"
+            href: "InClassExercise/InClass1/InClass1.html"
+          - text: "In-Class Exercise 2"
+            href: "InClassExercise/InClass2/InClass2.html"
+          - text: "In-Class Exercise 3"
+            href: "InClassExercise/InClass3/InClass3.html"
+          - text: "In-Class Exercise 4"
+            href: "InClassExercise/InClass4/InClass4.html"
+          - text: "In-Class Exercise 5"
+            href: "InClassExercise/InClass5/InClass5.html"
+          - text: "In-Class Exercise 6"
+            href: "InClassExercise/InClass6/InClass6.html"
+          
+      - text: "Take-Home Exercise"
+        menu: 
+          - text: "Take-Home Exercise 1"
+            href: "TakeHomeExercise/TakeHome1/TakeHome1.html"
+          - text: "Take-Home Exercise 2"
+            href: "TakeHomeExercise/TakeHome2/TakeHome2.html"
+    right:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+
+format:
+  html:
+    theme: yeti
+    css: styles.css
+    toc: true
+
+editor: visual
+
