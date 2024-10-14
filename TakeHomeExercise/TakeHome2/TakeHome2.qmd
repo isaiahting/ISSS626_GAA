@@ -36,7 +36,7 @@ To discover:
 ## Importing Packages
 
 ```{r}
-pacman::p_load(tidyverse, sf, spatstat, ggplot2, ggmap, tmap, dplyr, lubridate, raster, gtsummary, tidyr, spdep, knitr, plotly)
+pacman::p_load(tidyverse, sf, spatstat, ggplot2, ggmap, tmap, dplyr, lubridate, raster, gtsummary, tidyr, spdep, knitr, plotly, units)
 ```
 
 | Packages | Function |
@@ -76,6 +76,10 @@ st_crs(thaiboundary)
 ```
 
 ```{r}
+
+```
+
+```{r}
 glimpse(thaiboundary)
 ```
 
@@ -83,6 +87,7 @@ After importing the dataset, we will plot the Thailand map using tmap.
 
 ```{r}
 tmap_mode("plot")
+tmap_options(check.and.fix = TRUE)
 tm_shape(thaiboundary) +
   tm_fill(col = "white") +
   tm_borders(col = "black", lwd = 0.3, alpha = 0.6) +
@@ -94,6 +99,13 @@ tm_shape(thaiboundary) +
     legend.show = TRUE,
     frame = FALSE
   )
+tmap_mode("view")
+```
+
+```{r}
+tm_shape(thaiboundary) +
+  tm_polygons()
+view(thaiboundary)
 ```
 
 ```{r}
@@ -269,6 +281,7 @@ combined <- thaiboundary %>%
 
 ```{r}
 #| echo: false
+#| eval: false
 write.csv(combined, file = "data/csv/combined_data.csv", row.names = FALSE)
 ```
 
@@ -282,39 +295,6 @@ write_rds(combined, "data/rds/combined.rds")
 combined = read_rds("data/rds/combined.rds")
 ```
 
-```{r}
-basemap <- tm_shape(combined) +
-  tm_polygons() +
-  tm_text("Province", size=0.5) +
-  tm_text("Period")
-
-rev <- qtm(combined, "revenue_all")
-tmap_arrange(basemap, rev, asp=1, ncol=2)
-```
-
-```{r}
-#| echo: false
-write_rds(basemap, "data/rds/basemap.rds")
-```
-
-```{r}
-#| echo: false
-basemap = read_rds("data/rds/basemap.rds")
-```
-
-```{r}
-#| echo: false
-write_rds(rev, "data/rds/rev.rds")
-```
-
-```{r}
-#| echo: false
-rev = read_rds("data/rds/rev.rds")
-```
-
-```{r}
-colnames(combined)
-```
 
 The below code was run to simplify the gemetries through adjusting the tolerance.
 
@@ -367,11 +347,13 @@ print(combined_map)
 ![](map_Post-COVID.png)
 
 ```{r}
+#| eval: false
 #| echo: false
 write_rds(combinedmap, "data/rds/combinedmap.rds")
 ```
 
 ```{r}
+#| eval: false
 #| echo: false
 combinedmap = read_rds("data/rds/combinedmap.rds")
 ```
@@ -389,12 +371,17 @@ combined$Area <- combined %>%
   st_area()
 ```
 
-```{r}
-# Assuming your data is in a variable called 'combined'
-# If it's not, replace 'combined' with your actual data frame name
+A bar chart of each COVID period is generated alongside the percentage of the total revenue the province contributed.
 
-# Calculate total revenue for each province and period
-revenue_summary <- combined %>%
+::: callout-warning
+## Percentage of the Barchart Not Drawn to Scale
+:::
+
+```{r}
+combined_no_geometry <- combined %>%
+  st_drop_geometry()
+
+revenue_summary <- combined_no_geometry %>%
   group_by(Province, Period) %>%
   summarise(total_revenue = sum(revenue_all, na.rm = TRUE)) %>%
   ungroup()
@@ -453,8 +440,6 @@ Understandably, Bangkok generated 34.58% while Phuket generated 19.62%. Chonburi
 **Interesting Observations:**
 
 -   Krabi was the top 5 provinces of the total revenue of tourism in Pre-COVID. However, post COVID it wasn't in top 5 and merely generated 1.25% only. This is may due to the "slow international flight resumption at Krabi airport, especially from China, India and South Korea" as taken from [The Bangkok Post, November 2023](https://www.bangkokpost.com/business/general/2685874/krabi-tourism-struggles-with-flight-shortage).
-
--   
 
 ```{r}
 #| echo: false
@@ -675,11 +660,4 @@ We will perform Moran’s I statistical testing by using [*moran.test()*](https:
 
 -   approximately zero: observations arranged randomly over space
 
-The below code chunk will perform the Moran’s I test on both functional and non-functional water points.
 
-```{r}
-moran.test(combined$revenue_foreign,
-           listw = rswm_knn8,
-           zero.policy = TRUE,
-           na.action = na.omit)
-```
