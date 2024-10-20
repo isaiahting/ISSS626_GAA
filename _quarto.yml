@@ -6,7 +6,7 @@ website:
   navbar:
     left:
       - text: "Hands-On Exercise"
-        menu: 
+        menu:
           - text: "Hands-On Exercise 1a"
             href: "HandsOnExercise/HandsOn1/HandsOn1.html"
           - text: "Hands-On Exercise 1b"
@@ -25,6 +25,10 @@ website:
             href: "HandsOnExercise/HandsOn5b/HandsOn5b.html"
           - text: "Hands-On Exercise 6"
             href: "HandsOnExercise/HandsOn6/HandsOn6.html"
+          - text: "Hands-On Exercise 7"
+            href: "HandsOnExercise/HandsOn7/HandsOn7.html"
+          - text: "Hands-On Exercise 8"
+            href: "HandsOnExercise/HandsOn8/HandsOn8.html"
 
       - text: "In-Class Exercise"
         menu:
@@ -40,6 +44,8 @@ website:
             href: "InClassExercise/InClass5/InClass5.html"
           - text: "In-Class Exercise 6"
             href: "InClassExercise/InClass6/InClass6.html"
+          - text: "In-Class Exercise 7"
+            href: "InClassExercise/InClass7/InClass7.html"
           
       - text: "Take-Home Exercise"
         menu: 
@@ -47,6 +53,8 @@ website:
             href: "TakeHomeExercise/TakeHome1/TakeHome1.html"
           - text: "Take-Home Exercise 2"
             href: "TakeHomeExercise/TakeHome2/TakeHome2.html"
+          - text: "Take-Home Exercise 3"
+            href: "TakeHomeExercise/TakeHome3/TakeHome3.html"
     right:
       - href: index.qmd
         text: Home
@@ -59,4 +67,3 @@ format:
     toc: true
 
 editor: visual
-
