@@ -27,9 +27,7 @@ Geospatial predictive modelling is conceptually rooted in the principle that the
 
 ### Learning outcome
 
-In this in-class exercise, you will learn how to build predictive
-model by using geographical random forest method. By the end of this
-hands-on exercise, you will acquire the skills of:
+In this in-class exercise, you will learn how to build predictive model by using geographical random forest method. By the end of this hands-on exercise, you will acquire the skills of:
 
 -   preparing training and test data sets by using appropriate data sampling methods
 
@@ -43,16 +41,11 @@ hands-on exercise, you will acquire the skills of:
 
 -   **Aspatial dataset**:
 
-    -   HDB Resale data: a list of HDB resale transacted prices in Singapore
-        from Jan 2017 onwards. It is in csv format which can be downloaded from
-        Data.gov.sg.
+    -   HDB Resale data: a list of HDB resale transacted prices in Singapore from Jan 2017 onwards. It is in csv format which can be downloaded from Data.gov.sg.
 
 -   **Geospatial dataset**:
 
-    -   *MP14_SUBZONE_WEB_PL*: a polygon feature data providing
-        information of URA 2014 Master Plan Planning Subzone boundary data. It
-        is in ESRI shapefile format. This data set was also downloaded from
-        Data.gov.sg
+    -   *MP14_SUBZONE_WEB_PL*: a polygon feature data providing information of URA 2014 Master Plan Planning Subzone boundary data. It is in ESRI shapefile format. This data set was also downloaded from Data.gov.sg
 
 -   **Locational factors with geographic coordinates**:
 
@@ -136,9 +129,7 @@ write_rds(test_data, "data/model/test_data.rds")
 
 ## Computing Correlation Matrix
 
-Before loading the predictors into a predictive model, it is always a
-good practice to use correlation matrix to examine if there is sign of
-multicolinearity.
+Before loading the predictors into a predictive model, it is always a good practice to use correlation matrix to examine if there is sign of multicolinearity.
 
 ```{r}
 mdata_nogeo <- mdata %>%
@@ -179,8 +170,7 @@ write_rds(price_mlr, "data/model/price_mlr.rds" )
 
 ## gwr predictive method
 
-In this section, you will learn how to calibrate a model to predict
-HDB resale price by using geographically weighted regression method of [**GWmodel**](https://cran.r-project.org/web/packages/GWmodel/index.html) package.
+In this section, you will learn how to calibrate a model to predict HDB resale price by using geographically weighted regression method of [**GWmodel**](https://cran.r-project.org/web/packages/GWmodel/index.html) package.
 
 ### Converting the sf data.frame to SpatialPointDataFrame
 
@@ -208,8 +198,7 @@ bw_adaptive <- bw.gwr(resale_price ~ floor_area_sqm +
                   longlat=FALSE)
 ```
 
-The result shows that 40 neighbour points will be the optimal
-bandwidth to be used if adaptive bandwidth is used for this data set.
+The result shows that 40 neighbour points will be the optimal bandwidth to be used if adaptive bandwidth is used for this data set.
 
 ```{r}
 write_rds(bw_adaptive, "data/model/bw_adaptive.rds")
@@ -223,8 +212,7 @@ First, let us call the save bandwidth by using the code chunk below.
 bw_adaptive <- read_rds("data/model/bw_adaptive.rds")
 ```
 
-Now, we can go ahead to calibrate the gwr-based hedonic pricing model by using adaptive bandwidth and Gaussian kernel as shown in the code
-chunk below.
+Now, we can go ahead to calibrate the gwr-based hedonic pricing model by using adaptive bandwidth and Gaussian kernel as shown in the code chunk below.
 
 ```{r}
 #| eval: false
@@ -301,6 +289,16 @@ gwr_pred <- gwr.predict(formula = resale_price ~
                         adaptive=TRUE, 
                         longlat = FALSE)
 ```
+
+::: callout-warning
+## Error when running above code
+
+Possible reasons when no regression is fixed, there might be same coordinates with different attributes. To Find duplicate records.
+
+2nd way is to do gitter #gitter displays the coordinates alittle away from each other.
+
+Read on this [article](https://blogs.sas.com/content/iml/2011/07/06/to-jitter-or-not-to-jitter-that-is-the-question.html) more on jittering.
+:::
 
 ## Preparing coordinates data
 
@@ -402,9 +400,7 @@ test_data <- cbind(test_data, coords_test) %>%
 
 #### Predicting with test data
 
-Next, `predict.grf()` of spatialML package will be used to
-predict the resale value by using the test data and gwRF_adaptive model
-calibrated earlier.
+Next, `predict.grf()` of spatialML package will be used to predict the resale value by using the test data and gwRF_adaptive model calibrated earlier.
 
 ```{r}
 gwRF_pred <- predict.grf(gwRF_adaptive, 
@@ -442,10 +438,7 @@ write_rds(test_data_p, "data/model/test_data_p.rds")
 
 ### Calculating Root Mean Square Error
 
-The root mean square error (RMSE) allows us to measure how far
-predicted values are from observed values in a regression analysis. In
-the code chunk below, rmse() of Metrics package is used to compute the
-RMSE.
+The root mean square error (RMSE) allows us to measure how far predicted values are from observed values in a regression analysis. In the code chunk below, rmse() of Metrics package is used to compute the RMSE.
 
 ```{r}
 rmse(test_data_p$resale_price, 
@@ -454,8 +447,7 @@ rmse(test_data_p$resale_price,
 
 ### Visualising the predicted values
 
-Alternatively, scatterplot can be used to visualise the actual resale
-price and the predicted resale price by using the code chunk below.
+Alternatively, scatterplot can be used to visualise the actual resale price and the predicted resale price by using the code chunk below.
 
 ```{r}
 ggplot(data = test_data_p,
