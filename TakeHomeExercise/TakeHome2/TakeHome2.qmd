@@ -40,7 +40,7 @@ pacman::p_load(tidyverse, sf, spatstat, ggplot2, ggmap, tmap, dplyr, lubridate, 
 ```
 
 | Packages | Function |
-|------------------------------------|------------------------------------|
+|----|----|
 | [**sf**](https://r-spatial.github.io/sf/) | To import, manage, and hande geospatial data |
 | [**tidyverse**](https://www.tidyverse.org/) | For non-spatial data wrangling |
 | [**sfdep**](https://sfdep.josiahparry.com/) | To compute spatial weights, global and local spatial autocorrelation statistics |
@@ -73,10 +73,6 @@ In ensuring the right assignment of the coordinate reference system to the data,
 
 ```{r}
 st_crs(thaiboundary)
-```
-
-```{r}
-
 ```
 
 ```{r}
@@ -295,7 +291,6 @@ write_rds(combined, "data/rds/combined.rds")
 combined = read_rds("data/rds/combined.rds")
 ```
 
-
 The below code was run to simplify the gemetries through adjusting the tolerance.
 
 ```{r}
@@ -371,6 +366,27 @@ combined$Area <- combined %>%
   st_area()
 ```
 
+```{r}
+# Create a line graph of revenue by period with rearranged periods
+line_graph <- combined %>%
+  group_by(Period) %>%
+  summarise(total_revenue = sum(revenue_all, na.rm = TRUE)) %>%
+  ungroup() %>%
+  mutate(Period = factor(Period, levels = c("Pre-COVID", "COVID_P1", "COVID_P2", "Post-COVID")))  # Rearranging factor levels
+
+# Generate the line plot
+ggplot(line_graph, aes(x = Period, y = total_revenue, group = 1)) +
+  geom_line(color = "blue", size = 1) +  # Line color and size
+  geom_point(color = "red", size = 2) +  # Points on the line
+  geom_text(aes(label = total_revenue), vjust = -1, size = 4) +  # Show revenue on the dots
+  labs(title = "Total Revenue by Period",
+       x = "Period",
+       y = "Total Revenue (in Thai Baht)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Angle x-axis labels for better readability
+
+```
+
 A bar chart of each COVID period is generated alongside the percentage of the total revenue the province contributed.
 
 ::: callout-warning
@@ -378,6 +394,9 @@ A bar chart of each COVID period is generated alongside the percentage of the to
 :::
 
 ```{r}
+#| eval: false
+#| echo: false
+#CODES FOR RUNNING INTERACTIVE PLOTS with all provinces - too big in size
 combined_no_geometry <- combined %>%
   st_drop_geometry()
 
@@ -421,6 +440,294 @@ for (chart in pie_charts) {
 }
 ```
 
+```{r}
+#| eval: false
+#| echo: false
+combined_no_geometry <- combined %>%
+  st_drop_geometry()
+
+revenue_summary <- combined_no_geometry %>%
+  group_by(Province, Period) %>%
+  summarise(total_revenue = sum(revenue_all, na.rm = TRUE)) %>%
+  ungroup()
+
+# Create a function to generate a pie chart for a specific period
+create_pie_chart <- function(data, period) {
+  period_data <- data %>%
+    filter(Period == period) %>%
+    arrange(desc(total_revenue)) %>%
+    # Only keep top 10 provinces, group others
+    mutate(Province = if_else(row_number() <= 10, Province, "Other")) %>%
+    group_by(Province) %>%
+    summarise(total_revenue = sum(total_revenue)) %>%
+    ungroup()
+  
+  # Calculate total revenue for the period
+  total_period_revenue <- sum(period_data$total_revenue)
+  
+  # Calculate percentages
+  period_data <- period_data %>%
+    mutate(percentage = (total_revenue / total_period_revenue) * 100)
+  
+  plot_ly(period_data, labels = ~Province, values = ~percentage, type = 'pie',
+          textposition = 'inside',
+          textinfo = 'label+percent',
+          hoverinfo = 'text',
+          text = ~paste(Province, 
+                        "<br>Revenue: $", formatC(total_revenue, format="f", big.mark=",", digits=0),
+                        "<br>Percentage: ", formatC(percentage, format="f", digits=1), "%"),
+          marker = list(line = list(color = '#FFFFFF', width = 1))) %>%
+    layout(title = paste("Revenue Distribution by Province -", period),
+           showlegend = FALSE)
+}
+
+# Create pie charts for each period
+periods <- unique(revenue_summary$Period)
+pie_charts <- lapply(periods, function(p) create_pie_chart(revenue_summary, p))
+
+# Display the charts
+for (chart in pie_charts) {
+  print(chart)
+}
+```
+
+```{r}
+#| eval: false
+#| echo: false
+# Assuming your 'combined' sf object is already loaded and has necessary columns
+
+# Drop geometry for analysis
+combined_no_geometry <- combined %>%
+  st_drop_geometry()
+
+# Summarise revenue data
+revenue_summary <- combined_no_geometry %>%
+  group_by(Province, Period) %>%
+  summarise(total_revenue = sum(revenue_all, na.rm = TRUE)) %>%
+  ungroup()
+
+# Create a function to generate a pie chart for a specific period
+create_pie_chart <- function(data, period) {
+  period_data <- data %>%
+    filter(Period == period) %>%
+    arrange(desc(total_revenue)) %>%
+    mutate(Province = if_else(row_number() <= 10, Province, "Other")) %>%
+    group_by(Province) %>%
+    summarise(total_revenue = sum(total_revenue)) %>%
+    ungroup()
+  
+  total_period_revenue <- sum(period_data$total_revenue)
+  
+  period_data <- period_data %>%
+    mutate(percentage = (total_revenue / total_period_revenue) * 100)
+  
+  plot_ly(period_data, labels = ~Province, values = ~percentage, type = 'pie',
+          textposition = 'inside',
+          textinfo = 'label+percent',
+          hoverinfo = 'text',
+          text = ~paste(Province, 
+                        "<br>Revenue: $", formatC(total_revenue, format="f", big.mark=",", digits=0),
+                        "<br>Percentage: ", formatC(percentage, format="f", digits=1), "%"),
+          marker = list(line = list(color = '#FFFFFF', width = 1))) %>%
+    layout(title = paste("Revenue Distribution by Province -", period),
+           showlegend = FALSE)
+}
+
+# Create pie charts for each period
+periods <- unique(revenue_summary$Period)
+pie_charts <- lapply(periods, function(p) create_pie_chart(revenue_summary, p))
+
+# Combine and display the charts using subplot
+combined_chart <- subplot(pie_charts, nrows = 2, shareY = TRUE) %>%
+  layout(title = "Revenue Distribution by Province Across Periods")
+
+# Render the combined interactive chart
+combined_chart
+
+```
+
+### Percentage of Total Revenue Generated from Each Province
+
+#### Pre-COVID: 1st Jan 2019 - 3rd March 2020
+
+```{r}
+combined_no_geometry <- combined %>%
+  st_drop_geometry()
+
+# Summarise revenue data for Pre-COVID period only
+revenue_summary <- combined_no_geometry %>%
+  filter(Period == "Pre-COVID") %>%
+  group_by(Province) %>%
+  summarise(total_revenue = sum(revenue_all, na.rm = TRUE)) %>%
+  ungroup()
+
+# Create the pie chart for Pre-COVID period
+create_pie_chart <- function(data) {
+  period_data <- data %>%
+    arrange(desc(total_revenue)) %>%
+    mutate(Province = if_else(row_number() <= 10, Province, "Other")) %>%
+    group_by(Province) %>%
+    summarise(total_revenue = sum(total_revenue)) %>%
+    ungroup()
+  
+  total_period_revenue <- sum(period_data$total_revenue)
+  
+  period_data <- period_data %>%
+    mutate(percentage = (total_revenue / total_period_revenue) * 100)
+  
+  plot_ly(period_data, labels = ~Province, values = ~percentage, type = 'pie',
+          textposition = 'inside',
+          textinfo = 'label+percent',
+          hoverinfo = 'text',
+          text = ~paste(Province, 
+                        "<br>Revenue: $", formatC(total_revenue, format="f", big.mark=",", digits=0),
+                        "<br>Percentage: ", formatC(percentage, format="f", digits=1), "%"),
+          marker = list(line = list(color = '#FFFFFF', width = 1))) %>%
+    layout(title = list(text =  "Revenue Distribution by Province - Pre-COVID: 1st Jan 2019 - 3rd March 2020",
+                        font = list(size = 14)),
+           showlegend = FALSE)
+}
+
+# Create and display the Pre-COVID pie chart
+pre_covid_chart <- create_pie_chart(revenue_summary)
+pre_covid_chart
+```
+
+#### COVID Part I: 4th April 2020 - 30th June 2021
+
+```{r}
+combined_no_geometry <- combined %>%
+  st_drop_geometry()
+
+# Summarise revenue data for Pre-COVID period only
+revenue_summary <- combined_no_geometry %>%
+  filter(Period == "COVID_P1") %>%
+  group_by(Province) %>%
+  summarise(total_revenue = sum(revenue_all, na.rm = TRUE)) %>%
+  ungroup()
+
+# Create the pie chart for Pre-COVID period
+create_pie_chart <- function(data) {
+  period_data <- data %>%
+    arrange(desc(total_revenue)) %>%
+    mutate(Province = if_else(row_number() <= 10, Province, "Other")) %>%
+    group_by(Province) %>%
+    summarise(total_revenue = sum(total_revenue)) %>%
+    ungroup()
+  
+  total_period_revenue <- sum(period_data$total_revenue)
+  
+  period_data <- period_data %>%
+    mutate(percentage = (total_revenue / total_period_revenue) * 100)
+  
+  plot_ly(period_data, labels = ~Province, values = ~percentage, type = 'pie',
+          textposition = 'inside',
+          textinfo = 'label+percent',
+          hoverinfo = 'text',
+          text = ~paste(Province, 
+                        "<br>Revenue: $", formatC(total_revenue, format="f", big.mark=",", digits=0),
+                        "<br>Percentage: ", formatC(percentage, format="f", digits=1), "%"),
+          marker = list(line = list(color = '#FFFFFF', width = 1))) %>%
+    layout(title = list(text = "Revenue Distribution by Province - COVID PART I: 4th April 2020 - 30th June 2021",
+                        font = list(size=14)),
+           showlegend = FALSE)
+}
+
+# Create and display the Pre-COVID pie chart
+covidp1_chart <- create_pie_chart(revenue_summary)
+covidp1_chart
+```
+
+#### COVID Part II: 1st July 2021 - 30th April 2022
+
+```{r}
+combined_no_geometry <- combined %>%
+  st_drop_geometry()
+
+# Summarise revenue data for Pre-COVID period only
+revenue_summary <- combined_no_geometry %>%
+  filter(Period == "COVID_P2") %>%
+  group_by(Province) %>%
+  summarise(total_revenue = sum(revenue_all, na.rm = TRUE)) %>%
+  ungroup()
+
+# Create the pie chart for Pre-COVID period
+create_pie_chart <- function(data) {
+  period_data <- data %>%
+    arrange(desc(total_revenue)) %>%
+    mutate(Province = if_else(row_number() <= 10, Province, "Other")) %>%
+    group_by(Province) %>%
+    summarise(total_revenue = sum(total_revenue)) %>%
+    ungroup()
+  
+  total_period_revenue <- sum(period_data$total_revenue)
+  
+  period_data <- period_data %>%
+    mutate(percentage = (total_revenue / total_period_revenue) * 100)
+  
+  plot_ly(period_data, labels = ~Province, values = ~percentage, type = 'pie',
+          textposition = 'inside',
+          textinfo = 'label+percent',
+          hoverinfo = 'text',
+          text = ~paste(Province, 
+                        "<br>Revenue: $", formatC(total_revenue, format="f", big.mark=",", digits=0),
+                        "<br>Percentage: ", formatC(percentage, format="f", digits=1), "%"),
+          marker = list(line = list(color = '#FFFFFF', width = 1))) %>%
+    layout(title = list(text =  "Revenue Distribution by Province - COVID PART II: 1st July 2021 - 30th April 2022",
+                        font = list(size = 14)),
+           showlegend = FALSE
+           )
+}
+
+# Create and display the Pre-COVID pie chart
+covidp2_chart <- create_pie_chart(revenue_summary)
+covidp2_chart
+```
+
+#### Post-COVID: 1st May 2022 onwards
+
+```{r}
+combined_no_geometry <- combined %>%
+  st_drop_geometry()
+
+# Summarise revenue data for Pre-COVID period only
+revenue_summary <- combined_no_geometry %>%
+  filter(Period == "Post-COVID") %>%
+  group_by(Province) %>%
+  summarise(total_revenue = sum(revenue_all, na.rm = TRUE)) %>%
+  ungroup()
+
+# Create the pie chart for Pre-COVID period
+create_pie_chart <- function(data) {
+  period_data <- data %>%
+    arrange(desc(total_revenue)) %>%
+    mutate(Province = if_else(row_number() <= 10, Province, "Other")) %>%
+    group_by(Province) %>%
+    summarise(total_revenue = sum(total_revenue)) %>%
+    ungroup()
+  
+  total_period_revenue <- sum(period_data$total_revenue)
+  
+  period_data <- period_data %>%
+    mutate(percentage = (total_revenue / total_period_revenue) * 100)
+  
+  plot_ly(period_data, labels = ~Province, values = ~percentage, type = 'pie',
+          textposition = 'inside',
+          textinfo = 'label+percent',
+          hoverinfo = 'text',
+          text = ~paste(Province, 
+                        "<br>Revenue: $", formatC(total_revenue, format="f", big.mark=",", digits=0),
+                        "<br>Percentage: ", formatC(percentage, format="f", digits=1), "%"),
+          marker = list(line = list(color = '#FFFFFF', width = 1))) %>%
+    layout(title = "Revenue Distribution by Province - Post-COVID: 1st May 2022 onwards",size=0.5, 
+           showlegend = FALSE)
+}
+
+# Create and display the Pre-COVID pie chart
+post_covid_chart <- create_pie_chart(revenue_summary)
+post_covid_chart
+```
+
 **Pre-COVID: 1st Jan 2019 - 3rd March 2020**
 
 38.3% of the total revenue was generated from Bangkok while Phuket generated 16.91%. Choburi generated 9.88% while Krabi was 4.24%. Chiangmai was 4.14%.
@@ -440,26 +747,6 @@ Understandably, Bangkok generated 34.58% while Phuket generated 19.62%. Chonburi
 **Interesting Observations:**
 
 -   Krabi was the top 5 provinces of the total revenue of tourism in Pre-COVID. However, post COVID it wasn't in top 5 and merely generated 1.25% only. This is may due to the "slow international flight resumption at Krabi airport, especially from China, India and South Korea" as taken from [The Bangkok Post, November 2023](https://www.bangkokpost.com/business/general/2685874/krabi-tourism-struggles-with-flight-shortage).
-
-```{r}
-#| echo: false
-write_rds(periods, "data/rds/periods.rds")
-```
-
-```{r}
-#| echo: false
-write_rds(pie_charts, "data/rds/pie_charts.rds")
-```
-
-```{r}
-#| echo: false
-periods = read_rds("data/rds/periods.rds")
-```
-
-```{r}
-#| echo: false
-pie_charts = read_rds("data/rds/pie_charts.rds")
-```
 
 ```{r}
 # input: the dataframe and the variable name, chart style, title 
@@ -493,6 +780,16 @@ wm_q <- poly2nb(thaiboundary, queen=TRUE)
 summary(wm_q)
 ```
 
+```{r}
+#| echo: false
+write_rds(wm_q, "data/rds/wm_q.rds")
+```
+
+```{r}
+#| echo: false
+wm_q = read_rds("data/rds/wm_q.rds")
+```
+
 The summary report above shows that there are 77 area units in Thailand. The most connected area unit has 9 links.
 
 #### **Contiguity-based (Rook) Spatial Weight Contiguity**
@@ -502,6 +799,16 @@ In the code chunk below, [*poly2nb()*](https://r-spatial.github.io/spdep/referen
 ```{r}
 wm_q <- poly2nb(thaiboundary, queen=FALSE)
 summary(wm_q)
+```
+
+```{r}
+#| echo: false
+write_rds(wm_q, "data/rds/wm_q.rds")
+```
+
+```{r}
+#| echo: false
+wm_q = read_rds("data/rds/wm_q.rds")
 ```
 
 The summary report above shows that there are 77 area units in Thailand. The most connected area unit has 9 links.
@@ -530,10 +837,30 @@ To ensure that each region has at least one neighbour, we need to find out the m
 longitude <- map_dbl(thaiboundary$geometry, ~st_centroid(.x)[[1]])
 ```
 
+```{r}
+#| echo: false
+write_rds(longitude, "data/rds/longitude.rds")
+```
+
+```{r}
+#| echo: false
+longitude = read_rds("data/rds/longitude.rds")
+```
+
 We do the same for latitude with one key difference. We access the second value per each centroid with \[\[2\]\]
 
 ```{r}
 latitude <- map_dbl(thaiboundary$geometry, ~st_centroid(.x)[[2]])
+```
+
+```{r}
+#| echo: false
+write_rds(latitude, "data/rds/latitude.rds")
+```
+
+```{r}
+#| echo: false
+latitude = read_rds("data/rds/latitude.rds")
 ```
 
 Now that we have latitude and longitude, I used cbind to put longitude and latitude into the same object. We should check the first few observations to see if things are formatted correctly.
@@ -606,6 +933,16 @@ knn8 <- knn2nb(knearneigh(coords, k=8))
 knn8
 ```
 
+```{r}
+#| echo: false
+write_rds(knn8, "data/rds/knn8.rds")
+```
+
+```{r}
+#| echo: false
+knn8 = read_rds("data/rds/knn8.rds")
+```
+
 **Plotting Adaptive Distance-based Neighbours**
 
 ```{r}
@@ -660,4 +997,62 @@ We will perform Moran’s I statistical testing by using [*moran.test()*](https:
 
 -   approximately zero: observations arranged randomly over space
 
+```{r}
+combined_log <- combined %>%
+  mutate(log_revenue_all = log(revenue_all + 1))
 
+combined_log$log_revenue_all <- as.numeric(combined_log$log_revenue_all)
+
+# Check for any NA values in the log_revenue_all vector
+if (any(is.na(combined_log$log_revenue_all))) {
+  warning("There are NA values in log_revenue_all, they will be omitted from the analysis.")
+}
+
+# Run Moran's I test
+moran_result <- moran.test(combined_log$log_revenue_all, 
+                            listw = rswm_knn8, 
+                            zero.policy = TRUE, 
+                            na.action = na.omit)
+
+# Print the results
+print(moran_result)
+```
+
+```{r}
+# Assuming 'combined' is your sf object
+# Create the log-transformed revenue variable
+combined_log <- combined %>%
+  mutate(log_revenue_all = log(revenue_all + 1))  # Log-transform revenue_all
+
+# Check the structure to confirm the new variable
+str(combined_log)
+
+# Remove rows with NA in log_revenue_all for the Moran's I test
+moran_data <- combined_log %>%
+  filter(!is.na(log_revenue_all))
+
+# Ensure log_revenue_all is numeric
+moran_data$log_revenue_all <- as.numeric(moran_data$log_revenue_all)
+
+# Ensure 'rswm_knn8' is a proper neighborhood list
+# You might need to recreate it if necessary
+# Assuming combined_log has the same regions as when you created rswm_knn8
+# Replace this line with the correct neighbor creation if necessary
+wm_q <- poly2nb(combined_log, queen = TRUE)  # Create neighbor list again if needed
+rswm_knn8 <- nb2listw(wm_q, style = "W", zero.policy = TRUE)
+
+# Check the lengths to ensure they match
+length(moran_data$log_revenue_all)  # Length of log_revenue_all
+length(rswm_knn8$neighbours)         # Length of neighbors
+
+# Run Moran's I test
+moran_result <- moran.test(moran_data$log_revenue_all, 
+                            listw = rswm_knn8, 
+                            zero.policy = TRUE, 
+                            na.action = na.omit)
+
+# Print the results
+print(moran_result)
+
+
+```
