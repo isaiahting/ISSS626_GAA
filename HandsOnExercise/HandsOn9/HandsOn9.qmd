@@ -43,10 +43,7 @@ Four data sets will be used in this hands-on exercise, they are:
 
 -   `hexagons`: A 250m radius hexagons GIS data. This data set was created by using [*st_make_grid()*](https://r-spatial.github.io/sf/reference/st_make_grid.html) of sf package. It is in ESRI shapefile format.
 
--   `ELDERCARE`: GIS data showing location of eldercare service. [This data](https://data.gov.sg/dataset/eldercare-services)
-    is downloaded from data.gov.sg. There are two versions. One in ESRI
-    shapefile format. The other one in Google kml file format. For the
-    purpose of this hands-on exercise, ESRI shapefile format is provided.
+-   `ELDERCARE`: GIS data showing location of eldercare service. [This data](https://data.gov.sg/dataset/eldercare-services) is downloaded from data.gov.sg. There are two versions. One in ESRI shapefile format. The other one in Google kml file format. For the purpose of this hands-on exercise, ESRI shapefile format is provided.
 
 -   `OD_Matrix`: a distance matrix in csv format. There are six fields in the data file. They are:
 
@@ -111,9 +108,7 @@ pacman::p_load(tmap, SpatialAcc, sf,
 ::: callout-note
 ## Power of Tidyverse
 
-Notice that with tidyverse, we do not have to install **readr**, **dplyr** and
-**ggplots** packages separately. In fact, tidyverse also installs other R
-packages such as **tidyr, stringr, forcats, tibble, purrr** and **magrittr**.
+Notice that with tidyverse, we do not have to install **readr**, **dplyr** and **ggplots** packages separately. In fact, tidyverse also installs other R packages such as **tidyr, stringr, forcats, tibble, purrr** and **magrittr**.
 :::
 
 ## Geospatial Data Wrangling
@@ -214,8 +209,7 @@ distmat <- ODMatrix %>%
 
 Note: Since tidyr version 1.0 a new function called [*pivot_wider()*](https://tidyr.tidyverse.org/reference/pivot_wider.html) is introduce. You should use *pivot_wider()* instead of *spread()*
 
-Currently, the distance is measured in metre because SVY21 projected coordinate system is used. The code chunk below will be used to convert
-the unit f measurement from metre to kilometre.
+Currently, the distance is measured in metre because SVY21 projected coordinate system is used. The code chunk below will be used to convert the unit f measurement from metre to kilometre.
 
 ```{r}
 distmat_km <- as.matrix(distmat/1000)
@@ -288,7 +282,7 @@ The code chunk below uses a collection of mapping fucntions of tmap package to c
 ```{r}
 tmap_mode("plot")
 tm_shape(hexagon_Hansen,
-         bbox = mapex) + 
+         bbox = mapexs) + 
   tm_fill(col = "accHansen",
           n = 10,
           style = "quantile",
@@ -357,9 +351,7 @@ hexagon_KD2SFCA <- bind_cols(hexagons, acc_KD2SFCA)
 
 ### Visualising KD2SFCA’s accessibility
 
-The code chunk below uses a collection of mapping fucntions of tmap
-package to create a high cartographic quality accessibility to eldercare
-centre in Singapore. Notice that `mapex` is reused for *bbox* argument.
+The code chunk below uses a collection of mapping fucntions of tmap package to create a high cartographic quality accessibility to eldercare centre in Singapore. Notice that `mapex` is reused for *bbox* argument.
 
 ```{r}
 tmap_mode("plot")
