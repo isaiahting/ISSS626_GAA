@@ -18,3 +18,7 @@ Inspired by the pioneering work of John Snow in epidemiology, whose spatial mapp
 ![](images/hcw.webp){fig-align="center"}
 
 ![*Naively Confident Indeed*](images/google.jpg){fig-align="left"}
+
+![Ventricular Tachycardia](images/vt.jpg){fig-align="center"}
+
+The above ECG reading depicts my joy during my learning journey in Geospatial.
