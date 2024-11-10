@@ -1641,6 +1641,7 @@ In this section, we will split the data into training data - Jan 2023 to June 20
 
 ::: panel-tabset
 ## **Punggol**
+
 ```{r}
 set.seed(1234)
 train_data_punggol <- data %>%
@@ -1665,7 +1666,8 @@ write_rds(train_data_punggol, "data/rds/ml/punggol/train_data_punggol.rds")
 write_rds(test_data_punggol, "data/rds/ml/punggol/test_data_punggol.rds")
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 set.seed(1234)
 train_data_woodlands <- data %>%
@@ -1714,13 +1716,15 @@ corrplot::corrplot(cor(data_nogeo[, 2:19]),
 ### Retrieving Stored Data
 
 ::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 train_data_punggol <- read_rds("data/rds/ml/punggol/train_data_punggol.rds")
 test_data_punggol <- read_rds("data/rds/ml/punggol/test_data_punggol.rds")
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 train_data_woodlands <- read_rds("data/rds/ml/woodlands/train_data_woodlands.rds")
 test_data_woodlands <- read_rds("data/rds/ml/woodlands/test_data_woodlands.rds")
@@ -1730,7 +1734,8 @@ test_data_woodlands <- read_rds("data/rds/ml/woodlands/test_data_woodlands.rds")
 ## Building a non-spatial multiple linear regression
 
 ::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 # Fit the linear model for resale_price using the specified variables
 price_mlr_p <- lm(resale_price ~ floor_area_sqm +
@@ -1752,7 +1757,8 @@ beep(3)
 write_rds(price_mlr_p, "data/rds/ml/punggol/price_mlr_p.rds" ) 
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 # Fit the linear model for resale_price using the specified variables
 price_mlr_w <- lm(resale_price ~ floor_area_sqm +
@@ -1782,13 +1788,15 @@ Now, we will calibrate a model to predict HDB resale price by using geographical
 ### Converting the sf data.frame to SpatialPointDataFrame
 
 ::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 train_data_sp_p <- as_Spatial(train_data_punggol)
 train_data_sp_p
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 train_data_sp_w <- as_Spatial(train_data_woodlands)
 train_data_sp_w
@@ -1800,7 +1808,8 @@ train_data_sp_w
 Next, `bw.gwr()` of **GWmodel** package will be used to determine the optimal bandwidth to be used.
 
 ::::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 bw_adaptive_p <- bw.gwr(resale_price ~ floor_area_sqm +
                  unit_age + within_350m_busstop +
@@ -1830,7 +1839,8 @@ The result shows that 86 neighbour points will be the optimal bandwidth to be us
 write_rds(bw_adaptive_p, "data/rds/ml/punggol/bw_adaptive_p.rds")
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 bw_adaptive_w <- bw.gwr(resale_price ~ floor_area_sqm +
                  unit_age + within_350m_busstop +
@@ -1872,7 +1882,8 @@ bw_adaptive_w <- read_rds("data/rds/ml/woodlands/bw_adaptive_w.rds")
 Now, we can go ahead to calibrate the gwr-based hedonic pricing model by using adaptive bandwidth and Gaussian kernel as shown in the code chunk below.
 
 ::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 gwr_adaptive_p <- gwr.basic(formula = resale_price ~ floor_area_sqm +
                  unit_age + within_350m_busstop +
@@ -1893,7 +1904,8 @@ beep(3)
 write_rds(gwr_adaptive_p, "data/rds/ml/punggol/gwr_adaptive_p.rds")
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 gwr_adaptive_w <- gwr.basic(formula = resale_price ~ floor_area_sqm +
                  unit_age + within_350m_busstop +
@@ -1920,7 +1932,8 @@ write_rds(gwr_adaptive_w, "data/rds/ml/woodlands/gwr_adaptive_w.rds")
 The code below can be used to display the model output.
 
 ::::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 gwr_adaptive_p <- read_rds("data/rds/ml/punggol/gwr_adaptive_p.rds")
 ```
@@ -1973,7 +1986,8 @@ This model was calibrated using the **adaptive Gaussian kernel** with an **adapt
 Spatially varying coefficients highlight that the impact of certain factors, such as `floor_area_sqm`, `unit_age`, and proximity to amenities like `hawker centers` and `supermarkets`, can differ significantly across different locations, suggesting that location-specific interventions or policies might be more effective in real estate pricing.
 :::
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 gwr_adaptive_w <- read_rds("data/rds/ml/woodlands/gwr_adaptive_w.rds")
 ```
@@ -2066,13 +2080,15 @@ The GWR model provides a much better fit for the resale price data in Woodlands 
 ### Converting the test data from sf data.frame to SpatialPointDataFrame
 
 ::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 test_data_sp_p <- as_Spatial(test_data_punggol)
 test_data_sp_p
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 test_data_sp_w <- as_Spatial(test_data_woodlands)
 test_data_sp_w
@@ -2082,7 +2098,8 @@ test_data_sp_w
 ### Computing adaptive bandwidth for the test data
 
 ::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 gwr_bw_test_adaptive_p <- bw.gwr(resale_price ~ floor_area_sqm +
                  unit_age + within_350m_busstop +
@@ -2104,7 +2121,8 @@ beep(3)
 write_rds(gwr_bw_test_adaptive_p, "data/rds/ml/punggol/gwr_bw_test_adaptive_p.rds")
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 gwr_bw_test_adaptive_w<- bw.gwr(resale_price ~ floor_area_sqm +
                  unit_age + within_350m_busstop +
@@ -2130,7 +2148,8 @@ write_rds(gwr_bw_test_adaptive_w, "data/rds/ml/woodlands/gwr_bw_test_adaptive_w.
 ### Computing predicted values of the test data
 
 ::::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 gwr_pred_p <- gwr.predict(formula = resale_price ~ floor_area_sqm +
                  unit_age + within_350m_busstop +
@@ -2187,7 +2206,8 @@ Key findings include:
 -   The **prediction results** show a reasonable range of predicted resale prices, with substantial variance indicating the sensitivity of prices to local factors.
 :::
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 gwr_pred_w <- gwr.predict(formula = resale_price ~ floor_area_sqm +
                  unit_age + within_350m_busstop +
@@ -2270,7 +2290,8 @@ The **Geographically Weighted Regression (GWR)** model provides a more accurate 
 coords <- st_coordinates(data)
 ```
 
-**Punggol**
+## **Punggol**
+
 ```{r}
 coords_train_p <- st_coordinates(train_data_punggol)
 coords_test_p <- st_coordinates(test_data_punggol)
@@ -2283,7 +2304,8 @@ coords_train_p <- write_rds(coords_train_p, "data/rds/ml/punggol/coords_train_p.
 coords_test_p <- write_rds(coords_test_p, "data/rds/ml/punggol/coords_test_p.rds" )
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 coords_train_w <- st_coordinates(train_data_woodlands)
 coords_test_w <- st_coordinates(test_data_woodlands)
@@ -2302,14 +2324,16 @@ coords_test_w <- write_rds(coords_test_w, "data/rds/ml/coords_test_w.rds" )
 First, we will drop geometry column of the sf data.frame by using `st_drop_geometry()` of sf package.
 
 ::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 train_data_punggol <- train_data_punggol %>% 
   st_drop_geometry() %>% 
   select(-town)
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 train_data_woodlands <- train_data_woodlands %>% 
   st_drop_geometry() %>% 
@@ -2322,7 +2346,8 @@ train_data_woodlands <- train_data_woodlands %>%
 In this section, you will learn how to calibrate a model to predict HDB resale price by using random forest function of [**ranger**](https://cran.r-project.org/web/packages/ranger/index.html) package.
 
 ::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 set.seed(1234)
 rf_p <- ranger(resale_price ~ floor_area_sqm +
@@ -2345,7 +2370,8 @@ rf_p <- read_rds("data/rds/ml/punggol/rf_p.rds")
 rf_p
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 set.seed(1234)
 rf_w <- ranger(resale_price ~ floor_area_sqm +
@@ -2374,7 +2400,8 @@ rf_w
 In this section, you will learn how to calibrate a model to predict HDB resale price by using `grf()` of [**SpatialML**](https://cran.r-project.org/web/packages/ranger/index.html) package.
 
 ::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 set.seed(1234)
 gwRF_adaptive_p <- grf(formula = resale_price ~ floor_area_sqm +
@@ -2401,7 +2428,8 @@ write_rds(gwRF_adaptive_p, "data/rds/ml/punggol/gwRF_adaptive_p.rds")
 gwRF_adaptive_p <- read_rds("data/rds/ml/punggol/gwRF_adaptive_p.rds")
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 set.seed(1234)
 gwRF_adaptive_w <- grf(formula = resale_price ~ floor_area_sqm +
@@ -2436,13 +2464,15 @@ gwRF_adaptive_w <- read_rds("data/rds/ml/woodlands/gwRF_adaptive_w.rds")
 The code chunk below will be used to combine the test data with its corresponding coordinates data.
 
 ::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 test_data_punggol <- cbind(test_data_punggol, coords_test_p) %>%
   st_drop_geometry()
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 test_data_woodlands <- cbind(test_data_woodlands, coords_test_w) %>%
   st_drop_geometry()
@@ -2454,7 +2484,8 @@ test_data_woodlands <- cbind(test_data_woodlands, coords_test_w) %>%
 Next, `predict.grf()` of spatialML package will be used to predict the resale value by using the test data and gwRF_adaptive model calibrated earlier.
 
 ::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 gwRF_pred_p <- predict.grf(gwRF_adaptive_p, 
                            test_data_punggol, 
@@ -2468,7 +2499,8 @@ gwRF_pred_p <- predict.grf(gwRF_adaptive_p,
 GRF_pred_p <- write_rds(gwRF_pred_p, "data/rds/ml/punggol/gwRF_adaptive_p.rds")
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 gwRF_pred_w <- predict.grf(gwRF_adaptive_w, 
                            test_data_woodlands, 
@@ -2488,7 +2520,8 @@ GRF_pred_w <- write_rds(gwRF_pred_w, "data/rds/ml/woodlands/gwRF_adaptive_w.rds"
 The output of the `predict.grf()` is a vector of predicted values. It is wiser to convert it into a data frame for further visualisation and analysis.
 
 ::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 GRF_pred_p <- read_rds("data/rds/ml/punggol/gwRF_adaptive_p.rds")
 ```
@@ -2507,7 +2540,8 @@ test_data_p <- cbind(test_data_punggol, GRF_pred_df_p)
 write_rds(test_data_p, "data/rds/ml/punggol/test_data_p.rds")
 ```
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 GRF_pred_w <- read_rds("data/rds/ml/woodlands/gwRF_adaptive_w.rds")
 ```
@@ -2532,7 +2566,8 @@ write_rds(test_data_w, "data/rds/ml/woodlands/test_data_w.rds")
 The root mean square error (RMSE) allows us to measure how far predicted values are from observed values in a regression analysis. In the code chunk below, rmse() of Metrics package is used to compute the RMSE.
 
 ::::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 rmse(test_data_punggol$resale_price, 
      test_data_p$GRF_pred_p)
@@ -2584,7 +2619,8 @@ summary(test_data_p$resale_price)
 The **RMSE of** \$\$49,423.08 for the Punggol test dataset, where the median resale price is **648,000**, indicates that the model’s predictions are on average about **7.6%** off from the actual resale prices. This suggests that the model performs reasonably well, with error margins that are typical for real estate prediction models. While this level of error is acceptable, there is still room for improvement, particularly for properties at the lower and higher ends of the price spectrum.
 :::
 
-**Woodlands**
+## **Woodlands**
+
 ```{r}
 rmse(test_data_woodlands$resale_price, 
      test_data_w$GRF_pred_w)
@@ -2648,7 +2684,8 @@ The model appears to perform slightly better on the **test dataset**, which has 
 Alternatively, scatterplot can be used to visualise the actual resale price and the predicted resale price by using the code chunk below.
 
 ::::: panel-tabset
-**Punggol**
+## **Punggol**
+
 ```{r}
 ggplot(data = test_data_p,
        aes(x = GRF_pred_p,
@@ -2684,7 +2721,7 @@ Conclusion:
 The scatterplot shows that there is a positive relationship between predicted resale prices (**GRF_pred_p**) and actual resale prices (**resale_price**). This suggests that the model is successful in capturing the general trend of the data, but some discrepancies remain, which is expected in any predictive model. Further analysis, such as residual analysis or model evaluation metrics, could be done to refine the model and assess its performance more thoroughly.
 :::
 
-**Woodlands**
+## **Woodlands**
 
 ::: callout-note
 **Observation**
@@ -2722,7 +2759,8 @@ The scatterplot suggests that the model with **GRF_pred_w** effectively captures
 ## Evaluation of Model: Geographically Weighted Regression Vs Random Forest
 
 ::: panel-tabset
-**Punggol**
+## **Punggol** 
+
 To compare the two methods—Random Forest (RF) and Geographically Weighted Regression (GWR)—for predicting resale prices in Punggol, let's focus on the prediction accuracy and model performance.
 
 1\. Prediction Accuracy:
@@ -2767,7 +2805,7 @@ GWR:
 
 -   Interpretability: GWR excels in interpretability, as it provides insights into how different factors affect resale prices in different parts of Punggol, thanks to its spatially varying coefficients. This is valuable if you need to understand the localized impact of each predictor.
 
-**Woodlands**
+## **Woodlands**
 
 1\. Prediction Accuracy:
 
@@ -2814,4 +2852,4 @@ This study only looks into two the top two towns that has the most transactions 
 
 ## Conclusion
 
-To summarise, Random Forest is better in predicting HDB resale prices. However, geospatial details are heavily embedded in HDB resale data, we shouldn't discount the spatial aspects that will affect the resale prices too. If the study's purpose is to understand spatial patterns, GWR is more suited. Conversely, if accuracy is a priority, Random Forest is a better choice.
+To summarise, Random Forest is better in predicting HDB resale prices. However, geospatial details are heavily embedded in HDB resale data, we shouldn't discount the spatial aspects that will affect the resale prices too. If the study's purpose is to understand spatial patterns, GWR is more suited. Conversely, if accuracy is a priority, Random Forest would be a better choice.

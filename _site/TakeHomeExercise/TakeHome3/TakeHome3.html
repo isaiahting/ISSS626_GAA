@@ -371,7 +371,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">November 10, 2024</p>
+      <p class="date-modified">November 11, 2024</p>
     </div>
   </div>
     
@@ -3293,7 +3293,7 @@ Total number of duplicates: 74 </code></pre>
 <p>The entire data are split into training (Jan 2023 - June 2024) and testing (July 2024 - Sept 2024) data sets into by using <em>initial_split()</em> of <strong>rsample</strong> package. rsample is one of the package of tigymodels.</p>
 <p>In this section, we will split the data into training data - Jan 2023 to June 2024 &amp; test Data - July 2024 to Sept 2024 that is stratified by Punggol &amp; Woodlands. We can see there are 1549 training records and 300 testing records for Punggol whereas in Woodlands there are 1391 training records and 238 testing records.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true"><strong>Punggol</strong></a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
@@ -3333,7 +3333,8 @@ Total number of duplicates: 74 </code></pre>
 <span id="cb147-2"><a href="#cb147-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(test_data_punggol, <span class="st">"data/rds/ml/punggol/test_data_punggol.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p><strong>Woodlands</strong></p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
 <details class="code-fold">
 <summary>Code Chunk</summary>
@@ -3409,9 +3410,26 @@ Total number of duplicates: 74 </code></pre>
 <section id="retrieving-stored-data" class="level3" data-number="1.9.3">
 <h3 data-number="1.9.3" class="anchored" data-anchor-id="retrieving-stored-data"><span class="header-section-number">1.9.3</span> Retrieving Stored Data</h3>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb155"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb155-1"><a href="#cb155-1" aria-hidden="true" tabindex="-1"></a>train_data_punggol <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/punggol/train_data_punggol.rds"</span>)</span>
+<span id="cb155-2"><a href="#cb155-2" aria-hidden="true" tabindex="-1"></a>test_data_punggol <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/punggol/test_data_punggol.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a>train_data_woodlands <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/woodlands/train_data_woodlands.rds"</span>)</span>
+<span id="cb156-2"><a href="#cb156-2" aria-hidden="true" tabindex="-1"></a>test_data_woodlands <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/woodlands/test_data_woodlands.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3419,9 +3437,132 @@ Total number of duplicates: 74 </code></pre>
 <section id="building-a-non-spatial-multiple-linear-regression" class="level2" data-number="1.10">
 <h2 data-number="1.10" class="anchored" data-anchor-id="building-a-non-spatial-multiple-linear-regression"><span class="header-section-number">1.10</span> Building a non-spatial multiple linear regression</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb157"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb157-1"><a href="#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear model for resale_price using the specified variables</span></span>
+<span id="cb157-2"><a href="#cb157-2" aria-hidden="true" tabindex="-1"></a>price_mlr_p <span class="ot">&lt;-</span> <span class="fu">lm</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb157-3"><a href="#cb157-3" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb157-4"><a href="#cb157-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb157-5"><a href="#cb157-5" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb157-6"><a href="#cb157-6" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb157-7"><a href="#cb157-7" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb157-8"><a href="#cb157-8" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox,</span>
+<span id="cb157-9"><a href="#cb157-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> train_data_punggol)</span>
+<span id="cb157-10"><a href="#cb157-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb157-11"><a href="#cb157-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary of the linear model</span></span>
+<span id="cb157-12"><a href="#cb157-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(price_mlr_p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = resale_price ~ floor_area_sqm + unit_age + within_350m_busstop + 
+    within_350m_eldercare + hawker_prox + within_350m_kindergarten + 
+    mall_prox + mrt_prox + park_prox + within_1km_school + supermarket_prox, 
+    data = train_data_punggol)
 
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-136613  -26146     -96   26415  140294 
+
+Coefficients:
+                           Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)              -2425118.0   181420.5 -13.367  &lt; 2e-16 ***
+floor_area_sqm              11207.8      669.0  16.754  &lt; 2e-16 ***
+unit_age                    -3655.1      390.9  -9.351  &lt; 2e-16 ***
+within_350m_busstop          -601.6      515.7  -1.167 0.243557    
+within_350m_eldercare       18135.0     2457.4   7.380 2.59e-13 ***
+hawker_prox                -73597.2     5073.0 -14.508  &lt; 2e-16 ***
+within_350m_kindergarten     -788.8     2040.8  -0.387 0.699178    
+mall_prox                   37612.1     3120.5  12.053  &lt; 2e-16 ***
+mrt_prox                   -81583.3    11403.9  -7.154 1.30e-12 ***
+park_prox                   64924.6     7539.8   8.611  &lt; 2e-16 ***
+within_1km_school           -5807.9     1023.9  -5.673 1.68e-08 ***
+supermarket_prox            41305.5    11410.9   3.620 0.000304 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 39990 on 1537 degrees of freedom
+Multiple R-squared:  0.5345,    Adjusted R-squared:  0.5311 
+F-statistic: 160.4 on 11 and 1537 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb159"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb159-1"><a href="#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">beep</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb160"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb160-1"><a href="#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(price_mlr_p, <span class="st">"data/rds/ml/punggol/price_mlr_p.rds"</span> ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb161"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb161-1"><a href="#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the linear model for resale_price using the specified variables</span></span>
+<span id="cb161-2"><a href="#cb161-2" aria-hidden="true" tabindex="-1"></a>price_mlr_w <span class="ot">&lt;-</span> <span class="fu">lm</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb161-3"><a href="#cb161-3" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb161-4"><a href="#cb161-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb161-5"><a href="#cb161-5" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb161-6"><a href="#cb161-6" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb161-7"><a href="#cb161-7" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb161-8"><a href="#cb161-8" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox,</span>
+<span id="cb161-9"><a href="#cb161-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> train_data_woodlands)</span>
+<span id="cb161-10"><a href="#cb161-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb161-11"><a href="#cb161-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary of the linear model</span></span>
+<span id="cb161-12"><a href="#cb161-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(price_mlr_w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = resale_price ~ floor_area_sqm + unit_age + within_350m_busstop + 
+    within_350m_eldercare + hawker_prox + within_350m_kindergarten + 
+    mall_prox + mrt_prox + park_prox + within_1km_school + supermarket_prox, 
+    data = train_data_woodlands)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-108605  -18479    -861   17651  118328 
+
+Coefficients:
+                          Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)              475932.61   72526.66   6.562 7.48e-11 ***
+floor_area_sqm             2320.91     142.03  16.341  &lt; 2e-16 ***
+unit_age                  -4309.72      84.93 -50.742  &lt; 2e-16 ***
+within_350m_busstop         386.65     394.41   0.980   0.3271    
+within_350m_eldercare      1333.49    1282.39   1.040   0.2986    
+hawker_prox              -16533.03    3163.02  -5.227 1.99e-07 ***
+within_350m_kindergarten   2531.64    1171.15   2.162   0.0308 *  
+mall_prox                 -1004.92    1442.73  -0.697   0.4862    
+mrt_prox                 -44163.93    4902.52  -9.008  &lt; 2e-16 ***
+park_prox                -15524.87    2149.37  -7.223 8.38e-13 ***
+within_1km_school           693.69     670.29   1.035   0.3009    
+supermarket_prox             23.45    5293.65   0.004   0.9965    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 28570 on 1379 degrees of freedom
+Multiple R-squared:  0.748, Adjusted R-squared:  0.746 
+F-statistic: 372.1 on 11 and 1379 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb163"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb163-1"><a href="#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="fu">beep</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb164"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(price_mlr_w, <span class="st">"data/rds/ml/woodlands/price_mlr_w.rds"</span> ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3431,9 +3572,46 @@ Total number of duplicates: 74 </code></pre>
 <section id="converting-the-sf-data.frame-to-spatialpointdataframe" class="level3" data-number="1.11.1">
 <h3 data-number="1.11.1" class="anchored" data-anchor-id="converting-the-sf-data.frame-to-spatialpointdataframe"><span class="header-section-number">1.11.1</span> Converting the sf data.frame to SpatialPointDataFrame</h3>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb165"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb165-1"><a href="#cb165-1" aria-hidden="true" tabindex="-1"></a>train_data_sp_p <span class="ot">&lt;-</span> <span class="fu">as_Spatial</span>(train_data_punggol)</span>
+<span id="cb165-2"><a href="#cb165-2" aria-hidden="true" tabindex="-1"></a>train_data_sp_p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatialPointsDataFrame 
+features    : 1549 
+extent      : 34320.85, 37615.35, 41556.12, 43933.95  (xmin, xmax, ymin, ymax)
+crs         : +proj=tmerc +lat_0=1.36666666666667 +lon_0=103.833333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+variables   : 20
+names       :    town, resale_price, floor_area_sqm, remaining_lease_yr,        longitude,         latitude, unit_age,       busstop_prox, within_350m_busstop,       eldercare_prox, within_350m_eldercare,      hawker_prox,    kindergarten_prox, within_350m_kindergarten,        mall_prox, ... 
+min values  : PUNGGOL,       456000,             85,                 78, 34320.8500594051, 41556.1217510505,        4, 0.0232098182955299,                   2, 9.08133417710502e-07,                     0, 0.23549332350391, 3.08593427233971e-07,                        0, 54.6825044697734, ... 
+max values  : PUNGGOL,        8e+05,             99,                 95, 37615.3527353946, 43933.9470685477,       21,  0.320676170721283,                  14,     1.69953951976499,                     2, 1.98905282800319,    0.804615824046136,                        3, 56.7005204705412, ... </code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb167"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a>train_data_sp_w <span class="ot">&lt;-</span> <span class="fu">as_Spatial</span>(train_data_woodlands)</span>
+<span id="cb167-2"><a href="#cb167-2" aria-hidden="true" tabindex="-1"></a>train_data_sp_w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatialPointsDataFrame 
+features    : 1391 
+extent      : 21177.26, 25268.25, 45373.58, 47860.89  (xmin, xmax, ymin, ymax)
+crs         : +proj=tmerc +lat_0=1.36666666666667 +lon_0=103.833333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+variables   : 20
+names       :      town, resale_price, floor_area_sqm, remaining_lease_yr,        longitude,         latitude, unit_age,       busstop_prox, within_350m_busstop,     eldercare_prox, within_350m_eldercare,        hawker_prox,    kindergarten_prox, within_350m_kindergarten,        mall_prox, ... 
+min values  : WOODLANDS,       350000,             83,                 49, 21177.2576852251, 45373.5757321722,        4, 0.0199595426953728,                   4, 0.0547017433825683,                     0, 0.0666360841718605, 6.84731226937912e-07,                        0, 50.0713376927117, ... 
+max values  : WOODLANDS,       690000,            119,                 95, 25268.2547251521, 47860.8875505569,       50,  0.253082170943171,                  16,   1.73109192014879,                     3,   1.56805500852822,    0.760166885640459,                        4, 53.6923986369607, ... </code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3441,9 +3619,125 @@ Total number of duplicates: 74 </code></pre>
 <h3 data-number="1.11.2" class="anchored" data-anchor-id="computing-adaptive-bandwidth"><span class="header-section-number">1.11.2</span> Computing adaptive bandwidth</h3>
 <p>Next, <code>bw.gwr()</code> of <strong>GWmodel</strong> package will be used to determine the optimal bandwidth to be used.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb169"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb169-1"><a href="#cb169-1" aria-hidden="true" tabindex="-1"></a>bw_adaptive_p <span class="ot">&lt;-</span> <span class="fu">bw.gwr</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb169-2"><a href="#cb169-2" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb169-3"><a href="#cb169-3" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb169-4"><a href="#cb169-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb169-5"><a href="#cb169-5" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb169-6"><a href="#cb169-6" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb169-7"><a href="#cb169-7" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox,</span>
+<span id="cb169-8"><a href="#cb169-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>train_data_sp_p,</span>
+<span id="cb169-9"><a href="#cb169-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">approach=</span><span class="st">"CV"</span>,</span>
+<span id="cb169-10"><a href="#cb169-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">kernel=</span><span class="st">"gaussian"</span>,</span>
+<span id="cb169-11"><a href="#cb169-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">adaptive=</span><span class="cn">TRUE</span>,</span>
+<span id="cb169-12"><a href="#cb169-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">longlat=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Take a cup of tea and have a break, it will take a few minutes.
+          -----A kind suggestion from GWmodel development group
+Adaptive bandwidth: 964 CV score: 2.37468e+12 
+Adaptive bandwidth: 604 CV score: 2.273545e+12 
+Adaptive bandwidth: 379 CV score: 2.179535e+12 
+Adaptive bandwidth: 243 CV score: 2.073315e+12 
+Adaptive bandwidth: 155 CV score: 2.011629e+12 
+Adaptive bandwidth: 105 CV score: 1.983025e+12 
+Adaptive bandwidth: 69 CV score: 1.946889e+12 
+Adaptive bandwidth: 52 CV score: 1.916621e+12 
+Adaptive bandwidth: 36 CV score: 1.894903e+12 
+Adaptive bandwidth: 31 CV score: 1.888189e+12 
+Adaptive bandwidth: 23 CV score: 1.901021e+12 
+Adaptive bandwidth: 31 CV score: 1.888189e+12 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb171"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb171-1"><a href="#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="fu">beep</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The result shows that 31 neighbour points will be the optimal bandwidth to be used if adaptive bandwidth is used for this data set.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Insights</p>
+<p>The result shows that 86 neighbour points will be the optimal bandwidth to be used if adaptive bandwidth is used for this data set.</p>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb172"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(bw_adaptive_p, <span class="st">"data/rds/ml/punggol/bw_adaptive_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb173"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb173-1"><a href="#cb173-1" aria-hidden="true" tabindex="-1"></a>bw_adaptive_w <span class="ot">&lt;-</span> <span class="fu">bw.gwr</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb173-2"><a href="#cb173-2" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb173-3"><a href="#cb173-3" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb173-4"><a href="#cb173-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb173-5"><a href="#cb173-5" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb173-6"><a href="#cb173-6" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb173-7"><a href="#cb173-7" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox,</span>
+<span id="cb173-8"><a href="#cb173-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>train_data_sp_w,</span>
+<span id="cb173-9"><a href="#cb173-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">approach=</span><span class="st">"CV"</span>,</span>
+<span id="cb173-10"><a href="#cb173-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">kernel=</span><span class="st">"gaussian"</span>,</span>
+<span id="cb173-11"><a href="#cb173-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">adaptive=</span><span class="cn">TRUE</span>,</span>
+<span id="cb173-12"><a href="#cb173-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">longlat=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adaptive bandwidth: 867 CV score: 1.120907e+12 
+Adaptive bandwidth: 544 CV score: 1.112173e+12 
+Adaptive bandwidth: 343 CV score: 1.101484e+12 
+Adaptive bandwidth: 220 CV score: 1.079251e+12 
+Adaptive bandwidth: 142 CV score: 1.057357e+12 
+Adaptive bandwidth: 96 CV score: 1.047183e+12 
+Adaptive bandwidth: 65 CV score: 1.027565e+12 
+Adaptive bandwidth: 48 CV score: 1.015162e+12 
+Adaptive bandwidth: 35 CV score: 1.307044e+12 
+Adaptive bandwidth: 53 CV score: 1.017467e+12 
+Adaptive bandwidth: 41 CV score: 1.303681e+12 
+Adaptive bandwidth: 48 CV score: 1.015162e+12 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb175"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb175-1"><a href="#cb175-1" aria-hidden="true" tabindex="-1"></a><span class="fu">beep</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Insights</p>
+<p>The results shows that 48 neighbour points will be the optimal bandwidth to be used if adaptive bandwidth is used for this data set.</p>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb176"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb176-1"><a href="#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(bw_adaptive_w, <span class="st">"data/rds/ml/woodlands/bw_adaptive_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3452,20 +3746,71 @@ Total number of duplicates: 74 </code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code Chunk</summary>
-<div class="sourceCode cell-code" id="cb155"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb155-1"><a href="#cb155-1" aria-hidden="true" tabindex="-1"></a>bw_adaptive_p <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/punggol/bw_adaptive_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb177"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb177-1"><a href="#cb177-1" aria-hidden="true" tabindex="-1"></a>bw_adaptive_p <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/punggol/bw_adaptive_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code Chunk</summary>
-<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a>bw_adaptive_w <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/woodlands/bw_adaptive_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb178"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb178-1"><a href="#cb178-1" aria-hidden="true" tabindex="-1"></a>bw_adaptive_w <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/woodlands/bw_adaptive_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now, we can go ahead to calibrate the gwr-based hedonic pricing model by using adaptive bandwidth and Gaussian kernel as shown in the code chunk below.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb179"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb179-1"><a href="#cb179-1" aria-hidden="true" tabindex="-1"></a>gwr_adaptive_p <span class="ot">&lt;-</span> <span class="fu">gwr.basic</span>(<span class="at">formula =</span> resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb179-2"><a href="#cb179-2" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb179-3"><a href="#cb179-3" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb179-4"><a href="#cb179-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb179-5"><a href="#cb179-5" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb179-6"><a href="#cb179-6" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb179-7"><a href="#cb179-7" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox,</span>
+<span id="cb179-8"><a href="#cb179-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>train_data_sp_p,</span>
+<span id="cb179-9"><a href="#cb179-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">bw=</span>bw_adaptive_p, </span>
+<span id="cb179-10"><a href="#cb179-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">kernel =</span> <span class="st">'gaussian'</span>, </span>
+<span id="cb179-11"><a href="#cb179-11" aria-hidden="true" tabindex="-1"></a>                          <span class="at">adaptive=</span><span class="cn">TRUE</span>,</span>
+<span id="cb179-12"><a href="#cb179-12" aria-hidden="true" tabindex="-1"></a>                          <span class="at">longlat =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb179-13"><a href="#cb179-13" aria-hidden="true" tabindex="-1"></a><span class="fu">beep</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb180"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb180-1"><a href="#cb180-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(gwr_adaptive_p, <span class="st">"data/rds/ml/punggol/gwr_adaptive_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb181"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb181-1"><a href="#cb181-1" aria-hidden="true" tabindex="-1"></a>gwr_adaptive_w <span class="ot">&lt;-</span> <span class="fu">gwr.basic</span>(<span class="at">formula =</span> resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb181-2"><a href="#cb181-2" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb181-3"><a href="#cb181-3" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb181-4"><a href="#cb181-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb181-5"><a href="#cb181-5" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb181-6"><a href="#cb181-6" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb181-7"><a href="#cb181-7" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox,</span>
+<span id="cb181-8"><a href="#cb181-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>train_data_sp_w,</span>
+<span id="cb181-9"><a href="#cb181-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">bw=</span>bw_adaptive_w, </span>
+<span id="cb181-10"><a href="#cb181-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">kernel =</span> <span class="st">'gaussian'</span>, </span>
+<span id="cb181-11"><a href="#cb181-11" aria-hidden="true" tabindex="-1"></a>                          <span class="at">adaptive=</span><span class="cn">TRUE</span>,</span>
+<span id="cb181-12"><a href="#cb181-12" aria-hidden="true" tabindex="-1"></a>                          <span class="at">longlat =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb181-13"><a href="#cb181-13" aria-hidden="true" tabindex="-1"></a><span class="fu">beep</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb182"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb182-1"><a href="#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(gwr_adaptive_w, <span class="st">"data/rds/ml/woodlands/gwr_adaptive_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3473,36 +3818,798 @@ Total number of duplicates: 74 </code></pre>
 <h3 data-number="1.11.4" class="anchored" data-anchor-id="retrieve-gwr-output-object"><span class="header-section-number">1.11.4</span> Retrieve gwr output object</h3>
 <p>The code below can be used to display the model output.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb183"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb183-1"><a href="#cb183-1" aria-hidden="true" tabindex="-1"></a>gwr_adaptive_p <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/punggol/gwr_adaptive_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb184"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb184-1"><a href="#cb184-1" aria-hidden="true" tabindex="-1"></a>gwr_adaptive_p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   ***********************************************************************
+   *                       Package   GWmodel                             *
+   ***********************************************************************
+   Program starts at: 2024-11-11 01:51:55.810254 
+   Call:
+   gwr.basic(formula = resale_price ~ floor_area_sqm + unit_age + 
+    within_350m_busstop + within_350m_eldercare + hawker_prox + 
+    within_350m_kindergarten + mall_prox + mrt_prox + park_prox + 
+    within_1km_school + supermarket_prox, data = train_data_sp_p, 
+    bw = bw_adaptive_p, kernel = "gaussian", adaptive = TRUE, 
+    longlat = FALSE)
 
+   Dependent (y) variable:  resale_price
+   Independent variables:  floor_area_sqm unit_age within_350m_busstop within_350m_eldercare hawker_prox within_350m_kindergarten mall_prox mrt_prox park_prox within_1km_school supermarket_prox
+   Number of data points: 1549
+   ***********************************************************************
+   *                    Results of Global Regression                     *
+   ***********************************************************************
+
+   Call:
+    lm(formula = formula, data = data)
+
+   Residuals:
+    Min      1Q  Median      3Q     Max 
+-136613  -26146     -96   26415  140294 
+
+   Coefficients:
+                              Estimate Std. Error t value Pr(&gt;|t|)    
+   (Intercept)              -2425118.0   181420.5 -13.367  &lt; 2e-16 ***
+   floor_area_sqm              11207.8      669.0  16.754  &lt; 2e-16 ***
+   unit_age                    -3655.1      390.9  -9.351  &lt; 2e-16 ***
+   within_350m_busstop          -601.6      515.7  -1.167 0.243557    
+   within_350m_eldercare       18135.0     2457.4   7.380 2.59e-13 ***
+   hawker_prox                -73597.2     5073.0 -14.508  &lt; 2e-16 ***
+   within_350m_kindergarten     -788.8     2040.8  -0.387 0.699178    
+   mall_prox                   37612.1     3120.5  12.053  &lt; 2e-16 ***
+   mrt_prox                   -81583.3    11403.9  -7.154 1.30e-12 ***
+   park_prox                   64924.6     7539.8   8.611  &lt; 2e-16 ***
+   within_1km_school           -5807.9     1023.9  -5.673 1.68e-08 ***
+   supermarket_prox            41305.5    11410.9   3.620 0.000304 ***
+
+   ---Significance stars
+   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+   Residual standard error: 39990 on 1537 degrees of freedom
+   Multiple R-squared: 0.5345
+   Adjusted R-squared: 0.5311 
+   F-statistic: 160.4 on 11 and 1537 DF,  p-value: &lt; 2.2e-16 
+   ***Extra Diagnostic information
+   Residual sum of squares: 2.457709e+12
+   Sigma(hat): 39858.42
+   AIC:  37237.26
+   AICc:  37237.5
+   BIC:  35853.24
+   ***********************************************************************
+   *          Results of Geographically Weighted Regression              *
+   ***********************************************************************
+
+   *********************Model calibration information*********************
+   Kernel function: gaussian 
+   Adaptive bandwidth: 31 (number of nearest neighbours)
+   Regression points: the same locations as observations are used.
+   Distance metric: Euclidean distance metric is used.
+
+   ****************Summary of GWR coefficient estimates:******************
+                                   Min.     1st Qu.      Median     3rd Qu.
+   Intercept                -3.6026e+08 -1.8903e+07 -5.2468e+06  3.2394e+06
+   floor_area_sqm           -9.3131e+05  4.9672e+03  9.1804e+03  1.6247e+04
+   unit_age                 -7.2954e+03 -2.3589e+03  9.9553e+03  1.8568e+04
+   within_350m_busstop      -2.1840e+04 -3.5978e+03  7.9328e+02  3.5622e+03
+   within_350m_eldercare    -5.0557e+05 -2.9912e+03  1.7167e+04  5.6494e+04
+   hawker_prox              -1.0870e+07 -3.7718e+05 -8.1130e+04  1.2870e+05
+   within_350m_kindergarten -8.6012e+05 -2.8299e+04 -7.3968e+03  1.1648e+04
+   mall_prox                -6.1324e+06 -5.6280e+04  8.8829e+04  3.3087e+05
+   mrt_prox                 -1.5787e+06 -1.4296e+05 -9.5298e+03  2.0465e+05
+   park_prox                -8.1186e+06 -1.7270e+05  1.5589e+04  3.1357e+05
+   within_1km_school        -1.1002e+05 -7.9972e+03  4.7641e+02  8.1719e+03
+   supermarket_prox         -3.4463e+06 -1.1782e+05 -4.4088e+04  5.4404e+04
+                                 Max.
+   Intercept                344376485
+   floor_area_sqm              163021
+   unit_age                     45035
+   within_350m_busstop          20457
+   within_350m_eldercare      3933539
+   hawker_prox                1825411
+   within_350m_kindergarten    323139
+   mall_prox                  6261469
+   mrt_prox                   8775702
+   park_prox                  6609422
+   within_1km_school           119709
+   supermarket_prox          11102587
+   ************************Diagnostic information*************************
+   Number of data points: 1549 
+   Effective number of parameters (2trace(S) - trace(S'S)): 216.9356 
+   Effective degrees of freedom (n-2trace(S) + trace(S'S)): 1332.064 
+   AICc (GWR book, Fotheringham, et al. 2002, p. 61, eq 2.33): 36831.82 
+   AIC (GWR book, Fotheringham, et al. 2002,GWR p. 96, eq. 4.22): 36605.4 
+   BIC (GWR book, Fotheringham, et al. 2002,GWR p. 61, eq. 2.34): 36183.21 
+   Residual sum of squares: 1.482095e+12 
+   R-square value:  0.7192638 
+   Adjusted R-square value:  0.6735097 
+
+   ***********************************************************************
+   Program stops at: 2024-11-11 01:51:57.180324 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Insights of 2 Regression Analysis in predicting resale price - Punggol</strong></p>
+<ol type="1">
+<li><p>Global Regression</p>
+<ul>
+<li><p><strong>Residuals</strong>: The residuals indicate the difference between the observed and predicted resale prices. The residuals range from -144,029 to 135,047, with a median of -1,271, suggesting that the model may not perfectly fit all data points, particularly those with extreme values.</p></li>
+<li><p><strong>Coefficients</strong>: The estimated coefficients for each predictor variable indicate their respective impact on resale price.</p>
+<ul>
+<li><p><strong>Significant Variables</strong>: Variables like <code>floor_area_sqm</code>, <code>unit_age</code>, and <code>hawker_prox</code> are statistically significant with p-values less than 0.001, suggesting strong relationships with the resale price.</p></li>
+<li><p><strong>Non-significant Variables</strong>: <code>within_350m_busstop</code> did not show significant effects on resale price, with p-values greater than 0.05.</p></li>
+</ul></li>
+<li><p><strong>Model Fit</strong>: The global regression model explains about <strong>51.57%</strong> of the variance in resale price (R-squared = 0.5157). The <strong>Adjusted R-squared</strong> is 0.5123, showing a modest fit after adjusting for the number of predictors. The <strong>F-statistic</strong> of 148.8, with a p-value less than 2.2e-16, indicates that the overall model is highly significant.</p></li>
+<li><p><strong>AIC/BIC</strong>: The Akaike Information Criterion (AIC = 37,298.31) and the Bayesian Information Criterion (BIC = 35,914.29) suggest that the global model provides a reasonable fit, although these values are used for model comparison rather than absolute goodness-of-fit assessment.</p></li>
+</ul></li>
+<li><p>Geographically Weighted Regression</p></li>
+</ol>
+<p>This model was calibrated using the <strong>adaptive Gaussian kernel</strong> with an <strong>adaptive bandwidth</strong> of 31, meaning the model uses data from the 31 nearest neighbors to each observation.</p>
+<ul>
+<li><p><strong>Model Calibration</strong>: The GWR model was fitted using the same set of predictor variables as the global regression model. The use of an adaptive kernel and Euclidean distance metric enables the model to account for spatial heterogeneity in the relationships between predictors and resale price.</p></li>
+<li><p><strong>Coefficient Estimates</strong>:</p>
+<ul>
+<li><p>The GWR model shows <strong>significant variation</strong> in the coefficient estimates across geographic locations. For instance:</p>
+<ul>
+<li><p>The coefficient for <code>floor_area_sqm</code> ranges from negative to positive values, indicating that the impact of floor area on resale price varies spatially.</p></li>
+<li><p>The coefficient for <code>unit_age</code> shows a similar spatial variation, with the impact differing from location to location.</p></li>
+<li><p><code>hawker_prox</code> and <code>supermarket_prox</code> also exhibit varying effects on resale price across locations.</p></li>
+</ul></li>
+</ul></li>
+<li><p><strong>Model Fit</strong>:</p>
+<p><strong>R-squared</strong>: The GWR model explains approximately <strong>71.98%</strong> of the variance in resale price (R-squared = 0.7198), which is a substantial improvement over the global regression model. The <strong>Adjusted R-squared</strong> is 0.6743, indicating that the model explains a significant portion of the variance while accounting for the number of predictors.</p>
+<p><strong>AIC/BIC</strong>: The GWR model shows lower AIC (36,602.13) and BIC (36,179.57) values than the global regression model, suggesting that the GWR model provides a better fit to the data when accounting for spatial variability.</p></li>
+</ul>
+<p><strong>Overall</strong></p>
+<p>Spatially varying coefficients highlight that the impact of certain factors, such as <code>floor_area_sqm</code>, <code>unit_age</code>, and proximity to amenities like <code>hawker centers</code> and <code>supermarkets</code>, can differ significantly across different locations, suggesting that location-specific interventions or policies might be more effective in real estate pricing.</p>
+</div>
+</div>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb186"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb186-1"><a href="#cb186-1" aria-hidden="true" tabindex="-1"></a>gwr_adaptive_w <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/woodlands/gwr_adaptive_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb187"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb187-1"><a href="#cb187-1" aria-hidden="true" tabindex="-1"></a>gwr_adaptive_w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   ***********************************************************************
+   *                       Package   GWmodel                             *
+   ***********************************************************************
+   Program starts at: 2024-11-11 01:51:57.292957 
+   Call:
+   gwr.basic(formula = resale_price ~ floor_area_sqm + unit_age + 
+    within_350m_busstop + within_350m_eldercare + hawker_prox + 
+    within_350m_kindergarten + mall_prox + mrt_prox + park_prox + 
+    within_1km_school + supermarket_prox, data = train_data_sp_w, 
+    bw = bw_adaptive_w, kernel = "gaussian", adaptive = TRUE, 
+    longlat = FALSE)
+
+   Dependent (y) variable:  resale_price
+   Independent variables:  floor_area_sqm unit_age within_350m_busstop within_350m_eldercare hawker_prox within_350m_kindergarten mall_prox mrt_prox park_prox within_1km_school supermarket_prox
+   Number of data points: 1391
+   ***********************************************************************
+   *                    Results of Global Regression                     *
+   ***********************************************************************
+
+   Call:
+    lm(formula = formula, data = data)
+
+   Residuals:
+    Min      1Q  Median      3Q     Max 
+-108605  -18479    -861   17651  118328 
+
+   Coefficients:
+                             Estimate Std. Error t value Pr(&gt;|t|)    
+   (Intercept)              475932.61   72526.66   6.562 7.48e-11 ***
+   floor_area_sqm             2320.91     142.03  16.341  &lt; 2e-16 ***
+   unit_age                  -4309.72      84.93 -50.742  &lt; 2e-16 ***
+   within_350m_busstop         386.65     394.41   0.980   0.3271    
+   within_350m_eldercare      1333.49    1282.39   1.040   0.2986    
+   hawker_prox              -16533.03    3163.02  -5.227 1.99e-07 ***
+   within_350m_kindergarten   2531.64    1171.15   2.162   0.0308 *  
+   mall_prox                 -1004.92    1442.73  -0.697   0.4862    
+   mrt_prox                 -44163.93    4902.52  -9.008  &lt; 2e-16 ***
+   park_prox                -15524.87    2149.37  -7.223 8.38e-13 ***
+   within_1km_school           693.69     670.29   1.035   0.3009    
+   supermarket_prox             23.45    5293.65   0.004   0.9965    
+
+   ---Significance stars
+   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+   Residual standard error: 28570 on 1379 degrees of freedom
+   Multiple R-squared: 0.748
+   Adjusted R-squared: 0.746 
+   F-statistic: 372.1 on 11 and 1379 DF,  p-value: &lt; 2.2e-16 
+   ***Extra Diagnostic information
+   Residual sum of squares: 1.125708e+12
+   Sigma(hat): 28468.32
+   AIC:  32505.2
+   AICc:  32505.46
+   BIC:  31276.38
+   ***********************************************************************
+   *          Results of Geographically Weighted Regression              *
+   ***********************************************************************
+
+   *********************Model calibration information*********************
+   Kernel function: gaussian 
+   Adaptive bandwidth: 48 (number of nearest neighbours)
+   Regression points: the same locations as observations are used.
+   Distance metric: Euclidean distance metric is used.
+
+   ****************Summary of GWR coefficient estimates:******************
+                                   Min.     1st Qu.      Median     3rd Qu.
+   Intercept                -1.1312e+09 -1.5632e+06  3.9476e+05  1.9149e+06
+   floor_area_sqm           -1.5228e+04  9.8373e+02  2.1764e+03  2.7568e+03
+   unit_age                 -5.2038e+03 -4.5082e+03 -3.9677e+03 -2.2334e+03
+   within_350m_busstop      -5.5262e+03 -1.7354e+03 -5.3815e+02  1.2150e+03
+   within_350m_eldercare    -4.4071e+05 -1.9180e+04 -5.4921e+03  3.5630e+02
+   hawker_prox              -3.5823e+05 -3.8041e+04 -6.8955e+03  4.1019e+04
+   within_350m_kindergarten -3.9285e+04 -4.2950e+03  6.3734e+02  6.3378e+03
+   mall_prox                -2.4362e+05 -2.6020e+04  1.5904e+03  4.0938e+04
+   mrt_prox                 -6.7648e+05 -6.8419e+04 -1.5806e+04  2.0814e+04
+   park_prox                -3.5428e+05 -6.1010e+04 -2.2539e+04  2.6743e+03
+   within_1km_school        -5.6562e+05 -9.8708e+03 -5.0483e+03 -2.4167e+03
+   supermarket_prox         -5.4534e+05 -6.9462e+04 -3.9335e+04 -2.4152e+03
+                                  Max.
+   Intercept                13797986.0
+   floor_area_sqm              18382.0
+   unit_age                    13828.7
+   within_350m_busstop          4947.6
+   within_350m_eldercare     1085786.9
+   hawker_prox              22332689.8
+   within_350m_kindergarten   129965.6
+   mall_prox                21420842.0
+   mrt_prox                  3950844.9
+   park_prox                  787950.9
+   within_1km_school            7588.5
+   supermarket_prox            94873.0
+   ************************Diagnostic information*************************
+   Number of data points: 1391 
+   Effective number of parameters (2trace(S) - trace(S'S)): 131.5628 
+   Effective degrees of freedom (n-2trace(S) + trace(S'S)): 1259.437 
+   AICc (GWR book, Fotheringham, et al. 2002, p. 61, eq 2.33): 32347.02 
+   AIC (GWR book, Fotheringham, et al. 2002,GWR p. 96, eq. 4.22): 32221.73 
+   BIC (GWR book, Fotheringham, et al. 2002,GWR p. 61, eq. 2.34): 31488.57 
+   Residual sum of squares: 867184876654 
+   R-square value:  0.8058492 
+   Adjusted R-square value:  0.7855518 
+
+   ***********************************************************************
+   Program stops at: 2024-11-11 01:51:58.372047 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Insights of 2 Regression Analysis in predicting resale price - Woodlands</strong></p>
+<ol type="1">
+<li>Global Regression</li>
+</ol>
+<ul>
+<li><p><strong>Residuals</strong>: The residuals range from -110,060 to 118,690, with a median of -926. This shows that the model can produce both underestimations and overestimations of resale price, with some extreme residuals indicating potential outliers.</p></li>
+<li><p><strong>Coefficients</strong>:</p>
+<ul>
+<li><p><strong>Intercept</strong>: The base resale price when all predictors are zero is estimated at <strong>435,172.15</strong>.</p></li>
+<li><p><strong>Significant Variables</strong>:</p>
+<ul>
+<li><p><strong><code>floor_area_sqm</code></strong>: Each additional square meter increases the resale price by <strong>2,247.33</strong>.</p></li>
+<li><p><strong><code>unit_age</code></strong>: Each additional year of unit age decreases the resale price by <strong>4,322.06</strong>.</p></li>
+<li><p><strong><code>hawker_prox</code></strong>: Proximity to hawker centers decreases resale price by <strong>-14,811.35</strong>.</p></li>
+<li><p><strong><code>mrt_prox</code></strong>: Proximity to MRT stations has a significant negative effect of <strong>-45,257.65</strong> on resale price.</p></li>
+<li><p><strong><code>park_prox</code></strong>: Proximity to parks also significantly decreases resale price by <strong>-15,817.05</strong>.</p></li>
+<li><p><strong><code>within_350m_kindergarten</code></strong>: The presence of a kindergarten within 350 meters increases resale price by <strong>3,083.36</strong>.</p></li>
+</ul></li>
+</ul></li>
+<li><p><strong>Model Fit</strong>:</p>
+<ul>
+<li><p><strong>R-squared</strong>: The model explains about <strong>74.83%</strong> of the variance in resale price, indicating a strong overall fit.</p></li>
+<li><p><strong>Adjusted R-squared</strong>: <strong>74.63%</strong>, which adjusts for the number of predictors.</p></li>
+<li><p><strong>F-statistic</strong>: The F-statistic is <strong>372.7</strong>, with a p-value of less than 2.2e-16, indicating that the model is highly significant.</p></li>
+</ul></li>
+<li><p><strong>AIC/BIC</strong>:</p>
+<ul>
+<li><strong>AIC</strong>: 32,503.3, and <strong>BIC</strong>: 31,274.49, which provide a basis for model comparison and indicate that the global model fits the data reasonably well.</li>
+</ul></li>
+</ul>
+<ol start="2" type="1">
+<li>Geographical Weighted Regression</li>
+</ol>
+<ul>
+<li><p><strong>Model Calibration</strong>:</p>
+<ul>
+<li><p><strong>Adaptive Bandwidth</strong>: 48 neighbors were used in the adaptive bandwidth, ensuring that the local influence of each observation is based on the proximity of other observations.</p></li>
+<li><p><strong>Kernel Function</strong>: A Gaussian kernel was used, which gives more weight to observations closer to each location.</p></li>
+</ul></li>
+<li><p><strong>Coefficient Estimates</strong>: The coefficients for the predictors vary significantly across geographic locations:</p>
+<ul>
+<li><p><strong><code>floor_area_sqm</code></strong>: The effect of floor area on resale price ranges from negative to positive values. In some areas, additional floor space leads to a large increase in resale price, while in others, the impact is smaller.</p></li>
+<li><p><strong><code>unit_age</code></strong>: The effect of unit age varies spatially, with some areas showing a significant negative impact on resale price, while in others, the impact is less pronounced.</p></li>
+<li><p><strong><code>hawker_prox</code></strong>: The proximity to hawker centers shows a negative relationship with resale price in some regions, with a large range in coefficient estimates, suggesting that the effect of hawker centers on property prices varies significantly by location.</p></li>
+<li><p><strong><code>mrt_prox</code></strong>: Proximity to MRT stations shows a negative effect in certain locations, with varying strength across different regions in Woodlands.</p></li>
+<li><p><strong><code>park_prox</code></strong>: Proximity to parks also varies across locations, with some areas showing a stronger negative impact on resale price than others.</p></li>
+</ul></li>
+<li><p><strong>Model Fit</strong>:</p>
+<ul>
+<li><p><strong>R-squared</strong>: The GWR model explains <strong>80.58%</strong> of the variance in resale price, which represents a significant improvement over the global model (74.83%). This indicates that incorporating spatial variability greatly enhances model accuracy.</p></li>
+<li><p><strong>Adjusted R-squared</strong>: <strong>78.52%</strong>, further indicating that the GWR model accounts for a significant amount of variance while adjusting for the number of predictors.</p></li>
+</ul></li>
+<li><p><strong>AIC/BIC</strong>:</p>
+<ul>
+<li><strong>AIC</strong>: 32,223.42 and <strong>BIC</strong>: 31,497.62, which are lower than the values for the global model, indicating that the GWR model provides a better fit for the data when accounting for spatial differences.</li>
+</ul></li>
+<li><p><strong>Residual Sum of Squares (RSS)</strong>: The GWR model has a residual sum of squares of <strong>8.67507e+11</strong>, suggesting that the model has reduced unexplained variance compared to the global model.</p></li>
+</ul>
+<p><strong>Overall</strong></p>
+<p>The GWR model provides a much better fit for the resale price data in Woodlands compared to the global regression model. The improvement in <strong>R-squared</strong> (from 74.83% to 80.58%) suggests that there are significant spatial differences in the factors affecting resale prices.</p>
+<ul>
+<li><p><strong>Floor Area</strong>: The positive relationship between floor area and resale price varies significantly across Woodlands. In some areas, floor area is a strong predictor of resale price, while in others, it has a smaller effect.</p></li>
+<li><p><strong>Unit Age</strong>: The negative effect of unit age on resale price is more pronounced in some parts of Woodlands, indicating that older units in certain locations have a larger impact on resale price.</p></li>
+<li><p><strong>Proximity to Amenities</strong>: Variables such as proximity to MRT stations, parks, and hawker centers show varying effects across locations. For example, properties near MRT stations tend to have lower resale prices in some regions, while in others, the proximity to parks and kindergartens can increase prices.</p></li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
 <section id="converting-the-test-data-from-sf-data.frame-to-spatialpointdataframe" class="level3" data-number="1.11.5">
 <h3 data-number="1.11.5" class="anchored" data-anchor-id="converting-the-test-data-from-sf-data.frame-to-spatialpointdataframe"><span class="header-section-number">1.11.5</span> Converting the test data from sf data.frame to SpatialPointDataFrame</h3>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb189"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb189-1"><a href="#cb189-1" aria-hidden="true" tabindex="-1"></a>test_data_sp_p <span class="ot">&lt;-</span> <span class="fu">as_Spatial</span>(test_data_punggol)</span>
+<span id="cb189-2"><a href="#cb189-2" aria-hidden="true" tabindex="-1"></a>test_data_sp_p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatialPointsDataFrame 
+features    : 300 
+extent      : 34320.85, 37549.49, 41631.21, 43933.95  (xmin, xmax, ymin, ymax)
+crs         : +proj=tmerc +lat_0=1.36666666666667 +lon_0=103.833333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+variables   : 20
+names       :    town, resale_price, floor_area_sqm, remaining_lease_yr,        longitude,         latitude, unit_age,       busstop_prox, within_350m_busstop,       eldercare_prox, within_350m_eldercare,      hawker_prox,   kindergarten_prox, within_350m_kindergarten,        mall_prox, ... 
+min values  : PUNGGOL,       495000,             85,                 77, 34320.8500594051, 41631.2121389891,        5, 0.0287942812318591,                   2, 9.08133417710502e-07,                     0, 0.28631929470226, 5.4646933332265e-07,                        0, 54.6825044697734, ... 
+max values  : PUNGGOL,       788000,             99,                 94, 37549.4930230187, 43933.9470685477,       22,  0.286960879696002,                  14,     1.69953951976499,                     2, 1.94955185447985,   0.764704244775304,                        3, 56.6972972869625, ... </code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb191"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb191-1"><a href="#cb191-1" aria-hidden="true" tabindex="-1"></a>test_data_sp_w <span class="ot">&lt;-</span> <span class="fu">as_Spatial</span>(test_data_woodlands)</span>
+<span id="cb191-2"><a href="#cb191-2" aria-hidden="true" tabindex="-1"></a>test_data_sp_w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatialPointsDataFrame 
+features    : 238 
+extent      : 21177.26, 25186.96, 45373.58, 47860.89  (xmin, xmax, ymin, ymax)
+crs         : +proj=tmerc +lat_0=1.36666666666667 +lon_0=103.833333333333 +k=1 +x_0=28001.642 +y_0=38744.572 +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+variables   : 20
+names       :      town, resale_price, floor_area_sqm, remaining_lease_yr,        longitude,         latitude, unit_age,       busstop_prox, within_350m_busstop,     eldercare_prox, within_350m_eldercare,        hawker_prox,  kindergarten_prox, within_350m_kindergarten,        mall_prox, ... 
+min values  : WOODLANDS,       355000,             83,                 48, 21177.2576852251, 45373.5757321722,        5, 0.0205869708371814,                   4, 0.0656405943898966,                     0, 0.0666360841718605, 8.502567959163e-07,                        0, 50.0713376927117, ... 
+max values  : WOODLANDS,       701000,            111,                 94, 25186.9617010174, 47860.8875505569,       51,  0.253082170943171,                  16,   1.65460210369017,                     3,    1.5143514513644,  0.798763870107565,                        4, 53.6923986369607, ... </code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
 <section id="computing-adaptive-bandwidth-for-the-test-data" class="level3" data-number="1.11.6">
 <h3 data-number="1.11.6" class="anchored" data-anchor-id="computing-adaptive-bandwidth-for-the-test-data"><span class="header-section-number">1.11.6</span> Computing adaptive bandwidth for the test data</h3>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb193"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb193-1"><a href="#cb193-1" aria-hidden="true" tabindex="-1"></a>gwr_bw_test_adaptive_p <span class="ot">&lt;-</span> <span class="fu">bw.gwr</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb193-2"><a href="#cb193-2" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb193-3"><a href="#cb193-3" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb193-4"><a href="#cb193-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb193-5"><a href="#cb193-5" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb193-6"><a href="#cb193-6" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb193-7"><a href="#cb193-7" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox,</span>
+<span id="cb193-8"><a href="#cb193-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>test_data_sp_p,</span>
+<span id="cb193-9"><a href="#cb193-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">approach=</span><span class="st">"CV"</span>,</span>
+<span id="cb193-10"><a href="#cb193-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">kernel=</span><span class="st">"gaussian"</span>,</span>
+<span id="cb193-11"><a href="#cb193-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">adaptive=</span><span class="cn">TRUE</span>,</span>
+<span id="cb193-12"><a href="#cb193-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">longlat=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adaptive bandwidth: 193 CV score: 461863083474 
+Adaptive bandwidth: 127 CV score: 444482582747 
+Adaptive bandwidth: 86 CV score: 429860319803 
+Adaptive bandwidth: 60 CV score: 4.15545e+11 
+Adaptive bandwidth: 45 CV score: 405403507470 
+Adaptive bandwidth: 34 CV score: 406000083766 
+Adaptive bandwidth: 50 CV score: 408265912967 
+Adaptive bandwidth: 40 CV score: 406022699918 
+Adaptive bandwidth: 46 CV score: 405735445126 
+Adaptive bandwidth: 42 CV score: 406270763040 
+Adaptive bandwidth: 44 CV score: 405653093262 
+Adaptive bandwidth: 42 CV score: 406270763040 
+Adaptive bandwidth: 43 CV score: 4.05838e+11 
+Adaptive bandwidth: 42 CV score: 406270763040 
+Adaptive bandwidth: 42 CV score: 406270763040 
+Adaptive bandwidth: 41 CV score: 405877056522 
+Adaptive bandwidth: 41 CV score: 405877056522 
+Adaptive bandwidth: 40 CV score: 406022699918 
+Adaptive bandwidth: 40 CV score: 406022699918 
+Adaptive bandwidth: 39 CV score: 406410298495 
+Adaptive bandwidth: 39 CV score: 406410298495 
+Adaptive bandwidth: 38 CV score: 406480426659 
+Adaptive bandwidth: 38 CV score: 406480426659 
+Adaptive bandwidth: 37 CV score: 405643842893 
+Adaptive bandwidth: 37 CV score: 405643842893 
+Adaptive bandwidth: 36 CV score: 405801331672 
+Adaptive bandwidth: 36 CV score: 405801331672 
+Adaptive bandwidth: 35 CV score: 405721054702 
+Adaptive bandwidth: 35 CV score: 405721054702 
+Adaptive bandwidth: 34 CV score: 406000083766 
+Adaptive bandwidth: 34 CV score: 406000083766 
+Adaptive bandwidth: 33 CV score: 405311774904 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb195"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb195-1"><a href="#cb195-1" aria-hidden="true" tabindex="-1"></a><span class="fu">beep</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb196"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb196-1"><a href="#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(gwr_bw_test_adaptive_p, <span class="st">"data/rds/ml/punggol/gwr_bw_test_adaptive_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb197"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb197-1"><a href="#cb197-1" aria-hidden="true" tabindex="-1"></a>gwr_bw_test_adaptive_w<span class="ot">&lt;-</span> <span class="fu">bw.gwr</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb197-2"><a href="#cb197-2" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb197-3"><a href="#cb197-3" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb197-4"><a href="#cb197-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb197-5"><a href="#cb197-5" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb197-6"><a href="#cb197-6" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb197-7"><a href="#cb197-7" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox,</span>
+<span id="cb197-8"><a href="#cb197-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data=</span>test_data_sp_w,</span>
+<span id="cb197-9"><a href="#cb197-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">approach=</span><span class="st">"CV"</span>,</span>
+<span id="cb197-10"><a href="#cb197-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">kernel=</span><span class="st">"gaussian"</span>,</span>
+<span id="cb197-11"><a href="#cb197-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">adaptive=</span><span class="cn">TRUE</span>,</span>
+<span id="cb197-12"><a href="#cb197-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">longlat=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Adaptive bandwidth: 154 CV score: 141474677352 
+Adaptive bandwidth: 103 CV score: 140090697462 
+Adaptive bandwidth: 70 CV score: 138907367486 
+Adaptive bandwidth: 51 CV score: 137432823055 
+Adaptive bandwidth: 38 CV score: 135519123552 
+Adaptive bandwidth: 31 CV score: 134512516189 
+Adaptive bandwidth: 25 CV score: 134598796510 
+Adaptive bandwidth: 33 CV score: 1.34745e+11 
+Adaptive bandwidth: 28 CV score: 135016725804 
+Adaptive bandwidth: 31 CV score: 134512516189 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb199"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb199-1"><a href="#cb199-1" aria-hidden="true" tabindex="-1"></a><span class="fu">beep</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb200"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb200-1"><a href="#cb200-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(gwr_bw_test_adaptive_w, <span class="st">"data/rds/ml/woodlands/gwr_bw_test_adaptive_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 </div>
 </div>
 </section>
 <section id="computing-predicted-values-of-the-test-data" class="level3" data-number="1.11.7">
 <h3 data-number="1.11.7" class="anchored" data-anchor-id="computing-predicted-values-of-the-test-data"><span class="header-section-number">1.11.7</span> Computing predicted values of the test data</h3>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
+<div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb201"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb201-1"><a href="#cb201-1" aria-hidden="true" tabindex="-1"></a>gwr_pred_p <span class="ot">&lt;-</span> <span class="fu">gwr.predict</span>(<span class="at">formula =</span> resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb201-2"><a href="#cb201-2" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb201-3"><a href="#cb201-3" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb201-4"><a href="#cb201-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb201-5"><a href="#cb201-5" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb201-6"><a href="#cb201-6" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb201-7"><a href="#cb201-7" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox, </span>
+<span id="cb201-8"><a href="#cb201-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data=</span>train_data_sp_p, </span>
+<span id="cb201-9"><a href="#cb201-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">predictdata =</span> test_data_sp_p, </span>
+<span id="cb201-10"><a href="#cb201-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">bw=</span><span class="dv">100</span>, </span>
+<span id="cb201-11"><a href="#cb201-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">kernel =</span> <span class="st">'gaussian'</span>, </span>
+<span id="cb201-12"><a href="#cb201-12" aria-hidden="true" tabindex="-1"></a>                        <span class="at">adaptive=</span><span class="cn">TRUE</span>, </span>
+<span id="cb201-13"><a href="#cb201-13" aria-hidden="true" tabindex="-1"></a>                        <span class="at">longlat =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb201-14"><a href="#cb201-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb201-15"><a href="#cb201-15" aria-hidden="true" tabindex="-1"></a><span class="fu">beep</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb202"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb202-1"><a href="#cb202-1" aria-hidden="true" tabindex="-1"></a>gwr_pred_p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   ***********************************************************************
+   *                       Package   GWmodel                             *
+   ***********************************************************************
+   Program starts at: 2024-11-11 01:51:59.702211 
+   Call:
+   gwr.predict(formula = resale_price ~ floor_area_sqm + unit_age + 
+    within_350m_busstop + within_350m_eldercare + hawker_prox + 
+    within_350m_kindergarten + mall_prox + mrt_prox + park_prox + 
+    within_1km_school + supermarket_prox, data = train_data_sp_p, 
+    predictdata = test_data_sp_p, bw = 100, kernel = "gaussian", 
+    adaptive = TRUE, longlat = FALSE)
 
+   Dependent (y) variable for prediction:  resale_price
+   Independent variables:  floor_area_sqm unit_age within_350m_busstop within_350m_eldercare hawker_prox within_350m_kindergarten mall_prox mrt_prox park_prox within_1km_school supermarket_prox
+   Number of data points: 1549
+   ***********************************************************************
+   *     Results of Geographically Weighted Regression for prediction    *
+   ***********************************************************************
+
+   *********************Model calibration information*********************
+   Kernel function: gaussian 
+   Adaptive bandwidth: 100 (number of nearest neighbours)
+   Distance metric: Euclidean distance metric is used.
+
+   ****************Summary of GWR coefficient estimates:******************
+                                        Min.     1st Qu.      Median
+   Intercept_coef                -1.1137e+07 -4.0950e+06 -1.8008e+06
+   floor_area_sqm_coef            6.5380e+02  7.4184e+03  9.3916e+03
+   unit_age_coef                 -7.4305e+03 -3.9280e+03 -1.7500e+03
+   within_350m_busstop_coef      -5.3279e+03 -2.1329e+03 -5.4695e+02
+   within_350m_eldercare_coef    -3.0346e+04  2.0333e+03  1.8049e+04
+   hawker_prox_coef              -4.4176e+05 -2.1443e+05 -7.7957e+04
+   within_350m_kindergarten_coef -2.4241e+04 -1.6656e+04 -8.7511e+03
+   mall_prox_coef                -1.9105e+05  9.2298e+03  2.5243e+04
+   mrt_prox_coef                 -1.5919e+05 -8.3799e+04 -5.2551e+04
+   park_prox_coef                -9.6160e+04  1.4933e+04  5.4488e+04
+   within_1km_school_coef        -1.1990e+04 -6.1249e+03 -3.9312e+03
+   supermarket_prox_coef         -1.2277e+05 -5.0793e+04 -2.8030e+04
+                                     3rd Qu.       Max.
+   Intercept_coef                -5.5879e+05 10743979.3
+   floor_area_sqm_coef            1.2740e+04    19011.5
+   unit_age_coef                  4.2753e+03    18101.9
+   within_350m_busstop_coef       1.1316e+03     3852.9
+   within_350m_eldercare_coef     2.8801e+04    65407.6
+   hawker_prox_coef              -1.8368e+04   113086.4
+   within_350m_kindergarten_coef -3.7455e+02    15082.2
+   mall_prox_coef                 6.2916e+04   200516.3
+   mrt_prox_coef                 -1.7414e+04   165209.6
+   park_prox_coef                 1.3493e+05   365020.5
+   within_1km_school_coef        -1.1988e+03     7789.1
+   supermarket_prox_coef          3.2259e+04   117388.1
+
+   ****************       Results of GW prediction       ******************
+                        Min.    1st Qu.     Median    3rd Qu.       Max.
+   prediction         459054     588680     609707     646438     708324
+   prediction_var 1249829990 1264888497 1274282131 1284856043 1412261610
+
+   ***********************************************************************
+   Program stops at: 2024-11-11 01:52:47.242338 </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb204"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb204-1"><a href="#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(gwr_pred_p, <span class="st">"data/rds/ml/punggol/gwr_pred_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>GWR Coefficient Estimates</strong></p>
+<p><strong>Interpretation</strong>:</p>
+<ul>
+<li><p>The <strong>Intercept</strong> varies greatly across locations, ranging from a negative coefficient (-1,441,251.41) to a positive coefficient (786,268.8), indicating that baseline resale prices are influenced differently across locations.</p></li>
+<li><p><strong>floor_area_sqm</strong>: The effect of floor area on resale price ranges from negative to positive. In some locations, a larger floor area has a smaller impact, while in others it has a much larger effect.</p></li>
+<li><p><strong>unit_age</strong>: The negative relationship between unit age and resale price is more pronounced in some areas, suggesting that older units may have a larger negative impact on property values in certain locations.</p></li>
+<li><p><strong>Proximity to amenities</strong>: Variables such as <strong>hawker_prox</strong>, <strong>mrt_prox</strong>, <strong>park_prox</strong>, and <strong>supermarket_prox</strong> show a wide range of coefficients. For example, proximity to hawker centers has a strong negative impact in some regions, while proximity to parks and supermarkets has a positive impact in others.</p></li>
+</ul>
+<p><strong>Prediction Results</strong></p>
+<p><strong>Interpretation</strong>:</p>
+<ul>
+<li><p>The predicted resale prices range from <strong>$463,945</strong> to <strong>$707,938</strong>, with a median prediction of <strong>$609,348</strong>. These values are within a reasonable range given the data and suggest a good predictive performance.</p></li>
+<li><p>The <strong>prediction variance</strong> shows a substantial range, from about <strong>1.25 billion</strong> to <strong>1.4 billion</strong>, indicating that the predicted resale prices vary considerably. This is expected, as some locations may have more variability in resale price due to factors such as proximity to amenities and the overall market conditions.</p></li>
+</ul>
+<p><strong>Overall</strong></p>
+<p>Key findings include:</p>
+<ul>
+<li><p>The <strong>effect of floor area</strong>, <strong>unit age</strong>, and <strong>proximity to amenities</strong> varies significantly across different locations in Woodlands.</p></li>
+<li><p>The <strong>prediction results</strong> show a reasonable range of predicted resale prices, with substantial variance indicating the sensitivity of prices to local factors.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb205"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb205-1"><a href="#cb205-1" aria-hidden="true" tabindex="-1"></a>gwr_pred_w <span class="ot">&lt;-</span> <span class="fu">gwr.predict</span>(<span class="at">formula =</span> resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb205-2"><a href="#cb205-2" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb205-3"><a href="#cb205-3" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb205-4"><a href="#cb205-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb205-5"><a href="#cb205-5" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb205-6"><a href="#cb205-6" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb205-7"><a href="#cb205-7" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox, </span>
+<span id="cb205-8"><a href="#cb205-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">data=</span>train_data_sp_w, </span>
+<span id="cb205-9"><a href="#cb205-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">predictdata =</span> test_data_sp_w, </span>
+<span id="cb205-10"><a href="#cb205-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">bw=</span><span class="dv">100</span>, </span>
+<span id="cb205-11"><a href="#cb205-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">kernel =</span> <span class="st">'gaussian'</span>, </span>
+<span id="cb205-12"><a href="#cb205-12" aria-hidden="true" tabindex="-1"></a>                        <span class="at">adaptive=</span><span class="cn">TRUE</span>, </span>
+<span id="cb205-13"><a href="#cb205-13" aria-hidden="true" tabindex="-1"></a>                        <span class="at">longlat =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb205-14"><a href="#cb205-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb205-15"><a href="#cb205-15" aria-hidden="true" tabindex="-1"></a><span class="fu">beep</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb206"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb206-1"><a href="#cb206-1" aria-hidden="true" tabindex="-1"></a>gwr_pred_w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   ***********************************************************************
+   *                       Package   GWmodel                             *
+   ***********************************************************************
+   Program starts at: 2024-11-11 01:52:47.294196 
+   Call:
+   gwr.predict(formula = resale_price ~ floor_area_sqm + unit_age + 
+    within_350m_busstop + within_350m_eldercare + hawker_prox + 
+    within_350m_kindergarten + mall_prox + mrt_prox + park_prox + 
+    within_1km_school + supermarket_prox, data = train_data_sp_w, 
+    predictdata = test_data_sp_w, bw = 100, kernel = "gaussian", 
+    adaptive = TRUE, longlat = FALSE)
+
+   Dependent (y) variable for prediction:  resale_price
+   Independent variables:  floor_area_sqm unit_age within_350m_busstop within_350m_eldercare hawker_prox within_350m_kindergarten mall_prox mrt_prox park_prox within_1km_school supermarket_prox
+   Number of data points: 1391
+   ***********************************************************************
+   *     Results of Geographically Weighted Regression for prediction    *
+   ***********************************************************************
+
+   *********************Model calibration information*********************
+   Kernel function: gaussian 
+   Adaptive bandwidth: 100 (number of nearest neighbours)
+   Distance metric: Euclidean distance metric is used.
+
+   ****************Summary of GWR coefficient estimates:******************
+                                        Min.     1st Qu.      Median
+   Intercept_coef                -2.1902e+06 -9.3788e+04  6.7361e+05
+   floor_area_sqm_coef           -3.3112e+03  1.8210e+03  2.2761e+03
+   unit_age_coef                 -4.9718e+03 -4.5761e+03 -4.3469e+03
+   within_350m_busstop_coef      -2.2179e+03 -6.0128e+02 -9.4503e+01
+   within_350m_eldercare_coef    -4.5128e+04 -9.5403e+03 -5.8673e+03
+   hawker_prox_coef              -2.2862e+05 -2.6585e+04 -1.4338e+04
+   within_350m_kindergarten_coef -9.6328e+03 -2.6297e+03 -4.1932e+01
+   mall_prox_coef                -4.8135e+04 -1.0964e+04 -3.7845e+03
+   mrt_prox_coef                 -1.7215e+05 -4.2204e+04 -2.1621e+04
+   park_prox_coef                -1.3435e+05 -4.0264e+04 -2.7108e+04
+   within_1km_school_coef        -9.4865e+03 -5.4721e+03 -3.3587e+03
+   supermarket_prox_coef         -9.7199e+04 -4.7539e+04 -3.3118e+04
+                                     3rd Qu.      Max.
+   Intercept_coef                 1.1117e+06 2976576.6
+   floor_area_sqm_coef            2.5522e+03    3019.2
+   unit_age_coef                 -3.7747e+03   -1769.4
+   within_350m_busstop_coef       7.3075e+02    3301.4
+   within_350m_eldercare_coef    -1.4672e+03    4353.7
+   hawker_prox_coef               3.0435e+03  100863.4
+   within_350m_kindergarten_coef  3.8679e+03   24965.7
+   mall_prox_coef                 1.0691e+04   55502.5
+   mrt_prox_coef                 -7.2434e+03  148627.2
+   park_prox_coef                -1.3584e+04   94005.1
+   within_1km_school_coef        -2.7247e+02    2829.4
+   supermarket_prox_coef         -1.0807e+04   28141.1
+
+   ****************       Results of GW prediction       ******************
+                       Min.   1st Qu.    Median   3rd Qu.      Max.
+   prediction        354574    475267    494160    528380    617913
+   prediction_var 737877010 745713670 752120804 759546466 799428816
+
+   ***********************************************************************
+   Program stops at: 2024-11-11 01:53:19.356233 </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb208"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb208-1"><a href="#cb208-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(gwr_pred_w, <span class="st">"data/rds/ml/woodlands/gwr_pred_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Summary of GWR Coefficients</strong></p>
+<p><strong>Interpretation</strong>:</p>
+<ul>
+<li><p><strong>Intercept</strong>: The baseline resale price in Woodlands varies significantly across locations, with a range from 373,726.15 to 929,191.50. This suggests that the average resale price can be strongly influenced by local spatial factors.</p></li>
+<li><p><strong>Floor Area</strong>: The effect of floor area on resale price varies from a negative to a positive coefficient. In some locations, additional floor area has a relatively small positive impact, while in other locations, the effect is stronger.</p></li>
+<li><p><strong>Unit Age</strong>: The negative impact of unit age on resale price is consistent across locations. Older units tend to have a more significant negative effect on resale prices, particularly in areas where newer properties dominate.</p></li>
+<li><p><strong>Proximity to Amenities</strong>:</p>
+<ul>
+<li><p><strong>Bus Stops</strong>: Proximity to bus stops generally has a small positive effect in certain areas (range from -1,933.97 to 3,494.30).</p></li>
+<li><p><strong>Elder Care Centers</strong>: The proximity to eldercare centers has a more varied effect, with the coefficient ranging from negative to positive. In some regions, this proximity significantly increases resale prices.</p></li>
+<li><p><strong>Hawker Centers</strong>: The proximity to hawker centers shows a highly negative impact in many areas, especially in places where hawker centers are abundant and could be seen as less desirable.</p></li>
+<li><p><strong>Kindergartens</strong>: Proximity to kindergartens has a positive effect on property prices in certain locations, especially in family-oriented neighborhoods.</p></li>
+<li><p><strong>Malls, MRT, Parks</strong>: Proximity to malls and MRT stations tends to have a negative impact on resale prices in specific areas, while proximity to parks shows a more varied effect, with some areas benefiting from this proximity more than others.</p></li>
+<li><p><strong>Supermarkets</strong>: Proximity to supermarkets has a small negative effect on resale prices in some areas but is generally less influential compared to other amenities.</p></li>
+</ul></li>
+</ul>
+<p><strong>Prediction Results</strong></p>
+<p><strong>Interpretation</strong>:</p>
+<ul>
+<li><p>The predicted resale prices range from <strong>$359,170</strong> to <strong>$616,562</strong>, with a median prediction of <strong>$493,786</strong>. This shows that the resale price in Woodlands varies significantly across locations.</p></li>
+<li><p>The <strong>prediction variance</strong> is substantial, ranging from <strong>735 million</strong> to <strong>792 million</strong>. This suggests considerable variability in the predicted prices, likely due to differing local factors influencing property values across different areas of Woodlands.</p></li>
+</ul>
+<p><strong>Overall</strong></p>
+<p>The <strong>Geographically Weighted Regression (GWR)</strong> model provides a more accurate prediction of resale prices in <strong>Woodlands</strong> compared to traditional global models. By accounting for spatial variability, the GWR model captures how the relationship between property features and resale price changes across different locations.</p>
+<p><strong>Key findings</strong>:</p>
+<ul>
+<li><p><strong>Floor area</strong> and <strong>unit age</strong> have spatially varying impacts, with some regions showing stronger relationships between these variables and resale prices.</p></li>
+<li><p><strong>Proximity to amenities</strong> such as <strong>hawker centers</strong>, <strong>MRT stations</strong>, and <strong>supermarkets</strong> shows spatial heterogeneity, with some areas benefiting more from proximity to these amenities than others.</p></li>
+<li><p>The <strong>prediction results</strong> indicate that resale prices vary widely across Woodlands, with certain regions experiencing higher values based on local factors like proximity to key amenities.</p></li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3512,9 +4619,42 @@ Total number of duplicates: 74 </code></pre>
 <section id="extracting-coordinates-data" class="level3" data-number="1.12.1">
 <h3 data-number="1.12.1" class="anchored" data-anchor-id="extracting-coordinates-data"><span class="header-section-number">1.12.1</span> Extracting coordinates data</h3>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-11-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-1" role="tab" aria-controls="tabset-11-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-11-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-11-2" role="tab" aria-controls="tabset-11-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-11-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-11-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb209"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb209-1"><a href="#cb209-1" aria-hidden="true" tabindex="-1"></a>coords_train_p <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(train_data_punggol)</span>
+<span id="cb209-2"><a href="#cb209-2" aria-hidden="true" tabindex="-1"></a>coords_test_p <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(test_data_punggol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Before continue, we write all the output into rds for future used.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb210"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb210-1"><a href="#cb210-1" aria-hidden="true" tabindex="-1"></a>coords_train_p <span class="ot">&lt;-</span> <span class="fu">write_rds</span>(coords_train_p, <span class="st">"data/rds/ml/punggol/coords_train_p.rds"</span> )</span>
+<span id="cb210-2"><a href="#cb210-2" aria-hidden="true" tabindex="-1"></a>coords_test_p <span class="ot">&lt;-</span> <span class="fu">write_rds</span>(coords_test_p, <span class="st">"data/rds/ml/punggol/coords_test_p.rds"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-11-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-11-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb211"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb211-1"><a href="#cb211-1" aria-hidden="true" tabindex="-1"></a>coords_train_w <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(train_data_woodlands)</span>
+<span id="cb211-2"><a href="#cb211-2" aria-hidden="true" tabindex="-1"></a>coords_test_w <span class="ot">&lt;-</span> <span class="fu">st_coordinates</span>(test_data_woodlands)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Before continue, we write all the output into rds for future used.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb212"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb212-1"><a href="#cb212-1" aria-hidden="true" tabindex="-1"></a>coords_train_w <span class="ot">&lt;-</span> <span class="fu">write_rds</span>(coords_train_w, <span class="st">"data/rds/ml/coords_train_w.rds"</span> )</span>
+<span id="cb212-2"><a href="#cb212-2" aria-hidden="true" tabindex="-1"></a>coords_test_w <span class="ot">&lt;-</span> <span class="fu">write_rds</span>(coords_test_w, <span class="st">"data/rds/ml/coords_test_w.rds"</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3522,9 +4662,28 @@ Total number of duplicates: 74 </code></pre>
 <h3 data-number="1.12.2" class="anchored" data-anchor-id="dropping-geometry-field"><span class="header-section-number">1.12.2</span> Dropping geometry field</h3>
 <p>First, we will drop geometry column of the sf data.frame by using <code>st_drop_geometry()</code> of sf package.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-12-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-1" role="tab" aria-controls="tabset-12-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-12-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-12-2" role="tab" aria-controls="tabset-12-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-12-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-12-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb213"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb213-1"><a href="#cb213-1" aria-hidden="true" tabindex="-1"></a>train_data_punggol <span class="ot">&lt;-</span> train_data_punggol <span class="sc">%&gt;%</span> </span>
+<span id="cb213-2"><a href="#cb213-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb213-3"><a href="#cb213-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>town)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-12-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-12-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb214"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb214-1"><a href="#cb214-1" aria-hidden="true" tabindex="-1"></a>train_data_woodlands <span class="ot">&lt;-</span> train_data_woodlands <span class="sc">%&gt;%</span> </span>
+<span id="cb214-2"><a href="#cb214-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb214-3"><a href="#cb214-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>town)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3533,9 +4692,136 @@ Total number of duplicates: 74 </code></pre>
 <h2 data-number="1.13" class="anchored" data-anchor-id="calibrating-random-forest-model"><span class="header-section-number">1.13</span> Calibrating Random Forest Model</h2>
 <p>In this section, you will learn how to calibrate a model to predict HDB resale price by using random forest function of <a href="https://cran.r-project.org/web/packages/ranger/index.html"><strong>ranger</strong></a> package.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-13-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-1" role="tab" aria-controls="tabset-13-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-13-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-13-2" role="tab" aria-controls="tabset-13-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
+<div id="tabset-13-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-13-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb215"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb215-1"><a href="#cb215-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb215-2"><a href="#cb215-2" aria-hidden="true" tabindex="-1"></a>rf_p <span class="ot">&lt;-</span> <span class="fu">ranger</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb215-3"><a href="#cb215-3" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb215-4"><a href="#cb215-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb215-5"><a href="#cb215-5" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb215-6"><a href="#cb215-6" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb215-7"><a href="#cb215-7" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb215-8"><a href="#cb215-8" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox,</span>
+<span id="cb215-9"><a href="#cb215-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">data=</span>train_data_punggol)</span>
+<span id="cb215-10"><a href="#cb215-10" aria-hidden="true" tabindex="-1"></a>rf_p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ranger result
 
+Call:
+ ranger(resale_price ~ floor_area_sqm + unit_age + within_350m_busstop +      within_350m_eldercare + hawker_prox + within_350m_kindergarten +      mall_prox + mrt_prox + park_prox + within_1km_school + supermarket_prox,      data = train_data_punggol) 
+
+Type:                             Regression 
+Number of trees:                  500 
+Sample size:                      1549 
+Number of independent variables:  11 
+Mtry:                             3 
+Target node size:                 5 
+Variable importance mode:         none 
+Splitrule:                        variance 
+OOB prediction error (MSE):       1285768219 
+R squared (OOB):                  0.6229873 </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb217"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb217-1"><a href="#cb217-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(rf_p, <span class="st">"data/rds/ml/punggol/rf_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb218"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb218-1"><a href="#cb218-1" aria-hidden="true" tabindex="-1"></a>rf_p <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/punggol/rf_p.rds"</span>)</span>
+<span id="cb218-2"><a href="#cb218-2" aria-hidden="true" tabindex="-1"></a>rf_p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ranger result
+
+Call:
+ ranger(resale_price ~ floor_area_sqm + unit_age + within_350m_busstop +      within_350m_eldercare + hawker_prox + within_350m_kindergarten +      mall_prox + mrt_prox + park_prox + within_1km_school + supermarket_prox,      data = train_data_punggol) 
+
+Type:                             Regression 
+Number of trees:                  500 
+Sample size:                      1549 
+Number of independent variables:  11 
+Mtry:                             3 
+Target node size:                 5 
+Variable importance mode:         none 
+Splitrule:                        variance 
+OOB prediction error (MSE):       1285768219 
+R squared (OOB):                  0.6229873 </code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-13-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-13-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb220"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb220-1"><a href="#cb220-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb220-2"><a href="#cb220-2" aria-hidden="true" tabindex="-1"></a>rf_w <span class="ot">&lt;-</span> <span class="fu">ranger</span>(resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb220-3"><a href="#cb220-3" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb220-4"><a href="#cb220-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb220-5"><a href="#cb220-5" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb220-6"><a href="#cb220-6" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb220-7"><a href="#cb220-7" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb220-8"><a href="#cb220-8" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox,</span>
+<span id="cb220-9"><a href="#cb220-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">data=</span>train_data_woodlands)</span>
+<span id="cb220-10"><a href="#cb220-10" aria-hidden="true" tabindex="-1"></a>rf_w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ranger result
+
+Call:
+ ranger(resale_price ~ floor_area_sqm + unit_age + within_350m_busstop +      within_350m_eldercare + hawker_prox + within_350m_kindergarten +      mall_prox + mrt_prox + park_prox + within_1km_school + supermarket_prox,      data = train_data_woodlands) 
+
+Type:                             Regression 
+Number of trees:                  500 
+Sample size:                      1391 
+Number of independent variables:  11 
+Mtry:                             3 
+Target node size:                 5 
+Variable importance mode:         none 
+Splitrule:                        variance 
+OOB prediction error (MSE):       681781375 
+R squared (OOB):                  0.7878284 </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb222"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb222-1"><a href="#cb222-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(rf_w, <span class="st">"data/rds/ml/woodlands/rf_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb223"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb223-1"><a href="#cb223-1" aria-hidden="true" tabindex="-1"></a>rf_w <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/woodlands/rf_w.rds"</span>)</span>
+<span id="cb223-2"><a href="#cb223-2" aria-hidden="true" tabindex="-1"></a>rf_w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ranger result
+
+Call:
+ ranger(resale_price ~ floor_area_sqm + unit_age + within_350m_busstop +      within_350m_eldercare + hawker_prox + within_350m_kindergarten +      mall_prox + mrt_prox + park_prox + within_1km_school + supermarket_prox,      data = train_data_woodlands) 
+
+Type:                             Regression 
+Number of trees:                  500 
+Sample size:                      1391 
+Number of independent variables:  11 
+Mtry:                             3 
+Target node size:                 5 
+Variable importance mode:         none 
+Splitrule:                        variance 
+OOB prediction error (MSE):       681781375 
+R squared (OOB):                  0.7878284 </code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3543,9 +4829,178 @@ Total number of duplicates: 74 </code></pre>
 <h2 data-number="1.14" class="anchored" data-anchor-id="calibrating-geographical-random-forest-model"><span class="header-section-number">1.14</span> Calibrating Geographical Random Forest Model</h2>
 <p>In this section, you will learn how to calibrate a model to predict HDB resale price by using <code>grf()</code> of <a href="https://cran.r-project.org/web/packages/ranger/index.html"><strong>SpatialML</strong></a> package.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-14-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-1" role="tab" aria-controls="tabset-14-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-14-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-14-2" role="tab" aria-controls="tabset-14-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
+<div id="tabset-14-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-14-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb225"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb225-1"><a href="#cb225-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb225-2"><a href="#cb225-2" aria-hidden="true" tabindex="-1"></a>gwRF_adaptive_p <span class="ot">&lt;-</span> <span class="fu">grf</span>(<span class="at">formula =</span> resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb225-3"><a href="#cb225-3" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb225-4"><a href="#cb225-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb225-5"><a href="#cb225-5" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb225-6"><a href="#cb225-6" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb225-7"><a href="#cb225-7" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb225-8"><a href="#cb225-8" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox,</span>
+<span id="cb225-9"><a href="#cb225-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">dframe=</span>train_data_punggol, </span>
+<span id="cb225-10"><a href="#cb225-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">bw=</span><span class="dv">55</span>,</span>
+<span id="cb225-11"><a href="#cb225-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">kernel=</span><span class="st">"adaptive"</span>,</span>
+<span id="cb225-12"><a href="#cb225-12" aria-hidden="true" tabindex="-1"></a>                     <span class="at">coords=</span>coords_train_p,</span>
+<span id="cb225-13"><a href="#cb225-13" aria-hidden="true" tabindex="-1"></a>                     <span class="at">ntree =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ranger result
 
+Call:
+ ranger(resale_price ~ floor_area_sqm + unit_age + within_350m_busstop +      within_350m_eldercare + hawker_prox + within_350m_kindergarten +      mall_prox + mrt_prox + park_prox + within_1km_school + supermarket_prox,      data = train_data_punggol, num.trees = 50, mtry = 3, importance = "impurity",      num.threads = NULL) 
+
+Type:                             Regression 
+Number of trees:                  50 
+Sample size:                      1549 
+Number of independent variables:  11 
+Mtry:                             3 
+Target node size:                 5 
+Variable importance mode:         impurity 
+Splitrule:                        variance 
+OOB prediction error (MSE):       1310728297 
+R squared (OOB):                  0.6156685 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          floor_area_sqm                 unit_age      within_350m_busstop 
+            6.326567e+11             1.156479e+12             1.244582e+11 
+   within_350m_eldercare              hawker_prox within_350m_kindergarten 
+            1.596830e+11             5.174056e+11             1.464665e+11 
+               mall_prox                 mrt_prox                park_prox 
+            5.932477e+11             3.333798e+11             2.561672e+11 
+       within_1km_school         supermarket_prox 
+            1.749702e+11             3.213997e+11 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+-126714  -16526    2460    2945   23939  129080 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+-96078.65 -13775.10    855.28    -58.52  14384.32 119674.72 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                               Min         Max       Mean        StD
+floor_area_sqm                   0 91014202939 5906598515 9572494892
+unit_age                 772992909 70292040371 9653682844 7816982408
+within_350m_busstop              0 23284152693 2079171556 2163833036
+within_350m_eldercare            0 22318151206  229763601  939144823
+hawker_prox              125992847 77365795037 4763798655 4696341821
+within_350m_kindergarten         0 22978183199  737940280 1744984043
+mall_prox                 89425394 51937220048 4875866267 4755292035
+mrt_prox                 131598882 29974992166 4057921881 3311668548
+park_prox                108935979 38285549900 4649691712 4018345994
+within_1km_school                0 22017741359  794052428 1434695546
+supermarket_prox          38701460 63205009429 4233523256 4566974721</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb231"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb231-1"><a href="#cb231-1" aria-hidden="true" tabindex="-1"></a><span class="fu">beep</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb232"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb232-1"><a href="#cb232-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(gwRF_adaptive_p, <span class="st">"data/rds/ml/punggol/gwRF_adaptive_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb233"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb233-1"><a href="#cb233-1" aria-hidden="true" tabindex="-1"></a>gwRF_adaptive_p <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/punggol/gwRF_adaptive_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-14-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-14-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb234"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb234-1"><a href="#cb234-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb234-2"><a href="#cb234-2" aria-hidden="true" tabindex="-1"></a>gwRF_adaptive_w <span class="ot">&lt;-</span> <span class="fu">grf</span>(<span class="at">formula =</span> resale_price <span class="sc">~</span> floor_area_sqm <span class="sc">+</span></span>
+<span id="cb234-3"><a href="#cb234-3" aria-hidden="true" tabindex="-1"></a>                 unit_age <span class="sc">+</span> within_350m_busstop <span class="sc">+</span></span>
+<span id="cb234-4"><a href="#cb234-4" aria-hidden="true" tabindex="-1"></a>                 within_350m_eldercare <span class="sc">+</span> hawker_prox <span class="sc">+</span> </span>
+<span id="cb234-5"><a href="#cb234-5" aria-hidden="true" tabindex="-1"></a>                 within_350m_kindergarten <span class="sc">+</span> mall_prox <span class="sc">+</span></span>
+<span id="cb234-6"><a href="#cb234-6" aria-hidden="true" tabindex="-1"></a>                 mrt_prox <span class="sc">+</span> park_prox <span class="sc">+</span></span>
+<span id="cb234-7"><a href="#cb234-7" aria-hidden="true" tabindex="-1"></a>                 within_1km_school <span class="sc">+</span></span>
+<span id="cb234-8"><a href="#cb234-8" aria-hidden="true" tabindex="-1"></a>                 supermarket_prox,</span>
+<span id="cb234-9"><a href="#cb234-9" aria-hidden="true" tabindex="-1"></a>                      <span class="at">dframe=</span>train_data_woodlands, </span>
+<span id="cb234-10"><a href="#cb234-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">bw=</span><span class="dv">55</span>,</span>
+<span id="cb234-11"><a href="#cb234-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">kernel=</span><span class="st">"adaptive"</span>,</span>
+<span id="cb234-12"><a href="#cb234-12" aria-hidden="true" tabindex="-1"></a>                     <span class="at">coords=</span>coords_train_w,</span>
+<span id="cb234-13"><a href="#cb234-13" aria-hidden="true" tabindex="-1"></a>                     <span class="at">ntree =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ranger result
+
+Call:
+ ranger(resale_price ~ floor_area_sqm + unit_age + within_350m_busstop +      within_350m_eldercare + hawker_prox + within_350m_kindergarten +      mall_prox + mrt_prox + park_prox + within_1km_school + supermarket_prox,      data = train_data_woodlands, num.trees = 50, mtry = 3, importance = "impurity",      num.threads = NULL) 
+
+Type:                             Regression 
+Number of trees:                  50 
+Sample size:                      1391 
+Number of independent variables:  11 
+Mtry:                             3 
+Target node size:                 5 
+Variable importance mode:         impurity 
+Splitrule:                        variance 
+OOB prediction error (MSE):       699465884 
+R squared (OOB):                  0.7823249 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          floor_area_sqm                 unit_age      within_350m_busstop 
+            6.498645e+11             1.523757e+12             8.640691e+10 
+   within_350m_eldercare              hawker_prox within_350m_kindergarten 
+            2.443447e+10             1.374084e+11             6.735891e+10 
+               mall_prox                 mrt_prox                park_prox 
+            2.366135e+11             4.865546e+11             2.638215e+11 
+       within_1km_school         supermarket_prox 
+            2.269810e+11             3.863464e+11 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+-162753.7  -14222.8       0.0     207.3   15208.6  104482.1 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+-73326.46  -8051.71    102.83    -40.93   8585.95  73157.76 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                               Min          Max       Mean         StD
+floor_area_sqm                   0 119507423558 7235009419 12283139013
+unit_age                 290434405 162351531337 9787543745 16190314956
+within_350m_busstop       19024539 101166507333 3038063745  9092850294
+within_350m_eldercare            0  43950239157  391375201  1601131616
+hawker_prox              205434461 162703114194 4496604507  7941092644
+within_350m_kindergarten         0  28289156658  710152654  1940630865
+mall_prox                165366043  81654791451 4917757094  7011474221
+mrt_prox                 310086561  77191474562 4237235607  5629134036
+park_prox                166726290 137269067979 5310916373 12030607333
+within_1km_school                0  70335686672 1024510779  4531548436
+supermarket_prox         154822760 168893795321 5782731401 13086332964</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb240"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb240-1"><a href="#cb240-1" aria-hidden="true" tabindex="-1"></a><span class="fu">beep</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb241"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb241-1"><a href="#cb241-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(gwRF_adaptive_w, <span class="st">"data/rds/ml/woodlands/gwRF_adaptive_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb242"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb242-1"><a href="#cb242-1" aria-hidden="true" tabindex="-1"></a>gwRF_adaptive_w <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/woodlands/gwRF_adaptive_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 </div>
 </div>
 <section id="predicting-by-using-test-data" class="level3" data-number="1.14.1">
@@ -3554,9 +5009,26 @@ Total number of duplicates: 74 </code></pre>
 <h4 data-number="1.14.1.1" class="anchored" data-anchor-id="preparing-the-test-data"><span class="header-section-number">1.14.1.1</span> Preparing the test data</h4>
 <p>The code chunk below will be used to combine the test data with its corresponding coordinates data.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-15-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-15-1" role="tab" aria-controls="tabset-15-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-15-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-15-2" role="tab" aria-controls="tabset-15-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-15-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-15-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb243"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb243-1"><a href="#cb243-1" aria-hidden="true" tabindex="-1"></a>test_data_punggol <span class="ot">&lt;-</span> <span class="fu">cbind</span>(test_data_punggol, coords_test_p) <span class="sc">%&gt;%</span></span>
+<span id="cb243-2"><a href="#cb243-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-15-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-15-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb244"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb244-1"><a href="#cb244-1" aria-hidden="true" tabindex="-1"></a>test_data_woodlands <span class="ot">&lt;-</span> <span class="fu">cbind</span>(test_data_woodlands, coords_test_w) <span class="sc">%&gt;%</span></span>
+<span id="cb244-2"><a href="#cb244-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3564,9 +5036,46 @@ Total number of duplicates: 74 </code></pre>
 <h4 data-number="1.14.1.2" class="anchored" data-anchor-id="predicting-with-test-data"><span class="header-section-number">1.14.1.2</span> Predicting with test data</h4>
 <p>Next, <code>predict.grf()</code> of spatialML package will be used to predict the resale value by using the test data and gwRF_adaptive model calibrated earlier.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-16-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-16-1" role="tab" aria-controls="tabset-16-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-16-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-16-2" role="tab" aria-controls="tabset-16-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-16-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-16-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb245"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb245-1"><a href="#cb245-1" aria-hidden="true" tabindex="-1"></a>gwRF_pred_p <span class="ot">&lt;-</span> <span class="fu">predict.grf</span>(gwRF_adaptive_p, </span>
+<span id="cb245-2"><a href="#cb245-2" aria-hidden="true" tabindex="-1"></a>                           test_data_punggol, </span>
+<span id="cb245-3"><a href="#cb245-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">x.var.name=</span><span class="st">"X"</span>,</span>
+<span id="cb245-4"><a href="#cb245-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">y.var.name=</span><span class="st">"Y"</span>, </span>
+<span id="cb245-5"><a href="#cb245-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">local.w=</span><span class="dv">1</span>,</span>
+<span id="cb245-6"><a href="#cb245-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">global.w=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb246"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb246-1"><a href="#cb246-1" aria-hidden="true" tabindex="-1"></a>GRF_pred_p <span class="ot">&lt;-</span> <span class="fu">write_rds</span>(gwRF_pred_p, <span class="st">"data/rds/ml/punggol/gwRF_adaptive_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-16-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-16-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb247"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb247-1"><a href="#cb247-1" aria-hidden="true" tabindex="-1"></a>gwRF_pred_w <span class="ot">&lt;-</span> <span class="fu">predict.grf</span>(gwRF_adaptive_w, </span>
+<span id="cb247-2"><a href="#cb247-2" aria-hidden="true" tabindex="-1"></a>                           test_data_woodlands, </span>
+<span id="cb247-3"><a href="#cb247-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">x.var.name=</span><span class="st">"X"</span>,</span>
+<span id="cb247-4"><a href="#cb247-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">y.var.name=</span><span class="st">"Y"</span>, </span>
+<span id="cb247-5"><a href="#cb247-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">local.w=</span><span class="dv">1</span>,</span>
+<span id="cb247-6"><a href="#cb247-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">global.w=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb248"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb248-1"><a href="#cb248-1" aria-hidden="true" tabindex="-1"></a>GRF_pred_w <span class="ot">&lt;-</span> <span class="fu">write_rds</span>(gwRF_pred_w, <span class="st">"data/rds/ml/woodlands/gwRF_adaptive_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3574,9 +5083,62 @@ Total number of duplicates: 74 </code></pre>
 <h4 data-number="1.14.1.3" class="anchored" data-anchor-id="converting-the-predicting-output-into-a-data-frame"><span class="header-section-number">1.14.1.3</span> Converting the predicting output into a data frame</h4>
 <p>The output of the <code>predict.grf()</code> is a vector of predicted values. It is wiser to convert it into a data frame for further visualisation and analysis.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-17-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-17-1" role="tab" aria-controls="tabset-17-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-17-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-17-2" role="tab" aria-controls="tabset-17-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-17-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-17-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb249"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb249-1"><a href="#cb249-1" aria-hidden="true" tabindex="-1"></a>GRF_pred_p <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/punggol/gwRF_adaptive_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb250"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb250-1"><a href="#cb250-1" aria-hidden="true" tabindex="-1"></a>GRF_pred_df_p <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(GRF_pred_p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>In the code chunk below, <code>cbind()</code> is used to append the predicted values onto test_data</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb251"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb251-1"><a href="#cb251-1" aria-hidden="true" tabindex="-1"></a>test_data_p <span class="ot">&lt;-</span> <span class="fu">cbind</span>(test_data_punggol, GRF_pred_df_p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb252"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb252-1"><a href="#cb252-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(test_data_p, <span class="st">"data/rds/ml/punggol/test_data_p.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-17-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-17-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb253"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb253-1"><a href="#cb253-1" aria-hidden="true" tabindex="-1"></a>GRF_pred_w <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/ml/woodlands/gwRF_adaptive_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb254"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb254-1"><a href="#cb254-1" aria-hidden="true" tabindex="-1"></a>GRF_pred_df_w <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(GRF_pred_w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>In the code chunk below, <code>cbind()</code> is used to append the predicted values onto test_data</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb255"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb255-1"><a href="#cb255-1" aria-hidden="true" tabindex="-1"></a>test_data_w <span class="ot">&lt;-</span> <span class="fu">cbind</span>(test_data_woodlands, GRF_pred_df_w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb256"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb256-1"><a href="#cb256-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(test_data_w, <span class="st">"data/rds/ml/woodlands/test_data_w.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3585,9 +5147,157 @@ Total number of duplicates: 74 </code></pre>
 <h3 data-number="1.14.2" class="anchored" data-anchor-id="calculating-root-mean-square-error"><span class="header-section-number">1.14.2</span> Calculating Root Mean Square Error</h3>
 <p>The root mean square error (RMSE) allows us to measure how far predicted values are from observed values in a regression analysis. In the code chunk below, rmse() of Metrics package is used to compute the RMSE.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-18-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-18-1" role="tab" aria-controls="tabset-18-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-18-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-18-2" role="tab" aria-controls="tabset-18-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-18-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-18-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb257"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb257-1"><a href="#cb257-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(test_data_punggol<span class="sc">$</span>resale_price, </span>
+<span id="cb257-2"><a href="#cb257-2" aria-hidden="true" tabindex="-1"></a>     test_data_p<span class="sc">$</span>GRF_pred_p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 49338.38</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb259"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb259-1"><a href="#cb259-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(train_data_punggol<span class="sc">$</span>resale_price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 456000  566000  605000  606094  645000  800000 </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb261"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb261-1"><a href="#cb261-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(test_data_p<span class="sc">$</span>resale_price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 495000  610000  648000  650865  689166  788000 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Interpretation</strong></p>
+<ol type="1">
+<li><p><strong>Magnitude of the Error</strong>:</p>
+<ul>
+<li><p>The <strong>RMSE of</strong> $49,423.08 indicates that, on average, the model’s predicted resale prices deviate from the actual resale prices by approximately $<strong>49,423.08.</strong></p></li>
+<li><p>Given that the <strong>mean resale price</strong> for the <strong>test dataset</strong> is $<strong>650,865</strong>, this RMSE represents about <strong>7.5%</strong> of the mean resale price. This indicates a relatively reasonable model performance, with predictions being on average about <strong>7.5%</strong> off from actual resale prices.</p></li>
+</ul></li>
+<li><p><strong>Comparison to Median</strong>:</p>
+<ul>
+<li><p>The <strong>median resale price</strong> in the <strong>test dataset</strong> is $<strong>648,000</strong>.</p></li>
+<li><p>The <strong>RMSE of $49,423.08</strong> represents about <strong>7.6%</strong> of the median resale price, which suggests that the model’s predictions are, on average, off by <strong>7.6%</strong> from the actual resale price at the median.</p></li>
+<li><p>Since the RMSE is around <strong>7.5-8%</strong> of both the <strong>mean</strong> and <strong>median resale prices</strong>, it suggests that the model performs fairly well, but there is still some degree of prediction error.</p></li>
+</ul></li>
+<li><p><strong>Model Performance</strong>:</p>
+<ul>
+<li>An RMSE of $<strong>49,423.08</strong> is typical for real estate predictive models. It shows that while the model has a strong performance, especially considering it accounts for the variance in resale prices, there’s still room for improvement, particularly for properties at the lower and higher price ranges.</li>
+</ul></li>
+<li><p><strong>Range of Resale Prices</strong>:</p>
+<ul>
+<li><p>The resale prices in the test dataset range from $495,000 to $788,000. Given this price range, the RMSE of $<strong>49,423.08</strong> suggests that the model is accurate within <strong>7-8%</strong> for most properties, but the error could be higher for properties at the extremes (either low or high price points).</p></li>
+<li><p>The <strong>training dataset</strong> has similar price distributions, but with a slightly lower mean of $606,094 compared to the test dataset’s mean of $<strong>650,865</strong>, which suggests that the model may be slightly more optimistic for higher resale prices in the test set.</p></li>
+</ul></li>
+<li><p><strong>Comparison to the Training Data</strong>:</p>
+<ul>
+<li><p>The <strong>training dataset</strong> has a slightly higher mean resale price ($<strong>606,094</strong>) compared to the test dataset ($<strong>650,865</strong>), suggesting that the model might have been slightly undertrained or overfitted. This could be further analyzed by evaluating how well the model generalizes to the test data.</p></li>
+<li><p>The relatively large <strong>spread</strong> between the lower and upper bounds of the resale prices (from $456,000 to $<strong>800,000</strong> in the training set) might also contribute to some variance in the predictions, though the RMSE indicates that the model is generally effective.</p></li>
+</ul></li>
+</ol>
+<p><strong>Conclusion:</strong></p>
+<p>The <strong>RMSE of</strong> $$49,423.08 for the Punggol test dataset, where the median resale price is <strong>648,000</strong>, indicates that the model’s predictions are on average about <strong>7.6%</strong> off from the actual resale prices. This suggests that the model performs reasonably well, with error margins that are typical for real estate prediction models. While this level of error is acceptable, there is still room for improvement, particularly for properties at the lower and higher ends of the price spectrum.</p>
+</div>
+</div>
+</div>
+<div id="tabset-18-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-18-2-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb263"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb263-1"><a href="#cb263-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(test_data_woodlands<span class="sc">$</span>resale_price, </span>
+<span id="cb263-2"><a href="#cb263-2" aria-hidden="true" tabindex="-1"></a>     test_data_w<span class="sc">$</span>GRF_pred_w)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 41784.94</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb265"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb265-1"><a href="#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(train_data_woodlands<span class="sc">$</span>resale_price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 350000  470000  500000  507168  545000  690000 </code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb267"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb267-1"><a href="#cb267-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(test_data_w<span class="sc">$</span>resale_price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 355000  508500  530000  540097  570000  701000 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Interpretation</strong></p>
+<p>1. <strong>Magnitude of the Error</strong></p>
+<ul>
+<li><p>The <strong>RMSE of</strong> $42,038.73 indicates that, on average, the model’s predicted resale prices deviate from the actual resale prices by $<strong>42,038.73</strong></p></li>
+<li><p>This is a <strong>7.8%</strong> error when compared to the <strong>mean resale price</strong> in the test dataset ($<strong>540,097</strong>). This suggests that, on average, the model’s predictions are off by about <strong>7.8%</strong> of the actual resale price, which is a reasonable error margin for many predictive models.</p></li>
+</ul>
+<p>2. <strong>Comparison to the Median</strong></p>
+<ul>
+<li><p>The <strong>median resale price</strong> in the <strong>test dataset</strong> is $<strong>530,000</strong>.</p></li>
+<li><p>The <strong>RMSE of $42,038.73</strong> represents about <strong>7.9%</strong> of the median resale price. This level of error is typical for real estate predictive models, and the fact that the RMSE is about <strong>7.9%</strong> of the median indicates that the model performs well for most of the data points, but there may still be some variability in predictions for properties priced far below or above the median.</p></li>
+</ul>
+<p>3. <strong>Model Performance</strong></p>
+<ul>
+<li><p>The <strong>RMSE of $42,038.73</strong> shows that the model has a <strong>moderate level of predictive accuracy</strong>. An RMSE that is around <strong>7-8%</strong> of the median and mean resale prices is common for real estate prediction models, which often deal with diverse factors influencing property prices (e.g., location, condition of the property, etc.).</p></li>
+<li><p>The fact that the RMSE is relatively small compared to the range of resale prices suggests that the model captures the general trends well. However, there could be room for improvement, especially for properties with prices that are on the lower or upper extremes of the price spectrum.</p></li>
+</ul>
+<p>4. <strong>Range of Resale Prices</strong></p>
+<ul>
+<li><p>The <strong>range of resale prices</strong> in the test dataset spans from $355,000 to $701,000, with the median at $530,000 and the mean at $<strong>540,097</strong>.</p></li>
+<li><p>The RMSE of $42,038.73 indicates that, on average, the predicted resale prices are within 7-8% of the actual resale prices. This is reasonable for most properties, but properties at the lower end ($355,000) or the <strong>upper end</strong> ($701,000) of the price range might have higher prediction errors. This suggests that the model works well for mid-range properties, but its accuracy decreases as we move toward the extremes of the price range.</p></li>
+</ul>
+<p>5. <strong>Comparison to Training Data</strong></p>
+<ul>
+<li><p>The <strong>median resale price</strong> in the <strong>training dataset</strong> is $$500,000, which is 30,000 lower than the median resale price in the test dataset (5$<strong>30,000</strong>).</p></li>
+<li><p>The <strong>mean</strong> resale price in the training dataset is $507,168, which is also slightly lower than the mean of $<strong>540,097</strong> in the test dataset.</p></li>
+<li><p>This suggests that the test data might contain higher-value properties than the training data. Despite this difference, the model’s performance (as indicated by the RMSE) is fairly consistent, with the error remaining around <strong>7.8%</strong> of the test dataset’s mean resale price.</p></li>
+<li><p>The <strong>RMSE of</strong> $42,038.73 relative to the training dataset’s median resale price of $<strong>500,000</strong> is approximately <strong>8.4%</strong>, which is slightly higher than the RMSE relative to the test dataset’s median. This indicates that the model performs slightly better on the test dataset, potentially due to the difference in price distributions.</p></li>
+</ul>
+<p><strong>Conclusion:</strong></p>
+<p>The <strong>RMSE of</strong> $42,038.73 for the Woodlands test dataset, where the median resale price is $<strong>530,000</strong>, suggests that the model’s predictions are, on average, about <strong>7.9%</strong> off from the actual resale prices. This is a reasonable level of predictive accuracy, indicating that the model is performing well overall, with small but acceptable prediction errors for properties within the typical price range.</p>
+<p>The model appears to perform slightly better on the <strong>test dataset</strong>, which has higher property prices than the training dataset. Further model refinement or feature adjustment may help reduce errors for properties at the extremes of the price range. However, for general purposes, the model seems reliable for predicting resale prices within the observed price ranges.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3596,18 +5306,187 @@ Total number of duplicates: 74 </code></pre>
 <h2 data-number="1.15" class="anchored" data-anchor-id="visualising-the-predicted-values"><span class="header-section-number">1.15</span> Visualising the predicted values</h2>
 <p>Alternatively, scatterplot can be used to visualise the actual resale price and the predicted resale price by using the code chunk below.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-19-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-19-1" role="tab" aria-controls="tabset-19-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-19-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-19-2" role="tab" aria-controls="tabset-19-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-19-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-19-1-tab">
+<div class="cell">
+<details class="code-fold">
+<summary>Code Chunk</summary>
+<div class="sourceCode cell-code" id="cb269"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb269-1"><a href="#cb269-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> test_data_p,</span>
+<span id="cb269-2"><a href="#cb269-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> GRF_pred_p,</span>
+<span id="cb269-3"><a href="#cb269-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">y =</span> resale_price)) <span class="sc">+</span></span>
+<span id="cb269-4"><a href="#cb269-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="TakeHome3_files/figure-html/unnamed-chunk-217-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Observation</p>
+<ol type="1">
+<li><p><strong>Positive Correlation</strong>:</p>
+<ul>
+<li><p>There is a clear <strong>positive relationship</strong> between the predicted resale prices (<strong>GRF_pred_p</strong>) and the actual resale prices (<strong>resale_price</strong>). As the predicted resale prices increase, the actual resale prices also tend to increase.</p></li>
+<li><p>This suggests that the model’s predictions are generally in line with the observed data, as higher predicted values correspond to higher actual resale prices.</p></li>
+</ul></li>
+<li><p><strong>Trend and Distribution</strong>:</p>
+<ul>
+<li><p>The points follow an upward trend, with a generally <strong>tight clustering</strong> around the line of best fit (not shown, but implied by the alignment of points). This indicates that the model is effectively capturing the main trend in the data.</p></li>
+<li><p>The scatter is somewhat <strong>spread out</strong>, indicating some variance between the predicted and actual resale prices. This is typical in any real-world prediction model, as it shows that the model is not perfect and that there are some discrepancies between predicted and actual values.</p></li>
+</ul></li>
+<li><p><strong>Outliers</strong>:</p>
+<ul>
+<li>Although the points generally follow a clear upward trend, there might be a few <strong>outliers</strong> or data points that deviate significantly from the general trend. These outliers could represent cases where the model performs poorly or where there are unusual observations in the data.</li>
+</ul></li>
+<li><p><strong>Model Fit</strong>:</p>
+<ul>
+<li>The strong linear trend suggests that the model has captured the general relationship between the variables, but some level of variability remains. To assess how well the model performs, you would typically calculate performance metrics like <strong>R-squared</strong>, <strong>RMSE</strong>, or <strong>MAE</strong> to quantify how well the model’s predictions match the actual values.</li>
+</ul></li>
+</ol>
+<p>Conclusion:</p>
+<p>The scatterplot shows that there is a positive relationship between predicted resale prices (<strong>GRF_pred_p</strong>) and actual resale prices (<strong>resale_price</strong>). This suggests that the model is successful in capturing the general trend of the data, but some discrepancies remain, which is expected in any predictive model. Further analysis, such as residual analysis or model evaluation metrics, could be done to refine the model and assess its performance more thoroughly.</p>
+</div>
+</div>
+</div>
+<div id="tabset-19-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-19-2-tab">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Observation</strong></p>
+<ol type="1">
+<li><p><strong>Positive Correlation</strong>:</p>
+<ul>
+<li><p>There is a <strong>strong positive correlation</strong> between <strong>GRF_pred_w</strong> (predicted resale prices) and <strong>resale_price</strong> (actual resale prices). As the predicted resale prices increase, the actual resale prices also tend to increase.</p></li>
+<li><p>This indicates that the model’s predictions are generally aligned with the observed data, and the higher predicted values tend to correspond to higher actual resale prices.</p></li>
+</ul></li>
+<li><p><strong>Trend and Distribution</strong>:</p>
+<ul>
+<li><p>The points show a clear <strong>upward trend</strong>, indicating a <strong>good linear relationship</strong> between the predicted and actual values.</p></li>
+<li><p>The scatter around the trend is <strong>relatively tight</strong>, meaning that the model’s predictions are fairly close to the actual resale prices. This suggests that the model is capturing the trend in the data well.</p></li>
+</ul></li>
+<li><p><strong>Outliers</strong>:</p>
+<ul>
+<li>Some <strong>outliers</strong> may exist at the higher end of the resale price range. These points appear to deviate slightly from the general trend, but they do not seem to be too far from the line of best fit. These outliers could represent cases where the model does not predict well for certain properties, possibly due to extreme values or unique characteristics of those observations.</li>
+</ul></li>
+<li><p><strong>Model Fit</strong>:</p>
+<ul>
+<li>The strong linear relationship in the scatterplot indicates that the model fits the data well. However, there may still be room for improvement in reducing the variance in predictions, as indicated by the slight spread of points, especially for lower resale prices.</li>
+</ul></li>
+<li><p><strong>Comparison to the Previous Scatterplot</strong>:</p>
+<ul>
+<li>Compared to the first scatterplot with <strong>GRF_pred_p</strong>, this scatterplot (with <strong>GRF_pred_w</strong>) shows a <strong>similar pattern</strong> of positive correlation between predicted and actual resale prices. Both scatterplots indicate good predictive performance, with minor deviations in predicted values at the lower and higher ends.</li>
+</ul></li>
+</ol>
+<p>Conclusion:</p>
+<p>The scatterplot suggests that the model with <strong>GRF_pred_w</strong> effectively captures the relationship between the predictors and actual resale prices, with strong predictive accuracy. The positive correlation and tight clustering of points indicate that the model is reliable for predicting resale prices. However, further evaluation using residual analysis or model evaluation metrics could help identify areas for improvement, particularly in the presence of outliers.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
 <section id="evaluation-of-model-geographically-weighted-regression-vs-random-forest" class="level2" data-number="1.16">
 <h2 data-number="1.16" class="anchored" data-anchor-id="evaluation-of-model-geographically-weighted-regression-vs-random-forest"><span class="header-section-number">1.16</span> Evaluation of Model: Geographically Weighted Regression Vs Random Forest</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-20-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-20-1" role="tab" aria-controls="tabset-20-1" aria-selected="true"><strong>Punggol</strong></a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-20-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-20-2" role="tab" aria-controls="tabset-20-2" aria-selected="false"><strong>Woodlands</strong></a></li></ul>
 <div class="tab-content">
-
+<div id="tabset-20-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-20-1-tab">
+<p>To compare the two methods—Random Forest (RF) and Geographically Weighted Regression (GWR)—for predicting resale prices in Punggol, let’s focus on the prediction accuracy and model performance.</p>
+<p>1. Prediction Accuracy:</p>
+<p>Random Forest:</p>
+<ul>
+<li><p>RMSE: The Random Forest model has an RMSE of 49,423.08, which measures the average error between the predicted and actual resale prices. A lower RMSE indicates better accuracy.</p></li>
+<li><p>Price Distribution:</p>
+<ul>
+<li><p><strong>Training Data</strong>: Min 456,000, Median 605,000, Max 800,000.</p></li>
+<li><p><strong>Test Data</strong>: Min 495,000, Median 648,000, Max 788,000.</p></li>
+</ul></li>
+</ul>
+<p>The predicted resale prices in the test data are within the expected range and the RMSE indicates that the Random Forest model performs fairly well.</p>
+<p>GWR:</p>
+<ul>
+<li><p>Predicted Values: The predicted resale prices from the GWR model range from 463,945 to 707,938, with a median of 609,348.</p></li>
+<li><p>Prediction Variance: The variance of predictions ranges from 1.25 billion to 1.4 billion, indicating some spread in the predictions, which is typical of GWR since it accounts for spatial variability.</p></li>
+</ul>
+<p>The predicted resale prices from GWR are also within the expected range, with a similar spread as the actual test data.</p>
+<ol start="2" type="1">
+<li>Model Calibration:</li>
+</ol>
+<p>Random Forest:</p>
+<ul>
+<li><p>Strength: Random Forest is well-suited for handling complex, non-linear relationships between predictors without explicit assumptions about their functional form.</p></li>
+<li><p>Weakness: It is harder to interpret and doesn’t directly provide insights into how individual variables (like distance to bus stops, malls, etc.) influence the resale prices.</p></li>
+</ul>
+<p>GWR:</p>
+<ul>
+<li><p>Strength: GWR allows for spatial variation in the coefficients, meaning it can show how the effect of each predictor (like <code>floor_area_sqm</code>, <code>unit_age</code>, etc.) changes across different locations. This makes GWR especially valuable for understanding local variations in resale prices.</p></li>
+<li><p>Weakness: GWR requires more complex interpretation, as it provides different coefficients for each observation based on the local neighborhood.</p></li>
+</ul>
+<ol start="3" type="1">
+<li>Which Model is Better?</li>
+</ol>
+<ul>
+<li><p>Prediction Accuracy: Both models provide similar ranges of predicted resale prices. However, Random Forest has a slightly better RMSE (49,423.08), which suggests it may perform slightly better in terms of overall prediction accuracy.</p></li>
+<li><p>Interpretability: GWR excels in interpretability, as it provides insights into how different factors affect resale prices in different parts of Punggol, thanks to its spatially varying coefficients. This is valuable if you need to understand the localized impact of each predictor.</p></li>
+</ul>
+</div>
+<div id="tabset-20-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-20-2-tab">
+<p>1. Prediction Accuracy:</p>
+<p>Random Forest:</p>
+<ul>
+<li><p>RMSE: The RMSE for the Random Forest model is 42,038.73. Lower RMSE indicates better prediction accuracy, and this value is quite reasonable, suggesting good performance for predicting resale prices.</p></li>
+<li><p>Price Summary:</p>
+<ul>
+<li><p><strong>Training Data</strong>: Min 350,000, Median 500,000, Max 690,000.</p></li>
+<li><p><strong>Test Data</strong>: Min 355,000, Median 530,000, Max 701,000.</p></li>
+</ul>
+<p>The test data’s price distribution suggests that the model is predicting within the expected range.</p></li>
+</ul>
+<p>GWR:</p>
+<ul>
+<li><p>Prediction: The GWR model gives predicted resale prices ranging from 359,170 to 616,562, with a median of 493,786. This is fairly close to the actual resale prices in the test data (from 355,000 to 701,000), indicating that GWR is also performing reasonably well for predictions.</p></li>
+<li><p>Prediction Variance: The prediction variance ranges from 735,748,898 to 792,698,476, suggesting that the GWR model’s predictions have some spread, but this is expected since GWR accounts for spatial variation.</p></li>
+</ul>
+<ol start="2" type="1">
+<li>Model Calibration:</li>
+</ol>
+<p>Random Forest:</p>
+<ul>
+<li>Random Forest tends to perform well when capturing complex, non-linear relationships between predictors. It doesn’t offer easy interpretability, but it can model interactions between variables without explicitly specifying them. Given that the RMSE is relatively low (42,038.73), the model seems to be doing well in predicting resale prices.</li>
+</ul>
+<p>GWR:</p>
+<ul>
+<li><p>Model Calibration Information: The coefficients for the GWR model vary spatially, and the values seem reasonable (e.g., for <code>floor_area_sqm</code>, the coefficient ranges from -3419.735 to 3037.7). These coefficients represent the local effect of each variable on resale prices.</p></li>
+<li><p>Interpretability: One key strength of GWR is that it allows you to understand how each variable affects resale prices differently in various spatial locations (e.g., the effect of proximity to bus stops, hawker centers, or supermarkets varies across the region).</p></li>
+</ul>
+<ol start="3" type="1">
+<li>Which Model is Better?</li>
+</ol>
+<ul>
+<li><p>Prediction Accuracy: Both models give similar ranges for predicted resale prices, and both seem to predict the prices reasonably well. However, Random Forest generally provides a more reliable prediction with lower RMSE (42,038.73), indicating better overall performance in terms of predictive accuracy.</p></li>
+<li><p>Interpretability: If you need to understand how each factor influences resale prices in different regions of Woodlands, GWR is a better choice because of its spatially varying coefficients and ability to show how variables interact with location.</p></li>
+</ul>
+</div>
 </div>
 </div>
 </section>
@@ -3617,7 +5496,7 @@ Total number of duplicates: 74 </code></pre>
 </section>
 <section id="conclusion" class="level2" data-number="1.18">
 <h2 data-number="1.18" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">1.18</span> Conclusion</h2>
-<p>To summarise, Random Forest is better in predicting HDB resale prices. However, geospatial details are heavily embedded in HDB resale data, we shouldn’t discount the spatial aspects that will affect the resale prices too. If the study’s purpose is to understand spatial patterns, GWR is more suited. Conversely, if accuracy is a priority, Random Forest is a better choice.</p>
+<p>To summarise, Random Forest is better in predicting HDB resale prices. However, geospatial details are heavily embedded in HDB resale data, we shouldn’t discount the spatial aspects that will affect the resale prices too. If the study’s purpose is to understand spatial patterns, GWR is more suited. Conversely, if accuracy is a priority, Random Forest would be a better choice.</p>
 
 
 </section>
