@@ -1,0 +1,180 @@
+---
+title: "In-Class Exercise 9"
+author: "Joshua TING"
+date: "28 October, 2024"
+date-modified: "last-modified"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code Chunk"
+    number-sections: true
+execute:
+  eval: false #r will run through all codes
+  echo: true #r will display all code chunk
+  warning: false #for mark down
+  freeze: true #r will not render all existing  html files
+  message: false #avoid printing warning message
+editor: source
+---
+
+```{R}
+pacman::p_load(sf, tmap, spdep, GWmodel, SpatialML, rsample, Metrics, tidyverse, knitr, kableExtra)
+```
+
+ELDERCARE is in shapefile format, the code chunk below will be used:
+
+```{r}
+eldercare <- st_read(dsn = "data/EldercareServicesSHP",
+                     layer = "ELDERCARE") %>% 
+  st_transform(crs=3414)
+```
+
+Code chunk below is used to import fml file.
+
+```{r}
+CHAS <- st_read("data/CHASClinics.kml") %>% 
+  st_transform(crs=3414)
+```
+
+St_buffer of sf package is used to a buffer of 1km of around each eldercare features
+
+```{r}
+buffer_km <- st_buffer(eldercare, 
+                        dist = 1000)
+```
+
+the code chunk belwo is used to plot the newly created buffers and the CHAS clinic
+
+PLOT THE POLYGON FIRST then the point
+
+```{r}
+tmap_mode('plot') #view
+tm_shape(buffer_km) +
+  tm_polygons(alpha=.3) +
+tm_shape(CHAS) +
+  tm_dots()
+```
+
+code chunk below is used to count the number of CHAS clinics with 1km of each eldercare centre
+
+```{r}
+buffer_km$pts_counts <- lengths( #length returns in the new field name pts count
+  st_intersects(buffer_km, CHAS))
+
+```
+
+::: callout-note
+## spatstat do not like point z
+:::
+
+```{r}
+mdata <- read_rds("data/rds/model/mdata.rds") %>%
+  st_jitter(amount= 2) #in metres
+#jitter is displacement of the same point
+
+```
+
+if use gwr, coordinates that are the same will return nothing. thus, need to st_jitter to shift alittle. Shouldn't use decimal as if might be 0.
+
+Eg: 10 transactions in one hdb flat. then need to jitter to displace the distance alittle.
+
+::: callout-note
+## what are the codes to see overlapping
+:::
+
+```{r}
+pacman::p_load(SpatialACC, sf, tidyverse, tmap, ggstatsplot)
+```
+
+```{r}
+mpsz <- st_read(dsn = "data/geospatial",
+                layer="MP14_SUBZONE_NO_SEA_PL")
+```
+
+```{r}
+hexagons <- st_read(dsn = "data/geospatial",
+                    layer = "hexagons")
+```
+
+```{r}
+eldercare <-st_read(dsn = "data/geospatial",
+                    layer = "ELDERCARE")
+```
+
+```{r}
+ODMatrix <- read_csv("data/aspatial/OD_Matrix.csv",
+                     skip = 0)
+```
+
+```{r}
+eldercare <- eldercare %>% 
+  select(fid, ADDRESSPOS) %>%
+  mutate(capacity = 100)
+```
+
+```{r}
+hexagons <- hexagons %>% 
+  select(fid) %>% 
+  mutate(demand=100)
+```
+
+```{r}
+distmat <- ODMatrix %>% 
+  select(origin_id, destination_id, total_cost) %>% 
+  spread(destination_id, total_cost) %>% #converts to matrix instead making it into long and thin 
+  select(-c('origin_id'))
+```
+
+```{r}
+distmat_km <- as.matrix(distmat/1000)
+```
+
+```{r}
+acc_Hansen <- data.frame(ac(hexagons$demand, #distance
+                            eldercare$capacity, #origin
+                            distmat_km, 
+                            #d0 = 50, #distance limits
+                            power = 2, #can change the power
+                            family = "Hansen"))
+```
+
+```{r}
+
+colnames(acc_Hansen) <- "accHansen"
+
+acc_Hansen <- as_tibble(acc_Hansen)
+
+hexagon_Hansen <- bind_cols(hexagons, acc_Hansen)
+
+```
+
+```{r}
+mapex <- st_bbox(hexagons)
+
+tmap_mode("plot")
+tm_shape(hexagon_Hansen,
+         bbox = mapex) + 
+  tm_fill(col = "accHansen",
+          n = 10,
+          style = "quantile",
+          border.col = "black",
+          border.lwd = 1) +
+tm_shape(eldercare) +
+  tm_symbols(size = 0.1) +
+  tm_layout(main.title = "Accessibility to eldercare: Hansen method",
+            main.title.position = "center",
+            main.title.size = 2,
+            legend.outside = FALSE,
+            legend.height = 0.45, 
+            legend.width = 3.0,
+            legend.format = list(digits = 6),
+            legend.position = c("right", "top"),
+            frame = TRUE) +
+  tm_compass(type="8star", size = 2) +
+  tm_scale_bar(width = 0.15) +
+  tm_grid(lwd = 0.1, alpha = 0.5)
+```
+```{r}
+
+```
+
