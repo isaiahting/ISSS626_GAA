@@ -17,6 +17,7 @@ execute:
 editor: source
 ---
 
+
 # Take-home Exercise 3b: Predicting HDB Resale Prices with Geographically Weighted Machine Learning Methods
 
 ## Overview
@@ -27,9 +28,11 @@ In this take-home exercise, We will calibrate a predictive model to predict HDB 
 
 ## Getting Started
 
+
 ```{r}
 pacman::p_load(tidyverse, readr, sf, httr, jsonlite, rvest, dplyr, units, lubridate, tmap, ggplot2,ggpubr, beepr, corrplot, spdep, GWmodel, SpatialML, rsample, Metrics)
 ```
+
 
 | **Package** | **Function** | **Explanation** |
 |------------------------|------------------------|------------------------|
@@ -87,14 +90,17 @@ pacman::p_load(tidyverse, readr, sf, httr, jsonlite, rvest, dplyr, units, lubrid
 
 -   HDB Resale
 
+
 ```{r}
 resale2023 <- read_csv("data/rawdata/aspatial/hdb/resale.csv") %>%
   filter(month >= "2023-01" & month <= "2024-09")
 ```
 
+
 2.  Geospatial Data:
 
 -   MPSZ in shapefile format
+
 
 ```{r}
 mpsz = st_read(dsn = "data/rawdata/geospatial/mpsz",
@@ -105,60 +111,78 @@ mpsz = st_read(dsn = "data/rawdata/geospatial/mpsz",
 plot(mpsz)
 ```
 
+
 -   Bus Stops in shapefile format
+
 
 ```{r}
 busstop <- st_read(dsn = "data/rawdata/geospatial/busstop",
                       layer = "BusStop")
 ```
 
+
 -   **Eldercare** in shapefile format
+
 
 ```{r}
 eldercare <- st_read(dsn = "data/rawdata/geospatial/eldercare",
                       layer = "ELDERCARE")
 ```
 
+
 -   Hawker Centres in kml format
+
 
 ```{r}
 hawker <- st_read("data/rawdata/geospatial/hawker/HawkerCentres.kml")
 ```
 
+
 -   Kindergarten in fml format
+
 
 ```{r}
 kindergarten <- st_read("data/rawdata/geospatial/kindergarten/Kindergartens.kml")
 kindergarten <- st_transform(kindergarten, 3414)
 ```
 
+
 -   Shopping Malls in csv format
+
 
 ```{r}
 mall <- read_csv("data/rawdata/geospatial/mall/shopping_mall_coordinates.csv")
 ```
 
+
 -   Train Station in shapefile format
+
 
 ```{r}
 mrt <- st_read(dsn = "data/rawdata/geospatial/mrt",
                 layer = "RapidTransitSystemStation")
 ```
 
+
 -   SDCP Park in kml format
+
 
 ```{r}
 park <- st_read("data/rawdata/geospatial/park/NParksParksandNatureReservesKML.kml")
 ```
 
+
 -   Schools in csv format
+
 
 ```{r}
 school <- read_csv("data/rawdata/geospatial/school/Generalinformationofschools.csv") %>% 
   mutate(postal_code = as.character(postal_code))
 ```
 
+
 -   Supermarket in kml format
+
 
 ```{r}
 supermarket <- st_read("data/rawdata/geospatial/supermarket/SupermarketsKML.kml")
@@ -194,6 +218,7 @@ school = read_rds("data/rds/geospatial/school.rds")
 supermarket = read_rds("data/rds/geospatial/supermarket.rds")
 ```
 
+
 ::: callout-important
 ## Standardising CRS
 
@@ -207,6 +232,7 @@ Therefore, in this exercise, SVY21 (EPSG 3414) will be the standardised CRS as a
 ### HDB Resale
 
 In tidying up the HDB resale data, the column *block* & *street_name* are combined and *remaining_lease* are split in two columns for ease of manipulation. Additionally, we are changing the column *remaining_lease_yr* as an integer and splitting it to month and year.
+
 
 ```{r}
 resale_tidy <- resale2023 %>%
@@ -228,9 +254,11 @@ add_list <- sort(unique(resale_selected$address)) #parse a list as API cannot re
 #sort is used to easier to find geo codes
 ```
 
+
 Fetching Data from onemap API
 
 As the HDB resale data lack of coordinates, API was used to extract the coordinates.
+
 
 ```{r}
 get_coords <- function(add_list){
@@ -329,7 +357,9 @@ get_coords <- function(add_list){
 }
 ```
 
+
 Below is the code chunk that populates the coordinates in longitude, latitude and postal code against the address in the *add_list*.
+
 
 ```{r}
 coords <- get_coords(add_list)
@@ -345,7 +375,9 @@ write_rds(coords, "data/rds/aspatial/coords.rds")
 coords = read_rds("data/rds/aspatial/coords.rds")
 ```
 
+
 The longtitude and latitude is then combined into geometry and the crs has been set to EPSG = 3414.
+
 
 ```{r}
 coords_sf <- coords %>%
@@ -363,27 +395,35 @@ write_rds(coords_sf, "data/rds/aspatial/coords_sf.rds")
 coords_sf = read_rds("data/rds/aspatial/coords_sf.rds")
 ```
 
+
 Following which, the *coords_sf* is then combined to the *resale_selected* df by address, forming a new df *resale_geom*
+
 
 ```{r}
 resale_geom <- resale_selected %>% 
   left_join(coords_sf, by = "address")
 ```
 
+
 Assigning CRS EPSG 3414 to resale_geom
+
 
 ```{r}
 resale_geom <- resale_geom %>% 
   st_as_sf(coords =c("longitude", "latitude"), crs = 3414, remove = FALSE)
 ```
 
+
 Using st_crs() to check if it is the correct CRS.
+
 
 ```{r}
 st_crs(resale_geom)
 ```
 
+
 In ensuring these are the variables we need, we use select() to include the variables. Then, we compute the unit age with the formula of 99 year (convention HDB lease years) - remaining lease year. Lastly, we change the column *month* to POSICxt so we can manipulate in ease later on.
+
 
 ```{r}
 resale_geom <- resale_geom %>%
@@ -400,6 +440,7 @@ write_rds(resale_geom, "data/rds/aspatial/resale_geom.rds")
 #| echo: false
 resale_geom = read_rds("data/rds/aspatial/resale_geom.rds")
 ```
+
 
 ### Overview of Data sets in Coordinate Reference System
 
@@ -445,18 +486,23 @@ SVY21 (EPSG: 3413) - Singapore Use
 
 First, we would like to check if there is any shared boudaries in this sf as this will churned as invalid polygons in the data. We will then noticed that there are several "Ring Self-Intersection" specifically, there are 9 polygons with self-intersection issues which is not good for the data.
 
+
 ```{r}
 st_is_valid(mpsz, reason = TRUE)
 ```
 
+
 The below code chunk visualises the invalid geometries.
+
 
 ```{r}
 invalid_polygons <- mpsz[!st_is_valid(mpsz),]
 plot(invalid_polygons)
 ```
 
+
 In addressing the above point, we will use st_buffer() of sf package to compute a 5-metres buffers around the data.
+
 
 ```{r}
 mpsz <- st_buffer(mpsz, dist = 2)
@@ -472,11 +518,13 @@ write_rds(mpsz, "data/rds/geospatial/mpsz.rds")
 mpsz = read_rds("data/rds/geospatial/mpsz.rds")
 ```
 
+
 ### Bus Stops
 
 In inspecting the sf, we noticed that when we sort the column "BUS_STOP_N", there are two rows that retains the geometry however there are nil indication of the bus stop number and location. Hence both of the rows will be deleted.
 
 Additionally, in checking for duplicates through its geometry, we noticed two rows share the geometry. One is named as "YUSEN LOGISTICS" while the other is "yusen logistics"
+
 
 ```{r}
 # Check for duplicate geometries in the eldercare sf object
@@ -490,7 +538,9 @@ if (nrow(duplicate_busstop) > 0) {
 }
 ```
 
+
 Hence, with the above adjustments and extracting coordinates, the data is cleaned.
+
 
 ```{r}
 busstop_cleaned <- busstop %>%
@@ -522,9 +572,11 @@ write_rds(busstop_cleaned, "data/rds/geospatial/cleaned/busstop_cleaned.rds")
 busstop_cleaned = read_rds("data/rds/geospatial/cleaned/busstop_cleaned.rds")
 ```
 
+
 ### Eldercare
 
 In ensuring there are no duplicates the below code chunk was churned. However,we noticed that there is two rows that shares the same geometry. Through closer inspection, we realised that both addresses are formatted differently "117 Bukit Merah View" & "Blk 117 Bukit Merah View #01-205". Thus, one of the row will be deleted.
+
 
 ```{r}
 # Check for duplicate geometries in the eldercare sf object
@@ -538,7 +590,9 @@ if (nrow(duplicate_geometries) > 0) {
 }
 ```
 
+
 The code below selects the necessary variables of ease of manipulation
+
 
 ```{r}
 eldercare_cleaned <- eldercare %>% 
@@ -562,9 +616,11 @@ write_rds(eldercare_cleaned, "data/rds/geospatial/cleaned/eldercare_cleaned.rds"
 eldercare_cleaned = read_rds("data/rds/geospatial/cleaned/eldercare_cleaned.rds")
 ```
 
+
 ### Hawker
 
 The code chunk below checks if there are any duplicates geometries and it returns nil.
+
 
 ```{r}
 duplicate_geometries <- hawker[duplicated(st_geometry(hawker)), ]
@@ -577,13 +633,17 @@ if (nrow(duplicate_geometries) > 0) {
 }
 ```
 
+
 As the CRS of hawker sf is in WGS84, st_transform() is then used to transform it to SVY21.
+
 
 ```{r}
 hawker <- st_transform(hawker, 3414)
 ```
 
+
 The data is then split into longitude and latitude and selected columns were chosen.
+
 
 ```{r}
 coordinates <- st_coordinates(hawker)
@@ -603,9 +663,11 @@ write_rds(hawker_cleaned, "data/rds/geospatial/cleaned/hawker_cleaned.rds")
 hawker_cleaned = read_rds("data/rds/geospatial/cleaned/hawker_cleaned.rds")
 ```
 
+
 ### Kindergarten
 
 The code chunk below checks if there are any duplicates geometries and it returns nil.
+
 
 ```{r}
 duplicate_kindergarten <- kindergarten[duplicated(st_geometry(kindergarten)), ]
@@ -622,7 +684,9 @@ if (nrow(duplicate_kindergarten) > 0) {
 kindergarten <- st_transform(kindergarten, 3414)
 ```
 
+
 The data is then split into longitude and latitude and selected columns were chosen.
+
 
 ```{r}
 coordinates <- st_coordinates(kindergarten)
@@ -642,15 +706,19 @@ write_rds(kindergarten_cleaned, "data/rds/geospatial/cleaned/kindergarten_cleane
 kindergarten_cleaned = read_rds("data/rds/geospatial/cleaned/kindergarten_cleaned.rds")
 ```
 
+
 ### School
 
 Despite importing the data and ensuring that postal code is in character form, there are still incomplete postal code as seen in the below code.
+
 
 ```{r}
 list(school$postal_code)
 ```
 
+
 The below code chunk churned out 3 incomplete postal codes.
+
 
 ```{r}
 # Display postal codes that are not 6 digits
@@ -662,7 +730,9 @@ invalid_postal_codes <- school %>%
 print(invalid_postal_codes)
 ```
 
+
 The correct postal code has been changed with the assistance of Google Maps and it piped back to the main df school.
+
 
 ```{r}
 school <- school %>% 
@@ -694,11 +764,13 @@ postal_list <- sort(unique(school$postal_code)) #parse a list as API cannot read
 #sort is used to easier to find geo codes
 ```
 
+
 Fetching Data from onemap API
 
 As the primary schools lack of geometry coordinates, API was used to extract the coordinates.
 
 This will return WGS84 xy coordinates alongside SVY21 xy coordinates.
+
 
 ```{r}
 get_coords <- function(postal_list){
@@ -810,7 +882,9 @@ print(head(coords_school))
 coords_school_sf <- st_as_sf(coords_school[!is.na(coords_school$geometry), ])
 ```
 
+
 Below is the code chunk that populates the coordinates in longitude, latitude and postal code against the address in the *add_list*.
+
 
 ```{r}
 coords_school <- get_coords(postal_list)
@@ -833,14 +907,18 @@ coords_school <- coords_school %>%
   select(postal_code, geometry)
 ```
 
+
 `Following which, the coords_sf is then combined to the resale_selected df by address, forming a new df resale_geom`
+
 
 ```{r}
 school_cleaned <- school %>% 
   left_join(coords_school, by = "postal_code")
 ```
 
+
 In the code chunk, we will extract the longitude and latitude from the geometry to facilitate transforming into sf.
+
 
 ```{r}
 school_cleaned <- school_cleaned %>%
@@ -850,7 +928,9 @@ school_cleaned <- school_cleaned %>%
   )
 ```
 
+
 Then, we are able to transform this into sf with the new longitude and latitude columns.
+
 
 ```{r}
 school_cleaned<- st_as_sf(school_cleaned, coords = c("longitude", "latitude"), crs = 3414)
@@ -866,9 +946,11 @@ write_rds(school_cleaned, "data/rds/geospatial/cleaned/school_cleaned.rds")
 school_cleaned = read_rds("data/rds/geospatial/cleaned/school_cleaned.rds")
 ```
 
+
 ### Malls
 
 As the af *mall* was in WGS84, it will transformed into SVY21 EPSG 3414.
+
 
 ```{r}
 # Create an sf object with WGS 84 CRS
@@ -877,7 +959,9 @@ mall <- st_as_sf(mall, coords = c("LONGITUDE", "LATITUDE"), crs = 4326)
 mall_cleaned <- st_transform(mall, crs = 3414)
 ```
 
+
 From the code below, we noticed that there are two malls that are duplicated.
+
 
 ```{r}
 geom_text <- st_as_text(st_geometry(mall_cleaned))
@@ -895,7 +979,9 @@ if(nrow(duplicates) > 0) {
 
 ```
 
+
 Hence, with the code below, we will remove the duplicate.
+
 
 ```{r}
 # Convert geometry to text for comparison
@@ -921,9 +1007,11 @@ write_rds(mall, "data/rds/geospatial/cleaned/mall_cleaned.rds")
 mall_cleaned = read_rds("data/rds/geospatial/cleaned/mall_cleaned.rds")
 ```
 
+
 ### Park
 
 The code chunk below checks if there are any duplicates geometries and it returns nil.
+
 
 ```{r}
 # Get the geometries as text for easier comparison
@@ -933,7 +1021,9 @@ geom_park <- st_as_text(st_geometry(park))
 duplicates_park <- park[duplicated(geom_park) | duplicated(geom_park, fromLast = TRUE), ]
 ```
 
+
 As the sf park was in WGS84, it will transformed into SVY21 EPSG 3414.
+
 
 ```{r}
 # Create an sf object with WGS 84 CRS
@@ -953,15 +1043,19 @@ write_rds(park_cleaned, "data/rds/geospatial/cleaned/park_cleaned.rds")
 park_cleaned = read_rds("data/rds/geospatial/cleaned/park_cleaned.rds")
 ```
 
+
 ### MRT
 
 Let's take a quick glimpse at the data. We noticed that there duplicated station names, depots, command centres (i.e. BOCC - to which I derived it as a [Bus Operations Control Centre](https://landtransportguru.net/trapeze-common-fleet-management-system/seletar-bus-depot-interiors-7/), stations that are under construction.
+
 
 ```{r}
 glimpse(mrt)
 ```
 
+
 Thus, with the code chunk below, we use the duplicate function to check which are the duplciated stations. Noticeably, these stations are actually interchange where it consists of more than 1 metro line (i.e. Outram Park where it houses East-West, Thomson-EastCoast, and North-East Line). However, Bayshore MRT isn't an interchange but there are 2 duplicates of it that is likely due to the construction of Bedok South where both links. Regardless, the decision to keep these variables retains as it serves as an important proximate to the residential areas in geospatial setting.
+
 
 ```{r}
 # Check for duplicates in the STN_NAM_DE column and display the whole rows
@@ -980,9 +1074,11 @@ if (nrow(duplicates) > 0) {
 glimpse(duplicates)
 ```
 
+
 [![MRT System Map](images/Screenshot%202024-11-03%20at%2014.58.56.png){fig-align="center"}](https://www.lta.gov.sg/content/dam/ltagov/getting_around/public_transport/rail_network/image/SM_TEL4_Eng_(Ver150824)_TL_Main.pdf)
 
 In the below code chunk, we will cross-check with the MRT map above and remove the names are that are depots, operation centres, sub stations and columns that are not needed. The code chunks includes stations with "MRT STATION" or "LRT STATION".
+
 
 ```{r}
 mrt_cleaned <- mrt %>%
@@ -993,9 +1089,11 @@ mrt_cleaned <- mrt %>%
 print(mrt_cleaned)
 ```
 
+
 In the list, we noticed that some of the MRT stations are actually under construction. Hence we cross-checked with the MRT map above and exclude those that are under construction.
 
 First, we create a list of excluded MRT list. Then we use Regex to exclude it using if function.
+
 
 ```{r}
 # Specify the words to exclude
@@ -1022,7 +1120,9 @@ summary(mrt_cleaned )      # Summary of the filtered object
 
 ```
 
+
 We will then view() the mrt_cleaned sf and search for the excluded MRT stations in ensuring that it is not there.
+
 
 ```{r}
 view(mrt_cleaned)
@@ -1042,11 +1142,13 @@ write_rds(mrt_cleaned, "data/rds/geospatial/cleaned/mrt_cleaned.rds")
 mrt_cleaned = read_rds("data/rds/geospatial/cleaned/mrt_cleaned.rds")
 ```
 
+
 ### Supermarket
 
 The code chunk below checks if there are any duplicates geometries and it returns several duplicates.
 
 In the table below, we noticed that there are 33 rows of geometries returned with 2-4 duplicates in each geometry. In explaining this issue, we can zoom into the description column and it will surface different supermarket names sharing the same geometry. This is likely due to the changing of the tenants.
+
 
 ```{r}
 supermarket = read_rds("data/rds/geospatial/supermarket.rds")
@@ -1080,7 +1182,9 @@ if (nrow(duplicates_table) > 0) {
 
 ```
 
+
 In addressing the duplicate, only one geometry will be retained while the rest will be eradicated.
+
 
 ```{r}
 # Remove duplicates while retaining unique geometries
@@ -1088,7 +1192,9 @@ supermarket <- supermarket %>%
   distinct(geometry, .keep_all = TRUE)  # Keep all columns for the unique geometries
 ```
 
+
 Following which, we can check again to see if there's any duplicates remaining and it returns nil.
+
 
 ```{r}
 # Find duplicated geometries
@@ -1118,7 +1224,9 @@ if (nrow(duplicates_table) > 0) {
 
 ```
 
+
 The data is then transformed from WGS84 to SVY21.
+
 
 ```{r}
 # Create an sf object with WGS 84 CRS
@@ -1146,9 +1254,11 @@ write_rds(supermarket_cleaned, "data/rds/geospatial/cleaned/supermarket_cleaned.
 supermarket_cleaned = read_rds("data/rds/geospatial/cleaned/supermarket_cleaned.rds")
 ```
 
+
 ## Computing Proximity to Resale Transactions
 
 #### Bus Stop
+
 
 ```{r}
 # Create busstop_resale with just the two columns we want
@@ -1187,7 +1297,9 @@ write_rds(busstop_resale, "data/rds/prox/busstop_resale.rds")
 busstop_resale = read_rds("data/rds/prox/busstop_resale.rds")
 ```
 
+
 #### Eldercare
+
 
 ```{r}
 # Create eldercare_resale with just the two columns we want
@@ -1227,7 +1339,9 @@ write_rds(eldercare_resale, "data/rds/prox/eldercare_resale.rds")
 eldercare_resale = read_rds("data/rds/prox/eldercare_resale.rds")
 ```
 
+
 #### Hawker
+
 
 ```{r}
 # Create eldercare_resale with just the two columns we want
@@ -1263,7 +1377,9 @@ write_rds(hawker_resale, "data/rds/prox/hawker_resale.rds")
 hawker_resale = read_rds("data/rds/prox/hawker_resale.rds")
 ```
 
+
 #### Kindergarten
+
 
 ```{r}
 # Create eldercare_resale with just the two columns we want
@@ -1303,7 +1419,9 @@ write_rds(kindergarten_resale, "data/rds/prox/kindergarten_resale.rds")
 kindergarten_resale = read_rds("data/rds/prox/kindergarten_resale.rds")
 ```
 
+
 #### Malls
+
 
 ```{r}
 #change CRS of mall_cleaned to align to CRS EPSG 3414 
@@ -1342,7 +1460,9 @@ write_rds(mall_resale, "data/rds/prox/mall_resale.rds")
 mall_resale = read_rds("data/rds/prox/mall_resale.rds")
 ```
 
+
 #### MRT
+
 
 ```{r}
 # Create eldercare_resale with just the two columns we want
@@ -1378,7 +1498,9 @@ write_rds(mrt_resale, "data/rds/prox/mrt_resale.rds")
 mrt_resale = read_rds("data/rds/prox/mrt_resale.rds")
 ```
 
+
 #### Park
+
 
 ```{r}
 # Create eldercare_resale with just the two columns we want
@@ -1414,7 +1536,9 @@ write_rds(park_resale, "data/rds/prox/park_resale.rds")
 park_resale = read_rds("data/rds/prox/park_resale.rds")
 ```
 
+
 #### School
+
 
 ```{r}
 # Create eldercare_resale with just the two columns we want
@@ -1454,7 +1578,9 @@ write_rds(school_resale, "data/rds/prox/school_resale.rds")
 school_resale = read_rds("data/rds/prox/school_resale.rds")
 ```
 
+
 #### Supermarkets
+
 
 ```{r}
 # Create eldercare_resale with just the two columns we want
@@ -1490,9 +1616,11 @@ write_rds(supermarket_resale, "data/rds/prox/supermarket_resale.rds")
 supermarket_resale = read_rds("data/rds/prox/supermarket_resale.rds")
 ```
 
+
 ## Visualisations
 
 In the code chunk below, we are able to view the mininum, maximum, median and quadrants of the data. Interesting, the minimum and maximum resale price were \$150,000 and \$1.58m. And the smallest age of unit was 3 whereas the oldest was 58.
+
 
 ```{r}
 summary(resale_geom)
@@ -1541,7 +1669,9 @@ ggarrange(Area_sqm, Age, prox_busstop, prox_eldercare, prox_hawker,
           ncol = 3, nrow = 4)
 ```
 
+
 We will use tmap to create an iteractive map of the resale prices. Noticebly, the "hotter" resale flats are concentrated in the south and middle area with scatters around the east and west.
+
 
 ```{r}
 tmap_mode('plot')
@@ -1565,7 +1695,9 @@ tm_shape(resale_geom) +
   tm_view(set.zoom.limits = c(11,14))
 ```
 
+
 In barchart below, we have populated the percentage of transactions stratified by town. Visibly, Punggol attains the highest 7.7% followed by Woodlands at 7.6%. Hence We would want to predict the HDB resale prices for these two towns.
+
 
 ```{r}
 town_percentages <- resale_geom %>%
@@ -1587,7 +1719,9 @@ ggplot(town_percentages, aes(x = reorder(town, -percentage), y = percentage)) +
        y = "Percentage of Total Transactions (%)")
 ```
 
+
 ## Final Amendments
+
 
 ```{r}
 #| echo: false
@@ -1601,11 +1735,13 @@ data <- resale_geom %>%
             park_resale, school_resale, supermarket_resale)
 ```
 
+
 Firstly, we will change the column "month" to POSIXct for easier manipulation.
 
 As we are focusing on 4-room HDB flats, we will filter according to that.
 
 Lastly, as we're working with an sf (spatial features) object, we need to use a different approach to remove columns instead of using dplyr. We will use select(!matches) to remove the column address.
+
 
 ```{r}
 data <- data %>%
@@ -1626,21 +1762,25 @@ write_rds(data, "data/rds/ml/data.rds")
 write.csv(data,"data/rds/ml/data.csv", row.names = FALSE)
 ```
 
+
 ## Machine Learning
 
 ### Data Sampling
 
 The entire data are split into training (Jan 2023 - June 2024) and testing (July 2024 - Sept 2024) data sets into by using *initial_split()* of **rsample** package. rsample is one of the package of tigymodels.
 
+
 ```{r}
 #| echo: false
 data = read_rds("data/rds/ml/data.rds")
 ```
 
+
 In this section, we will split the data into training data - Jan 2023 to June 2024 & test Data - July 2024 to Sept 2024 that is stratified by Punggol & Woodlands. We can see there are 1549 training records and 300 testing records for Punggol whereas in Woodlands there are 1391 training records and 238 testing records.
 
 ::: panel-tabset
 ## **Punggol**
+
 
 ```{r}
 set.seed(1234)
@@ -1666,7 +1806,9 @@ write_rds(train_data_punggol, "data/rds/ml/punggol/train_data_punggol.rds")
 write_rds(test_data_punggol, "data/rds/ml/punggol/test_data_punggol.rds")
 ```
 
+
 ## **Woodlands**
+
 
 ```{r}
 set.seed(1234)
@@ -1691,11 +1833,13 @@ print(paste("Number of testing records:", nrow(test_data_woodlands)))
 write_rds(train_data_woodlands, "data/rds/ml/woodlands/train_data_woodlands.rds")
 write_rds(test_data_woodlands, "data/rds/ml/woodlands/test_data_woodlands.rds")
 ```
+
 :::
 
 ### Computing Correlation Matrix
 
 Prior to loading predictors into predictive model, a correlation matrix will be use to check for sign of multicollinearity. From the correlation matrix below, all correlation values are below 0.8, indicating no sign of multicollinearity.
+
 
 ```{r}
 data_nogeo <- data %>%
@@ -1713,28 +1857,34 @@ corrplot::corrplot(cor(data_nogeo[, 2:19]),
                    type = "upper")
 ```
 
+
 ### Retrieving Stored Data
 
 ::: panel-tabset
 **Punggol**
+
 
 ```{r}
 train_data_punggol <- read_rds("data/rds/ml/punggol/train_data_punggol.rds")
 test_data_punggol <- read_rds("data/rds/ml/punggol/test_data_punggol.rds")
 ```
 
+
 **Woodlands**
+
 
 ```{r}
 train_data_woodlands <- read_rds("data/rds/ml/woodlands/train_data_woodlands.rds")
 test_data_woodlands <- read_rds("data/rds/ml/woodlands/test_data_woodlands.rds")
 ```
+
 :::
 
 ## Building a non-spatial multiple linear regression
 
 ::: panel-tabset
 **Punggol**
+
 
 ```{r}
 # Fit the linear model for resale_price using the specified variables
@@ -1757,7 +1907,9 @@ beep(3)
 write_rds(price_mlr_p, "data/rds/ml/punggol/price_mlr_p.rds" ) 
 ```
 
+
 **Woodlands**
+
 
 ```{r}
 # Fit the linear model for resale_price using the specified variables
@@ -1779,6 +1931,7 @@ beep(3)
 ```{r}
 write_rds(price_mlr_w, "data/rds/ml/woodlands/price_mlr_w.rds" ) 
 ```
+
 :::
 
 ## Geographically Weighted Regression
@@ -1790,17 +1943,21 @@ Now, we will calibrate a model to predict HDB resale price by using geographical
 ::: panel-tabset
 **Punggol**
 
+
 ```{r}
 train_data_sp_p <- as_Spatial(train_data_punggol)
 train_data_sp_p
 ```
 
+
 **Woodlands**
+
 
 ```{r}
 train_data_sp_w <- as_Spatial(train_data_woodlands)
 train_data_sp_w
 ```
+
 :::
 
 ### Computing adaptive bandwidth
@@ -1809,6 +1966,7 @@ Next, `bw.gwr()` of **GWmodel** package will be used to determine the optimal ba
 
 ::::: panel-tabset
 **Punggol**
+
 
 ```{r}
 bw_adaptive_p <- bw.gwr(resale_price ~ floor_area_sqm +
@@ -1827,6 +1985,7 @@ bw_adaptive_p <- bw.gwr(resale_price ~ floor_area_sqm +
 beep(3)
 ```
 
+
 The result shows that 31 neighbour points will be the optimal bandwidth to be used if adaptive bandwidth is used for this data set.
 
 ::: callout-note
@@ -1835,11 +1994,14 @@ Insights
 The result shows that 86 neighbour points will be the optimal bandwidth to be used if adaptive bandwidth is used for this data set.
 :::
 
+
 ```{r}
 write_rds(bw_adaptive_p, "data/rds/ml/punggol/bw_adaptive_p.rds")
 ```
 
+
 **Woodlands**
+
 
 ```{r}
 bw_adaptive_w <- bw.gwr(resale_price ~ floor_area_sqm +
@@ -1858,18 +2020,22 @@ bw_adaptive_w <- bw.gwr(resale_price ~ floor_area_sqm +
 beep(3)
 ```
 
+
 ::: callout-note
 Insights
 
 The results shows that 48 neighbour points will be the optimal bandwidth to be used if adaptive bandwidth is used for this data set.
 :::
 
+
 ```{r}
 write_rds(bw_adaptive_w, "data/rds/ml/woodlands/bw_adaptive_w.rds")
 ```
+
 :::::
 
 ### Constructing the adaptive bandwidth gwr model
+
 
 ```{r}
 bw_adaptive_p <- read_rds("data/rds/ml/punggol/bw_adaptive_p.rds")
@@ -1879,10 +2045,12 @@ bw_adaptive_p <- read_rds("data/rds/ml/punggol/bw_adaptive_p.rds")
 bw_adaptive_w <- read_rds("data/rds/ml/woodlands/bw_adaptive_w.rds")
 ```
 
+
 Now, we can go ahead to calibrate the gwr-based hedonic pricing model by using adaptive bandwidth and Gaussian kernel as shown in the code chunk below.
 
 ::: panel-tabset
 **Punggol**
+
 
 ```{r}
 gwr_adaptive_p <- gwr.basic(formula = resale_price ~ floor_area_sqm +
@@ -1904,7 +2072,9 @@ beep(3)
 write_rds(gwr_adaptive_p, "data/rds/ml/punggol/gwr_adaptive_p.rds")
 ```
 
+
 **Woodlands**
+
 
 ```{r}
 gwr_adaptive_w <- gwr.basic(formula = resale_price ~ floor_area_sqm +
@@ -1925,6 +2095,7 @@ beep(3)
 ```{r}
 write_rds(gwr_adaptive_w, "data/rds/ml/woodlands/gwr_adaptive_w.rds")
 ```
+
 :::
 
 ### Retrieve gwr output object
@@ -1934,6 +2105,7 @@ The code below can be used to display the model output.
 ::::: panel-tabset
 **Punggol**
 
+
 ```{r}
 gwr_adaptive_p <- read_rds("data/rds/ml/punggol/gwr_adaptive_p.rds")
 ```
@@ -1941,6 +2113,7 @@ gwr_adaptive_p <- read_rds("data/rds/ml/punggol/gwr_adaptive_p.rds")
 ```{r}
 gwr_adaptive_p
 ```
+
 
 ::: callout-note
 **Insights of 2 Regression Analysis in predicting resale price - Punggol**
@@ -1988,6 +2161,7 @@ Spatially varying coefficients highlight that the impact of certain factors, suc
 
 **Woodlands**
 
+
 ```{r}
 gwr_adaptive_w <- read_rds("data/rds/ml/woodlands/gwr_adaptive_w.rds")
 ```
@@ -1995,6 +2169,7 @@ gwr_adaptive_w <- read_rds("data/rds/ml/woodlands/gwr_adaptive_w.rds")
 ```{r}
 gwr_adaptive_w
 ```
+
 
 ::: callout-note
 **Insights of 2 Regression Analysis in predicting resale price - Woodlands**
@@ -2082,23 +2257,28 @@ The GWR model provides a much better fit for the resale price data in Woodlands 
 ::: panel-tabset
 Punggol
 
+
 ```{r}
 test_data_sp_p <- as_Spatial(test_data_punggol)
 test_data_sp_p
 ```
 
+
 Woodlands
+
 
 ```{r}
 test_data_sp_w <- as_Spatial(test_data_woodlands)
 test_data_sp_w
 ```
+
 :::
 
 ### Computing adaptive bandwidth for the test data
 
 ::: panel-tabset
 Punggol
+
 
 ```{r}
 gwr_bw_test_adaptive_p <- bw.gwr(resale_price ~ floor_area_sqm +
@@ -2121,7 +2301,9 @@ beep(3)
 write_rds(gwr_bw_test_adaptive_p, "data/rds/ml/punggol/gwr_bw_test_adaptive_p.rds")
 ```
 
+
 Woodlands
+
 
 ```{r}
 gwr_bw_test_adaptive_w<- bw.gwr(resale_price ~ floor_area_sqm +
@@ -2143,12 +2325,14 @@ beep(3)
 ```{r}
 write_rds(gwr_bw_test_adaptive_w, "data/rds/ml/woodlands/gwr_bw_test_adaptive_w.rds")
 ```
+
 :::
 
 ### Computing predicted values of the test data
 
 ::::: panel-tabset
 Punggol
+
 
 ```{r}
 gwr_pred_p <- gwr.predict(formula = resale_price ~ floor_area_sqm +
@@ -2175,6 +2359,7 @@ gwr_pred_p
 ```{r}
 write_rds(gwr_pred_p, "data/rds/ml/punggol/gwr_pred_p.rds")
 ```
+
 
 ::: callout-note
 **GWR Coefficient Estimates**
@@ -2208,6 +2393,7 @@ Key findings include:
 
 Woodlands
 
+
 ```{r}
 gwr_pred_w <- gwr.predict(formula = resale_price ~ floor_area_sqm +
                  unit_age + within_350m_busstop +
@@ -2233,6 +2419,7 @@ gwr_pred_w
 ```{r}
 write_rds(gwr_pred_w, "data/rds/ml/woodlands/gwr_pred_w.rds")
 ```
+
 
 ::: callout-note
 **Summary of GWR Coefficients**
@@ -2286,37 +2473,47 @@ The **Geographically Weighted Regression (GWR)** model provides a more accurate 
 ### Extracting coordinates data
 
 ::: panel-tabset
+
 ```{r}
 coords <- st_coordinates(data)
 ```
 
+
 **Punggol**
+
 
 ```{r}
 coords_train_p <- st_coordinates(train_data_punggol)
 coords_test_p <- st_coordinates(test_data_punggol)
 ```
 
+
 Before continue, we write all the output into rds for future used.
+
 
 ```{r}
 coords_train_p <- write_rds(coords_train_p, "data/rds/ml/punggol/coords_train_p.rds" )
 coords_test_p <- write_rds(coords_test_p, "data/rds/ml/punggol/coords_test_p.rds" )
 ```
 
+
 **Woodlands**
+
 
 ```{r}
 coords_train_w <- st_coordinates(train_data_woodlands)
 coords_test_w <- st_coordinates(test_data_woodlands)
 ```
 
+
 Before continue, we write all the output into rds for future used.
+
 
 ```{r}
 coords_train_w <- write_rds(coords_train_w, "data/rds/ml/coords_train_w.rds" )
 coords_test_w <- write_rds(coords_test_w, "data/rds/ml/coords_test_w.rds" )
 ```
+
 :::
 
 ### Dropping geometry field
@@ -2326,19 +2523,23 @@ First, we will drop geometry column of the sf data.frame by using `st_drop_geome
 ::: panel-tabset
 **Punggol**
 
+
 ```{r}
 train_data_punggol <- train_data_punggol %>% 
   st_drop_geometry() %>% 
   select(-town)
 ```
 
+
 **Woodlands**
+
 
 ```{r}
 train_data_woodlands <- train_data_woodlands %>% 
   st_drop_geometry() %>% 
   select(-town)
 ```
+
 :::
 
 ## Calibrating Random Forest Model
@@ -2347,6 +2548,7 @@ In this section, you will learn how to calibrate a model to predict HDB resale p
 
 ::: panel-tabset
 **Punggol**
+
 
 ```{r}
 set.seed(1234)
@@ -2370,7 +2572,9 @@ rf_p <- read_rds("data/rds/ml/punggol/rf_p.rds")
 rf_p
 ```
 
+
 **Woodlands**
+
 
 ```{r}
 set.seed(1234)
@@ -2393,6 +2597,7 @@ write_rds(rf_w, "data/rds/ml/woodlands/rf_w.rds")
 rf_w <- read_rds("data/rds/ml/woodlands/rf_w.rds")
 rf_w
 ```
+
 :::
 
 ## Calibrating Geographical Random Forest Model
@@ -2401,6 +2606,7 @@ In this section, you will learn how to calibrate a model to predict HDB resale p
 
 ::: panel-tabset
 **Punggol**
+
 
 ```{r}
 set.seed(1234)
@@ -2428,7 +2634,9 @@ write_rds(gwRF_adaptive_p, "data/rds/ml/punggol/gwRF_adaptive_p.rds")
 gwRF_adaptive_p <- read_rds("data/rds/ml/punggol/gwRF_adaptive_p.rds")
 ```
 
+
 **Woodlands**
+
 
 ```{r}
 set.seed(1234)
@@ -2455,6 +2663,7 @@ write_rds(gwRF_adaptive_w, "data/rds/ml/woodlands/gwRF_adaptive_w.rds")
 ```{r}
 gwRF_adaptive_w <- read_rds("data/rds/ml/woodlands/gwRF_adaptive_w.rds")
 ```
+
 :::
 
 ### Predicting by using test data
@@ -2466,17 +2675,21 @@ The code chunk below will be used to combine the test data with its correspondin
 ::: panel-tabset
 **Punggol**
 
+
 ```{r}
 test_data_punggol <- cbind(test_data_punggol, coords_test_p) %>%
   st_drop_geometry()
 ```
 
+
 **Woodlands**
+
 
 ```{r}
 test_data_woodlands <- cbind(test_data_woodlands, coords_test_w) %>%
   st_drop_geometry()
 ```
+
 :::
 
 #### Predicting with test data
@@ -2485,6 +2698,7 @@ Next, `predict.grf()` of spatialML package will be used to predict the resale va
 
 ::: panel-tabset
 **Punggol**
+
 
 ```{r}
 gwRF_pred_p <- predict.grf(gwRF_adaptive_p, 
@@ -2499,7 +2713,9 @@ gwRF_pred_p <- predict.grf(gwRF_adaptive_p,
 GRF_pred_p <- write_rds(gwRF_pred_p, "data/rds/ml/punggol/gwRF_adaptive_p.rds")
 ```
 
+
 **Woodlands**
+
 
 ```{r}
 gwRF_pred_w <- predict.grf(gwRF_adaptive_w, 
@@ -2513,6 +2729,7 @@ gwRF_pred_w <- predict.grf(gwRF_adaptive_w,
 ```{r}
 GRF_pred_w <- write_rds(gwRF_pred_w, "data/rds/ml/woodlands/gwRF_adaptive_w.rds")
 ```
+
 :::
 
 #### Converting the predicting output into a data frame
@@ -2522,6 +2739,7 @@ The output of the `predict.grf()` is a vector of predicted values. It is wiser t
 ::: panel-tabset
 **Punggol**
 
+
 ```{r}
 GRF_pred_p <- read_rds("data/rds/ml/punggol/gwRF_adaptive_p.rds")
 ```
@@ -2530,7 +2748,9 @@ GRF_pred_p <- read_rds("data/rds/ml/punggol/gwRF_adaptive_p.rds")
 GRF_pred_df_p <- as.data.frame(GRF_pred_p)
 ```
 
+
 In the code chunk below, `cbind()` is used to append the predicted values onto test_data
+
 
 ```{r}
 test_data_p <- cbind(test_data_punggol, GRF_pred_df_p)
@@ -2540,7 +2760,9 @@ test_data_p <- cbind(test_data_punggol, GRF_pred_df_p)
 write_rds(test_data_p, "data/rds/ml/punggol/test_data_p.rds")
 ```
 
+
 **Woodlands**
+
 
 ```{r}
 GRF_pred_w <- read_rds("data/rds/ml/woodlands/gwRF_adaptive_w.rds")
@@ -2550,7 +2772,9 @@ GRF_pred_w <- read_rds("data/rds/ml/woodlands/gwRF_adaptive_w.rds")
 GRF_pred_df_w <- as.data.frame(GRF_pred_w)
 ```
 
+
 In the code chunk below, `cbind()` is used to append the predicted values onto test_data
+
 
 ```{r}
 test_data_w <- cbind(test_data_woodlands, GRF_pred_df_w)
@@ -2559,6 +2783,7 @@ test_data_w <- cbind(test_data_woodlands, GRF_pred_df_w)
 ```{r}
 write_rds(test_data_w, "data/rds/ml/woodlands/test_data_w.rds")
 ```
+
 :::
 
 ### Calculating Root Mean Square Error
@@ -2567,6 +2792,7 @@ The root mean square error (RMSE) allows us to measure how far predicted values 
 
 ::::: panel-tabset
 **Punggol**
+
 
 ```{r}
 rmse(test_data_punggol$resale_price, 
@@ -2580,6 +2806,7 @@ summary(train_data_punggol$resale_price)
 ```{r}
 summary(test_data_p$resale_price)
 ```
+
 
 ::: callout-note
 **Interpretation**
@@ -2621,6 +2848,7 @@ The **RMSE of** \$\$49,423.08 for the Punggol test dataset, where the median res
 
 **Woodlands**
 
+
 ```{r}
 rmse(test_data_woodlands$resale_price, 
      test_data_w$GRF_pred_w)
@@ -2633,6 +2861,7 @@ summary(train_data_woodlands$resale_price)
 ```{r}
 summary(test_data_w$resale_price)
 ```
+
 
 ::: callout-note
 **Interpretation**
@@ -2686,12 +2915,14 @@ Alternatively, scatterplot can be used to visualise the actual resale price and 
 ::::: panel-tabset
 **Punggol**
 
+
 ```{r}
 ggplot(data = test_data_p,
        aes(x = GRF_pred_p,
            y = resale_price)) +
   geom_point()
 ```
+
 
 ::: callout-note
 Observation
@@ -2853,3 +3084,4 @@ This study only looks into two the top two towns that has the most transactions 
 ## Conclusion
 
 To summarise, Random Forest is better in predicting HDB resale prices. However, geospatial details are heavily embedded in HDB resale data, we shouldn't discount the spatial aspects that will affect the resale prices too. If the study's purpose is to understand spatial patterns, GWR is more suited. Conversely, if accuracy is a priority, Random Forest is a better choice.
+
